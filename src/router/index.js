@@ -10,6 +10,7 @@ const router = createRouter({
   history: createWebHistory(),
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) return savedPosition
+    if (to.name === 'products' && from.name === 'products' && to.path === from.path) return false
     if (to.hash) return { el: to.hash, behavior: 'smooth', top: 96 }
     return { top: 0, behavior: 'smooth' }
   },

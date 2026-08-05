@@ -1,6 +1,6 @@
 <script setup>
 import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-vue-next'
-import { computed, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
 import { categories, products } from '../data/products'
@@ -12,6 +12,7 @@ const router = useRouter()
 const activeCategory = ref(route.query.category || 'all')
 const search = ref('')
 const mobileFilters = ref(false)
+const productList = ref(null)
 
 watch(() => route.query.category, (value) => {
   activeCategory.value = categories.some((item) => item.key === value) ? value : 'all'
@@ -24,10 +25,12 @@ const filteredProducts = computed(() => products.filter((product) => {
   return categoryMatch && searchMatch
 }))
 
-const chooseCategory = (key) => {
+const chooseCategory = async (key) => {
   activeCategory.value = key
   mobileFilters.value = false
-  router.replace({ query: key === 'all' ? {} : { category: key } })
+  await router.replace({ query: key === 'all' ? {} : { category: key } })
+  await nextTick()
+  productList.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
 }
 </script>
 
@@ -72,7 +75,7 @@ const chooseCategory = (key) => {
           </div>
         </aside>
 
-        <div>
+        <div id="product-list" ref="productList" class="scroll-mt-24 lg:scroll-mt-28">
           <div class="mb-7 flex items-center justify-between">
             <p class="text-sm text-black/50"><strong class="text-ink">{{ filteredProducts.length }}</strong> {{ t.productCount }}</p>
             <p class="hidden text-xs uppercase tracking-[0.12em] text-black/35 sm:block">{{ locale === 'zh' ? 'WOLFWALKER 户外装备系统' : 'WOLFWALKER FIELD SYSTEMS' }}</p>

@@ -1,5 +1,5 @@
 <script setup>
-import { ArrowRight, Instagram, Linkedin, Mail } from 'lucide-vue-next'
+import { ArrowRight, Check, Instagram, Linkedin, Mail } from 'lucide-vue-next'
 import { ref } from 'vue'
 import BrandMark from './BrandMark.vue'
 import { categories } from '../data/products'
@@ -16,51 +16,56 @@ const subscribe = () => {
 </script>
 
 <template>
-  <footer class="bg-ink text-white">
-    <div class="site-container grid gap-12 py-14 lg:grid-cols-[1.35fr_.7fr_.7fr_1.2fr] lg:py-20">
-      <div>
-        <BrandMark light />
-        <p class="mt-6 max-w-sm text-sm leading-7 text-white/55">{{ t.footerText }}</p>
-        <div class="mt-7 flex gap-2">
-          <a href="https://www.instagram.com" target="_blank" rel="noreferrer" class="grid size-10 place-items-center border border-white/20 transition hover:border-signal hover:bg-signal" aria-label="Instagram"><Instagram :size="18" /></a>
-          <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" class="grid size-10 place-items-center border border-white/20 transition hover:border-signal hover:bg-signal" aria-label="LinkedIn"><Linkedin :size="18" /></a>
-          <a href="mailto:sales@wolfwalker.com" class="grid size-10 place-items-center border border-white/20 transition hover:border-signal hover:bg-signal" aria-label="Email"><Mail :size="18" /></a>
+  <footer id="site-footer" class="border-t-4 border-signal bg-ink text-white">
+    <div class="site-container">
+      <div class="grid gap-10 border-b border-white/10 py-11 sm:py-14 lg:grid-cols-[1fr_.9fr] lg:items-end lg:gap-20 lg:py-16">
+        <div>
+          <BrandMark light />
+          <p class="mt-5 max-w-md text-sm leading-7 text-white/60">{{ t.footerText }}</p>
+          <div class="mt-6 flex gap-2">
+            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="Instagram"><Instagram :size="18" /></a>
+            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="LinkedIn"><Linkedin :size="18" /></a>
+            <a href="mailto:sales@wolfwalker.com" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="Email"><Mail :size="18" /></a>
+          </div>
+        </div>
+
+        <div class="lg:max-w-xl lg:justify-self-end">
+          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#9eb2a5]">{{ t.newsletter }}</h2>
+          <p class="mt-3 text-sm leading-6 text-white/60">{{ t.newsletterCopy }}</p>
+          <form class="mt-5 grid min-h-12 grid-cols-[minmax(0,1fr)_48px] border border-white/20 bg-white/[0.03] focus-within:border-white/45" @submit.prevent="subscribe">
+            <input v-model="email" type="email" required :placeholder="t.email" class="min-w-0 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" />
+            <button type="submit" class="grid size-12 place-items-center bg-signal text-white transition hover:bg-[#c95021] focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset" :aria-label="t.subscribe"><ArrowRight :size="19" /></button>
+          </form>
+          <p v-if="subscribed" class="mt-3 flex items-center gap-2 text-xs text-[#b5d3a6]" aria-live="polite"><Check :size="15" />{{ locale === 'zh' ? '订阅成功。' : 'You are on the list.' }}</p>
         </div>
       </div>
 
-      <div>
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-white/40">{{ t.navigation }}</h2>
-        <div class="mt-5 flex flex-col gap-3 text-sm">
-          <RouterLink to="/" class="hover:text-signal">{{ t.home }}</RouterLink>
-          <RouterLink to="/product" class="hover:text-signal">{{ t.products }}</RouterLink>
-          <RouterLink to="/AboutUs" class="hover:text-signal">{{ t.brand }}</RouterLink>
-          <RouterLink to="/contact" class="hover:text-signal">{{ t.contact }}</RouterLink>
-        </div>
-      </div>
+      <div class="grid grid-cols-2 gap-x-7 py-9 sm:gap-x-12 lg:grid-cols-[.6fr_1.4fr] lg:gap-x-20 lg:py-12">
+        <nav aria-label="Footer navigation">
+          <h2 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{{ t.navigation }}</h2>
+          <div class="mt-4 flex flex-col text-sm">
+            <RouterLink to="/" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.home }}</RouterLink>
+            <RouterLink to="/product" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.products }}</RouterLink>
+            <RouterLink to="/AboutUs" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.brand }}</RouterLink>
+            <RouterLink to="/contact" class="flex min-h-10 items-center transition hover:text-signal">{{ t.contact }}</RouterLink>
+          </div>
+        </nav>
 
-      <div>
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-white/40">{{ t.categories }}</h2>
-        <div class="mt-5 flex flex-col gap-3 text-sm">
-          <RouterLink v-for="category in categories" :key="category.key" :to="`/product?category=${category.key}`" class="hover:text-signal">
-            {{ category[locale] }}
-          </RouterLink>
-        </div>
-      </div>
-
-      <div>
-        <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-white/40">{{ t.newsletter }}</h2>
-        <p class="mt-5 text-sm leading-6 text-white/55">{{ t.newsletterCopy }}</p>
-        <form class="mt-5 flex border-b border-white/30" @submit.prevent="subscribe">
-          <input v-model="email" type="email" required :placeholder="t.email" class="min-w-0 flex-1 bg-transparent py-3 text-sm text-white outline-none placeholder:text-white/35" />
-          <button type="submit" class="grid size-11 place-items-center transition hover:text-signal" :aria-label="t.subscribe"><ArrowRight :size="19" /></button>
-        </form>
-        <p v-if="subscribed" class="mt-3 text-xs text-[#9ec88b]">{{ locale === 'zh' ? '订阅成功。' : 'You are on the list.' }}</p>
+        <nav aria-label="Product categories">
+          <h2 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{{ t.categories }}</h2>
+          <div class="mt-4 flex flex-col text-sm lg:grid lg:grid-cols-2 lg:gap-x-12">
+            <RouterLink v-for="category in categories" :key="category.key" :to="`/product?category=${category.key}`" class="flex min-h-10 items-center border-b border-white/[0.07] transition last:border-b-0 hover:text-signal">
+              {{ category[locale] }}
+            </RouterLink>
+          </div>
+        </nav>
       </div>
     </div>
-    <div class="border-t border-white/10">
-      <div class="site-container flex flex-col gap-3 py-5 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+
+    <div class="border-t border-white/10 bg-black/10">
+      <div class="site-container flex flex-col gap-4 py-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
         <p>© {{ new Date().getFullYear() }} WOLFWALKER. {{ t.rights }}</p>
-        <div class="flex gap-5"><a href="#">{{ t.privacy }}</a><a href="#">{{ t.terms }}</a></div>
+        <div class="flex gap-6"><a href="#" class="transition hover:text-white">{{ t.privacy }}</a><a href="#" class="transition hover:text-white">{{ t.terms }}</a></div>
       </div>
     </div>
   </footer>

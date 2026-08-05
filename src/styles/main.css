@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #17201b;
+  background: #f7f8f5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { margin: 0; min-width: 320px; overflow-x: hidden; background: #f7f8f5; }
+body.menu-open { overflow: hidden; }
+button, input, textarea { font: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+img { display: block; max-width: 100%; }
+::selection { color: white; background: #173d2b; }
+
+@layer components {
+  .site-container { @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12; }
+  .eyebrow { @apply mb-3 text-xs font-bold uppercase tracking-[0.18em] text-signal; }
+  .display-title { @apply font-display text-4xl font-black uppercase leading-[0.98] text-ink sm:text-5xl lg:text-6xl; }
+  .section-title { @apply font-display text-3xl font-black uppercase leading-tight text-ink sm:text-4xl; }
+  .break-title { overflow-wrap: anywhere; word-break: normal; }
+  .btn-primary { @apply inline-flex min-h-12 items-center justify-center gap-2 bg-signal px-6 py-3 text-sm font-bold text-white transition duration-300 hover:bg-[#c95021] focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2; }
+  .btn-dark { @apply inline-flex min-h-12 items-center justify-center gap-2 bg-ink px-6 py-3 text-sm font-bold text-white transition duration-300 hover:bg-pine focus:outline-none focus:ring-2 focus:ring-pine focus:ring-offset-2; }
+  .btn-outline { @apply inline-flex min-h-12 items-center justify-center gap-2 border border-ink/25 bg-transparent px-6 py-3 text-sm font-bold text-ink transition duration-300 hover:border-ink hover:bg-ink hover:text-white focus:outline-none focus:ring-2 focus:ring-pine focus:ring-offset-2; }
+  .icon-button { @apply inline-flex size-11 shrink-0 items-center justify-center border border-black/15 bg-white text-ink transition hover:border-pine hover:bg-pine hover:text-white focus:outline-none focus:ring-2 focus:ring-pine focus:ring-offset-2; }
+}
+
+.route-enter-active,
+.route-leave-active { transition: opacity 240ms ease, transform 240ms ease; }
+.route-enter-from { opacity: 0; transform: translateY(8px); }
+.route-leave-to { opacity: 0; transform: translateY(-8px); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes drift {
+  0%, 100% { transform: scale(1.02); }
+  50% { transform: scale(1.06); }
+}
+.animate-rise { animation: rise 700ms cubic-bezier(.2,.7,.2,1) both; }
+.animate-drift { animation: drift 14s ease-in-out infinite; }
+.delay-1 { animation-delay: 100ms; }
+.delay-2 { animation-delay: 200ms; }
+.reveal-ready { opacity: 0; transform: translateY(24px); transition: opacity 700ms ease, transform 700ms cubic-bezier(.2,.7,.2,1); }
+.reveal-visible { opacity: 1; transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .reveal-ready { opacity: 1; transform: none; }
+}

@@ -2,6 +2,7 @@
 import { ArrowRight, Pause, Play, Quote } from 'lucide-vue-next'
 import { ref } from 'vue'
 import { useLocale } from '../composables/useLocale'
+import UiLinkButton from '../components/UiLinkButton.vue'
 
 const { locale, t } = useLocale()
 const video = ref(null)
@@ -42,9 +43,9 @@ const toggleVideo = async () => {
           <source src="https://videos.pexels.com/video-files/3130284/3130284-hd_1920_1080_30fps.mp4" type="video/mp4" />
         </video>
         <div class="pointer-events-none absolute inset-0 bg-black/20 transition group-hover:bg-black/10"></div>
-        <button type="button" class="absolute left-1/2 top-1/2 grid size-20 -translate-x-1/2 -translate-y-1/2 place-items-center bg-signal text-white shadow-lift transition duration-300 hover:scale-105 sm:size-24" :aria-label="playing ? t.pauseFilm : t.playFilm" @click="toggleVideo">
+        <ElButton class="video-control absolute left-1/2 top-1/2 !size-20 -translate-x-1/2 -translate-y-1/2 shadow-lift sm:!size-24" :aria-label="playing ? t.pauseFilm : t.playFilm" @click="toggleVideo">
           <Pause v-if="playing" :size="28" fill="currentColor" /><Play v-else :size="30" fill="currentColor" />
-        </button>
+        </ElButton>
         <p class="absolute bottom-5 left-5 text-xs font-bold uppercase tracking-[0.16em] text-white sm:bottom-8 sm:left-8">{{ playing ? t.pauseFilm : t.playFilm }}</p>
       </div>
     </section>
@@ -86,7 +87,7 @@ const toggleVideo = async () => {
       <div v-reveal class="site-container relative flex min-h-[440px] flex-col items-start justify-center">
         <Quote :size="32" class="text-signal" />
         <blockquote class="mt-5 max-w-3xl font-display text-3xl font-black uppercase leading-tight sm:text-4xl">{{ locale === 'zh' ? '好的户外装备，不该打扰风景，只需默默让旅程更舒适。' : 'Great outdoor gear should never distract from the view. It should simply make the journey feel better.' }}</blockquote>
-        <RouterLink to="/contact" class="btn-primary mt-8">{{ t.contact }} <ArrowRight :size="18" /></RouterLink>
+        <UiLinkButton to="/contact" class="mt-8">{{ t.contact }} <ArrowRight :size="18" /></UiLinkButton>
       </div>
     </section>
   </div>

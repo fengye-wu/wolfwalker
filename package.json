@@ -13,6 +13,7 @@
     "check:visual": "node scripts/visual-check.mjs"
   },
   "dependencies": {
+    "element-plus": "^2.14.3",
     "lucide-vue-next": "^0.468.0",
     "vue": "^3.4.38",
     "vue-router": "^4.4.3"

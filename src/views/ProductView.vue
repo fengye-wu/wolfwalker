@@ -3,6 +3,7 @@ import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-vue-next'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import ProductCard from '../components/ProductCard.vue'
+import UiLinkButton from '../components/UiLinkButton.vue'
 import { categories, products } from '../data/products'
 import { useLocale } from '../composables/useLocale'
 
@@ -55,23 +56,22 @@ const chooseCategory = async (key) => {
           <h2 class="section-title">{{ t.allProducts }}</h2>
         </div>
         <div class="flex items-center gap-3">
-          <label class="flex h-12 flex-1 items-center gap-3 border border-black/15 bg-white px-4 lg:w-72">
-            <Search :size="18" class="text-black/40" />
-            <input v-model="search" type="search" :placeholder="locale === 'zh' ? '搜索商品' : 'Search products'" class="min-w-0 flex-1 bg-transparent text-sm outline-none" />
-          </label>
-          <button type="button" class="icon-button lg:hidden" :aria-label="t.categories" @click="mobileFilters = !mobileFilters"><X v-if="mobileFilters" :size="19" /><SlidersHorizontal v-else :size="19" /></button>
+          <ElInput v-model="search" clearable class="product-search flex-1 lg:w-72 lg:flex-none" type="search" :placeholder="locale === 'zh' ? '搜索商品' : 'Search products'">
+            <template #prefix><Search :size="18" /></template>
+          </ElInput>
+          <ElButton class="brand-icon-button lg:!hidden" :aria-label="t.categories" @click="mobileFilters = !mobileFilters"><X v-if="mobileFilters" :size="19" /><SlidersHorizontal v-else :size="19" /></ElButton>
         </div>
       </div>
 
       <div class="mt-8 grid gap-10 lg:grid-cols-[220px_1fr] lg:gap-12">
         <aside :class="mobileFilters ? 'block' : 'hidden lg:block'">
           <div class="sticky top-28 space-y-1 bg-white p-3 lg:bg-transparent lg:p-0">
-            <button type="button" class="flex w-full items-center justify-between border-b border-black/10 px-3 py-4 text-left text-sm font-bold transition hover:text-signal" :class="activeCategory === 'all' ? 'text-signal' : 'text-ink/60'" @click="chooseCategory('all')">
+            <ElButton text class="category-filter" :class="activeCategory === 'all' ? 'is-active' : ''" @click="chooseCategory('all')">
               <span>{{ t.filterAll }}</span><span>{{ products.length }}</span>
-            </button>
-            <button v-for="category in categories" :key="category.key" type="button" class="flex w-full items-center justify-between border-b border-black/10 px-3 py-4 text-left text-sm font-bold transition hover:text-signal" :class="activeCategory === category.key ? 'text-signal' : 'text-ink/60'" @click="chooseCategory(category.key)">
+            </ElButton>
+            <ElButton v-for="category in categories" :key="category.key" text class="category-filter" :class="activeCategory === category.key ? 'is-active' : ''" @click="chooseCategory(category.key)">
               <span>{{ category[locale] }}</span><span>{{ products.filter((item) => item.category === category.key).length }}</span>
-            </button>
+            </ElButton>
           </div>
         </aside>
 
@@ -91,7 +91,7 @@ const chooseCategory = async (key) => {
     <section class="bg-pine py-14 text-white">
       <div class="site-container flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
         <div><p class="text-xs font-bold uppercase tracking-[0.18em] text-white/50">{{ locale === 'zh' ? '品牌定制' : 'OEM / ODM' }}</p><h2 class="mt-2 font-display text-3xl font-black uppercase">{{ locale === 'zh' ? '寻找专属定制方案？' : 'Need a custom solution?' }}</h2></div>
-        <RouterLink to="/contact" class="btn-primary self-start sm:self-auto">{{ t.inquiry }} <ArrowRight :size="18" /></RouterLink>
+        <UiLinkButton to="/contact" class="self-start sm:self-auto">{{ t.inquiry }} <ArrowRight :size="18" /></UiLinkButton>
       </div>
     </section>
   </div>

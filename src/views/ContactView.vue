@@ -1,6 +1,6 @@
 <script setup>
 import { ArrowRight, Building2, Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
-import { reactive, ref, watch } from 'vue'
+import { computed, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLocale } from '../composables/useLocale'
 
@@ -15,8 +15,20 @@ const form = reactive({
   name: '', company: '', email: '', phone: '',
   message: inquiryMessage(locale.value),
 })
+const formRef = ref()
 const sent = ref(false)
-const submit = () => { sent.value = true }
+const rules = computed(() => ({
+  name: [{ required: true, message: locale.value === 'zh' ? '请输入姓名' : 'Please enter your name', trigger: 'blur' }],
+  email: [
+    { required: true, message: locale.value === 'zh' ? '请输入邮箱' : 'Please enter your email', trigger: 'blur' },
+    { type: 'email', message: locale.value === 'zh' ? '请输入有效邮箱' : 'Please enter a valid email', trigger: ['blur', 'change'] },
+  ],
+  message: [{ required: true, message: locale.value === 'zh' ? '请输入留言' : 'Please enter a message', trigger: 'blur' }],
+}))
+const submit = async () => {
+  if (!formRef.value || !await formRef.value.validate().catch(() => false)) return
+  sent.value = true
+}
 watch(locale, (value, previous) => {
   if (route.query.product && form.message === inquiryMessage(previous)) form.message = inquiryMessage(value)
 })
@@ -42,16 +54,16 @@ watch(locale, (value, previous) => {
         </div>
       </div>
 
-      <form v-reveal class="bg-white p-6 shadow-lift sm:p-10" @submit.prevent="submit">
+      <ElForm ref="formRef" v-reveal :model="form" :rules="rules" label-position="top" class="contact-form bg-white p-6 shadow-lift sm:p-10" @submit.prevent="submit">
         <div class="grid gap-6 sm:grid-cols-2">
-          <label class="block"><span class="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-black/45">{{ t.name }} *</span><input v-model="form.name" required class="h-12 w-full border-b border-black/20 bg-mist px-4 text-sm outline-none transition focus:border-pine" /></label>
-          <label class="block"><span class="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-black/45">{{ t.company }}</span><input v-model="form.company" class="h-12 w-full border-b border-black/20 bg-mist px-4 text-sm outline-none transition focus:border-pine" /></label>
-          <label class="block"><span class="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-black/45">{{ t.email }} *</span><input v-model="form.email" required type="email" class="h-12 w-full border-b border-black/20 bg-mist px-4 text-sm outline-none transition focus:border-pine" /></label>
-          <label class="block"><span class="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-black/45">{{ t.phone }}</span><input v-model="form.phone" type="tel" class="h-12 w-full border-b border-black/20 bg-mist px-4 text-sm outline-none transition focus:border-pine" /></label>
+          <ElFormItem :label="t.name" prop="name"><ElInput v-model="form.name" /></ElFormItem>
+          <ElFormItem :label="t.company" prop="company"><ElInput v-model="form.company" /></ElFormItem>
+          <ElFormItem :label="t.email" prop="email"><ElInput v-model="form.email" type="email" /></ElFormItem>
+          <ElFormItem :label="t.phone" prop="phone"><ElInput v-model="form.phone" type="tel" /></ElFormItem>
         </div>
-        <label class="mt-6 block"><span class="mb-2 block text-xs font-bold uppercase tracking-[0.12em] text-black/45">{{ t.message }} *</span><textarea v-model="form.message" required rows="5" class="w-full resize-none border-b border-black/20 bg-mist p-4 text-sm leading-6 outline-none transition focus:border-pine"></textarea></label>
-        <div class="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><button type="submit" class="btn-primary">{{ t.send }} <ArrowRight :size="18" /></button><p v-if="sent" class="text-sm text-pine">{{ t.formSuccess }}</p></div>
-      </form>
+        <ElFormItem :label="t.message" prop="message" class="mt-1"><ElInput v-model="form.message" type="textarea" :rows="5" resize="none" /></ElFormItem>
+        <div class="mt-3 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"><ElButton type="primary" native-type="submit" size="large">{{ t.send }} <ArrowRight :size="18" /></ElButton><p v-if="sent" class="text-sm text-pine">{{ t.formSuccess }}</p></div>
+      </ElForm>
     </section>
 
     <section class="relative h-[520px] overflow-hidden bg-[#dfe4dc]">

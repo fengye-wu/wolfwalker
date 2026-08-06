@@ -51,7 +51,7 @@ try {
   );
   await page.locator('header button').nth(1).click();
   assert(
-    await page.locator('header nav').last().isVisible(),
+    await page.locator('.mobile-nav-drawer nav').isVisible(),
     'Mobile navigation did not open'
   );
   await page.waitForTimeout(350);

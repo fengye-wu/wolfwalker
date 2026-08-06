@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { Languages, Menu, X } from 'lucide-vue-next'
 import { useRoute } from 'vue-router'
 import BrandMark from './BrandMark.vue'
@@ -16,8 +16,6 @@ const links = computed(() => [
 ])
 
 watch(() => route.fullPath, () => { open.value = false })
-watch(open, (value) => document.body.classList.toggle('menu-open', value))
-onBeforeUnmount(() => document.body.classList.remove('menu-open'))
 </script>
 
 <template>
@@ -38,19 +36,21 @@ onBeforeUnmount(() => document.body.classList.remove('menu-open'))
       </nav>
 
       <div class="flex shrink-0 items-center gap-2">
-        <button class="inline-flex h-10 min-w-10 items-center justify-center gap-2 border border-black/15 px-2 text-xs font-bold transition hover:border-pine hover:text-pine sm:px-3" type="button" @click="toggleLocale">
+        <ElButton class="brand-control" @click="toggleLocale">
           <Languages class="hidden sm:block" :size="17" aria-hidden="true" />
           {{ t.language }}
-        </button>
-        <button class="icon-button lg:hidden" type="button" :aria-label="open ? t.close : t.menu" :aria-expanded="open" @click="open = !open">
-          <X v-if="open" :size="21" />
-          <Menu v-else :size="21" />
-        </button>
+        </ElButton>
+        <ElButton class="brand-icon-button lg:!hidden" :aria-label="t.menu" :aria-expanded="open" @click="open = !open">
+          <Menu :size="21" />
+        </ElButton>
       </div>
     </div>
 
-    <Transition enter-active-class="transition duration-300" enter-from-class="opacity-0 -translate-y-3" leave-active-class="transition duration-200" leave-to-class="opacity-0 -translate-y-3">
-      <div v-if="open" class="fixed inset-x-0 top-[72px] h-[calc(100vh-72px)] border-t border-black/10 bg-white p-5 lg:hidden">
+    <ElDrawer v-model="open" append-to-body direction="rtl" size="min(88vw, 380px)" :show-close="false" :with-header="false" class="mobile-nav-drawer lg:hidden">
+      <div class="relative h-full p-5">
+        <div class="mb-3 flex justify-end">
+          <ElButton class="brand-icon-button" :aria-label="t.close" @click="open = false"><X :size="21" /></ElButton>
+        </div>
         <nav class="flex flex-col" aria-label="Mobile navigation">
           <RouterLink
             v-for="(link, index) in links"
@@ -63,6 +63,6 @@ onBeforeUnmount(() => document.body.classList.remove('menu-open'))
         </nav>
         <div class="absolute bottom-8 left-5 right-5 bg-mist p-5 text-sm leading-6 text-ink/65">{{ t.footerText }}</div>
       </div>
-    </Transition>
+    </ElDrawer>
   </header>
 </template>

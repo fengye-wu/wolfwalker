@@ -3,8 +3,6 @@ import {
   ArrowLeft,
   ArrowRight,
   Check,
-  Minus,
-  Plus,
   ShieldCheck,
   Truck,
   Wrench
@@ -12,6 +10,7 @@ import {
 import { computed, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import ProductCard from '../components/ProductCard.vue';
+import UiLinkButton from '../components/UiLinkButton.vue';
 import { getCategory, getProduct, products } from '../data/products';
 import { useLocale } from '../composables/useLocale';
 
@@ -45,9 +44,6 @@ const detailImages = computed(() =>
 );
 const selectedImage = ref(0);
 
-const adjustQuantity = (amount) => {
-  quantity.value = Math.max(50, quantity.value + amount);
-};
 </script>
 
 <template>
@@ -78,11 +74,10 @@ const adjustQuantity = (amount) => {
           </Transition>
         </div>
         <div class="mt-3 grid grid-cols-3 gap-3">
-          <button
+          <ElButton
             v-for="(image, index) in detailImages"
             :key="`${image}-${index}`"
-            type="button"
-            class="aspect-[4/3] overflow-hidden border-2 bg-[#e9ebe5] transition"
+            class="thumbnail-button aspect-[4/3] overflow-hidden border-2 bg-[#e9ebe5] transition"
             :class="
               selectedImage === index
                 ? 'border-signal'
@@ -91,7 +86,7 @@ const adjustQuantity = (amount) => {
             @click="selectedImage = index"
           >
             <img :src="image" alt="" class="size-full object-cover" />
-          </button>
+          </ElButton>
         </div>
       </div>
 
@@ -141,39 +136,15 @@ const adjustQuantity = (amount) => {
             >{{ t.quantity }}</label
           >
           <div class="flex gap-3">
-            <div class="flex h-12 border border-black/15 bg-white">
-              <button
-                type="button"
-                class="grid w-11 place-items-center hover:bg-mist"
-                aria-label="Decrease"
-                @click="adjustQuantity(-10)"
-              >
-                <Minus :size="16" />
-              </button>
-              <input
-                v-model.number="quantity"
-                type="number"
-                min="50"
-                step="10"
-                class="w-16 border-x border-black/10 text-center text-sm font-bold outline-none"
-              />
-              <button
-                type="button"
-                class="grid w-11 place-items-center hover:bg-mist"
-                aria-label="Increase"
-                @click="adjustQuantity(10)"
-              >
-                <Plus :size="16" />
-              </button>
-            </div>
-            <RouterLink
+            <ElInputNumber v-model="quantity" :min="50" :step="10" class="quantity-input" />
+            <UiLinkButton
               :to="{
                 path: '/contact',
                 query: { product: product.sku, quantity }
               }"
-              class="btn-primary flex-1"
+              class="flex-1"
               >{{ t.requestQuote }} <ArrowRight :size="18"
-            /></RouterLink>
+            /></UiLinkButton>
           </div>
         </div>
 
@@ -268,8 +239,8 @@ const adjustQuantity = (amount) => {
     <div>
       <p class="font-display text-7xl font-black text-black/10">404</p>
       <h1 class="mt-4 text-2xl font-bold">{{ t.noProducts }}</h1>
-      <RouterLink to="/product" class="btn-dark mt-7"
-        ><ArrowLeft :size="18" /> {{ t.backProducts }}</RouterLink
+      <UiLinkButton to="/product" variant="dark" class="mt-7"
+        ><ArrowLeft :size="18" /> {{ t.backProducts }}</UiLinkButton
       >
     </div>
   </section>
@@ -283,8 +254,5 @@ const adjustQuantity = (amount) => {
 .image-swap-enter-from,
 .image-swap-leave-to {
   opacity: 0;
-}
-input[type='number']::-webkit-inner-spin-button {
-  appearance: none;
 }
 </style>

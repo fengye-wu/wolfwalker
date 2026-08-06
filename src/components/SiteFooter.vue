@@ -32,9 +32,9 @@ const subscribe = () => {
         <div class="lg:max-w-xl lg:justify-self-end">
           <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#9eb2a5]">{{ t.newsletter }}</h2>
           <p class="mt-3 text-sm leading-6 text-white/60">{{ t.newsletterCopy }}</p>
-          <form class="mt-5 grid min-h-12 grid-cols-[minmax(0,1fr)_48px] border border-white/20 bg-white/[0.03] focus-within:border-white/45" @submit.prevent="subscribe">
-            <input v-model="email" type="email" required :placeholder="t.email" class="min-w-0 bg-transparent px-4 py-3 text-sm text-white outline-none placeholder:text-white/35" />
-            <button type="submit" class="grid size-12 place-items-center bg-signal text-white transition hover:bg-[#c95021] focus:outline-none focus:ring-2 focus:ring-white focus:ring-inset" :aria-label="t.subscribe"><ArrowRight :size="19" /></button>
+          <form class="newsletter-form mt-5 flex min-h-12" @submit.prevent="subscribe">
+            <ElInput v-model="email" type="email" required :placeholder="t.email" :aria-label="t.email" />
+            <ElButton type="primary" native-type="submit" class="newsletter-submit" :aria-label="t.subscribe"><ArrowRight :size="19" /></ElButton>
           </form>
           <p v-if="subscribed" class="mt-3 flex items-center gap-2 text-xs text-[#b5d3a6]" aria-live="polite"><Check :size="15" />{{ locale === 'zh' ? '订阅成功。' : 'You are on the list.' }}</p>
         </div>

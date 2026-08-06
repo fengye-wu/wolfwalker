@@ -1,9 +1,14 @@
 import { createApp } from 'vue'
+import { ElButton, ElCarousel, ElCarouselItem, ElDrawer, ElForm, ElFormItem, ElInput, ElInputNumber } from 'element-plus'
+import 'element-plus/dist/index.css'
 import App from './App.vue'
 import router from './router'
 import './styles/main.css'
 
 const app = createApp(App)
+
+const elementComponents = { ElButton, ElCarousel, ElCarouselItem, ElDrawer, ElForm, ElFormItem, ElInput, ElInputNumber }
+Object.entries(elementComponents).forEach(([name, component]) => app.component(name, component))
 
 app.directive('reveal', {
   mounted(el) {

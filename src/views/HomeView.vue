@@ -1,13 +1,14 @@
 <script setup>
 import { ArrowDown, ArrowRight, ChevronLeft, ChevronRight, MoveRight } from 'lucide-vue-next'
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import ProductCard from '../components/ProductCard.vue'
+import UiLinkButton from '../components/UiLinkButton.vue'
 import { categories, products } from '../data/products'
 import { useLocale } from '../composables/useLocale'
 
 const { locale, t } = useLocale()
+const carouselRef = ref()
 const activeSlide = ref(0)
-let timer
 
 const slides = [
   {
@@ -32,39 +33,39 @@ const slides = [
 
 const featured = products.filter((product) => product.featured).slice(0, 8)
 const spotlights = [products[0], products.find((item) => item.category === 'sofa')]
-const current = computed(() => slides[activeSlide.value])
-const goTo = (index) => { activeSlide.value = (index + slides.length) % slides.length }
-const startTimer = () => { timer = window.setInterval(() => goTo(activeSlide.value + 1), 6500) }
-
-onMounted(startTimer)
-onBeforeUnmount(() => window.clearInterval(timer))
+const goTo = (index) => carouselRef.value?.setActiveItem((index + slides.length) % slides.length)
+const handleSlideChange = (index) => { activeSlide.value = index }
 </script>
 
 <template>
   <div>
     <section class="relative min-h-[calc(100svh-72px)] overflow-hidden bg-ink text-white lg:min-h-[calc(100svh-80px)]">
-      <TransitionGroup name="hero-fade">
-        <img v-for="(slide, index) in slides" v-show="activeSlide === index" :key="slide.image" :src="slide.image" :alt="slide.title[locale]" class="absolute inset-0 size-full object-cover" :class="activeSlide === index ? 'animate-drift' : ''" />
-      </TransitionGroup>
-      <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent"></div>
-      <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/60 to-transparent"></div>
+      <ElCarousel ref="carouselRef" class="hero-carousel" height="calc(100svh - var(--site-header-height))" :interval="6500" arrow="never" indicator-position="none" @change="handleSlideChange">
+        <ElCarouselItem v-for="(slide, index) in slides" :key="slide.image">
+          <div class="relative size-full overflow-hidden">
+            <img :src="slide.image" :alt="slide.title[locale]" class="absolute inset-0 size-full object-cover" :class="activeSlide === index ? 'animate-drift' : ''" />
+            <div class="absolute inset-0 bg-gradient-to-r from-black/75 via-black/35 to-transparent"></div>
+            <div class="absolute inset-x-0 bottom-0 h-40 bg-gradient-to-t from-black/60 to-transparent"></div>
 
-      <div class="site-container relative flex min-h-[calc(100svh-72px)] items-end pb-24 pt-28 lg:min-h-[calc(100svh-80px)] lg:items-center lg:pb-24 lg:pt-24">
-        <div :key="activeSlide" class="max-w-3xl animate-rise">
-          <p class="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-white/70">{{ current.eyebrow[locale] }}</p>
-          <h1 class="font-display text-4xl font-black uppercase leading-[0.92] text-white sm:text-6xl lg:text-7xl xl:text-[7rem]">{{ current.title[locale] }}</h1>
-          <p class="mt-6 max-w-xl text-base leading-7 text-white/75 sm:text-lg">{{ current.copy[locale] }}</p>
-          <RouterLink to="/product" class="btn-primary mt-8">{{ t.explore }} <ArrowRight :size="18" /></RouterLink>
-        </div>
-      </div>
+            <div class="site-container relative flex h-full items-end pb-24 pt-28 lg:items-center lg:pb-24 lg:pt-24">
+              <div class="max-w-3xl transition duration-700" :class="activeSlide === index ? 'translate-y-0 opacity-100' : 'translate-y-7 opacity-0'">
+                <p class="mb-5 text-xs font-bold uppercase tracking-[0.2em] text-white/70">{{ slide.eyebrow[locale] }}</p>
+                <h1 class="font-display text-4xl font-black uppercase leading-[0.92] text-white sm:text-6xl lg:text-7xl xl:text-[7rem]">{{ slide.title[locale] }}</h1>
+                <p class="mt-6 max-w-xl text-base leading-7 text-white/75 sm:text-lg">{{ slide.copy[locale] }}</p>
+                <UiLinkButton to="/product" class="mt-8">{{ t.explore }} <ArrowRight :size="18" /></UiLinkButton>
+              </div>
+            </div>
+          </div>
+        </ElCarouselItem>
+      </ElCarousel>
 
-      <div class="site-container absolute inset-x-0 bottom-5 flex items-end justify-between">
+      <div class="site-container absolute inset-x-0 bottom-5 z-10 flex items-end justify-between">
         <div class="flex gap-2">
-          <button v-for="(_, index) in slides" :key="index" type="button" class="h-1 transition-all" :class="activeSlide === index ? 'w-12 bg-signal' : 'w-7 bg-white/40 hover:bg-white'" :aria-label="`Slide ${index + 1}`" @click="goTo(index)"></button>
+          <ElButton v-for="(_, index) in slides" :key="index" text class="slide-dot" :class="activeSlide === index ? 'is-active' : ''" :aria-label="`Slide ${index + 1}`" @click="goTo(index)" />
         </div>
         <div class="hidden gap-2 sm:flex">
-          <button class="grid size-11 place-items-center border border-white/35 transition hover:bg-white hover:text-ink" type="button" aria-label="Previous slide" @click="goTo(activeSlide - 1)"><ChevronLeft :size="20" /></button>
-          <button class="grid size-11 place-items-center border border-white/35 transition hover:bg-white hover:text-ink" type="button" aria-label="Next slide" @click="goTo(activeSlide + 1)"><ChevronRight :size="20" /></button>
+          <ElButton class="hero-nav-button" aria-label="Previous slide" @click="goTo(activeSlide - 1)"><ChevronLeft :size="20" /></ElButton>
+          <ElButton class="hero-nav-button" aria-label="Next slide" @click="goTo(activeSlide + 1)"><ChevronRight :size="20" /></ElButton>
         </div>
       </div>
     </section>
@@ -81,7 +82,7 @@ onBeforeUnmount(() => window.clearInterval(timer))
     <section class="site-container py-20 lg:py-28">
       <div v-reveal class="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
         <div><p class="eyebrow">{{ locale === 'zh' ? 'WOLFWALKER 精选' : 'WOLFWALKER SELECTS' }}</p><h2 class="section-title">{{ t.featured }}</h2><p class="mt-4 max-w-xl text-sm leading-7 text-black/55 sm:text-base">{{ t.featuredCopy }}</p></div>
-        <RouterLink to="/product" class="btn-outline self-start sm:self-auto">{{ t.viewAll }} <ArrowRight :size="18" /></RouterLink>
+        <UiLinkButton to="/product" variant="outline" class="self-start sm:self-auto">{{ t.viewAll }} <ArrowRight :size="18" /></UiLinkButton>
       </div>
 
       <div class="mt-12 grid gap-5 lg:grid-cols-2">
@@ -129,8 +130,3 @@ onBeforeUnmount(() => window.clearInterval(timer))
     </RouterLink>
   </div>
 </template>
-
-<style scoped>
-.hero-fade-enter-active, .hero-fade-leave-active { transition: opacity 800ms ease; }
-.hero-fade-enter-from, .hero-fade-leave-to { opacity: 0; }
-</style>

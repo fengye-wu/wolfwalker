@@ -120,7 +120,15 @@ watch(
     height: 100%;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: minmax(210px, 1fr) auto minmax(210px, 1fr);
+    // 两侧列 1fr 等分，nav 自然落在正中。
+    // 下限原为 210px，但 1024-1040 这段装不下：英文六个菜单的 nav 要 536px
+    // （中文只要 478px），加上 210×2 和两道 gap 共需 1017px，而这里的壳只有
+    // 976px —— 溢出 41px，页面出现 17px 横向滚动，nav 还被顶得偏右 20px，
+    // 正好和这条下限想维持的居中相反。
+    // 收到 150px：brand 实测最宽 220px（1920 下）、tools 190-412px，都由内容
+    // 撑开，用不到下限；下限只在内容异常窄时兜个底，所以降它不影响任何断点的
+    // 居中（实测 1024-2560 偏移全为 0）。
+    grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
     align-items: center;
     gap: clamp(20px, 3vw, 60px);
     border-bottom: 1px solid rgba(39, 38, 45, 0.13);

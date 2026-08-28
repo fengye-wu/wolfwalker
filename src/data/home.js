@@ -39,6 +39,10 @@ export const heroSlides = sectionImages.map((image, index) => ({
   ...heroSlideContent[index]
 }));
 
+// 这四个 key 必须是 products.js 里 categories 真实存在的（现有五类：
+// tent / sleepingpad / sofa / tableAndchair / accessories）。
+// ProductView 对未知 key 会静默回落到「全部」，所以拼错不会报错、只会筛不出东西。
+// 顺序同时决定 categoryImages 和 copy.categoryNames 的对应关系，三者一动全动。
 export const categoryRoutes = [
   'tent',
   'accessories',
@@ -78,12 +82,16 @@ export const copy = {
     more: '查看更多',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle: '多元户外装备\n露营 / 徒步 / 越野全覆盖',
-    categoryNames: ['帐篷产品', '徒步产品', '骑行产品', '睡袋产品'],
+    // 逐项对应 categoryRoutes 的 tent / accessories / tableAndchair / sleepingpad。
+    // 原来是「帐篷 / 徒步 / 骑行 / 睡袋」，后三个商品库里没有这些品类：点「徒步产品」
+    // 实际筛到配件、「骑行产品」筛到桌椅，「睡袋」也不等于 sleepingpad（那是睡垫）。
+    // 改任何一项都要同步核对 categoryRoutes 同下标的 key。
+    categoryNames: ['帐篷产品', '配件产品', '桌椅产品', '睡垫产品'],
     categoryEnglish: [
       'Tent & Awning',
-      'Hiking Gear',
-      'Off-road Cycling',
-      'Sleeping Bags'
+      'Camp Accessories',
+      'Tables & Chairs',
+      'Sleeping Pads'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
@@ -134,20 +142,20 @@ export const copy = {
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle:
       'Versatile outdoor gear\nfor camp, trail and off-road travel',
-    // 卡片上两行叠着显示：中文版是「品名 + 英文品名」，英文版原来是
-    // 「品名 + XX Collection」，等于凭空多出一层分类名。改成与中文同构 ——
-    // 上行品名、下行沿用中文版那组英文，两个语言的卡片长得一样。
+    // 这两组只进 aria-label / alt，卡面上不显示文字（早先的注释说「两行叠着显示」，
+    // 已经不是现在的实现）。英文版两组内容相同，HomeView 里会去重，读屏不会念两遍。
+    // 同样逐项对应 categoryRoutes，改动要跟着核对 key。
     categoryNames: [
-      'Tents & Awnings',
-      'Hiking Gear',
-      'Cycling Gear',
-      'Sleeping Bags'
+      'Tent & Awning',
+      'Camp Accessories',
+      'Tables & Chairs',
+      'Sleeping Pads'
     ],
     categoryEnglish: [
       'Tent & Awning',
-      'Hiking Gear',
-      'Off-road Cycling',
-      'Sleeping Bags'
+      'Camp Accessories',
+      'Tables & Chairs',
+      'Sleeping Pads'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',

@@ -47,12 +47,20 @@ const brandBodyLines = computed(() =>
 // categoryImages 已改为数组。分类数量以 categoryRoutes 为准，
 // 多出来的图片先忽略，等补齐 categoryNames / categoryEnglish 再启用。
 const categories = computed(() =>
-  categoryRoutes.map((route, index) => ({
-    image: categoryImages[index],
-    name: copy.value.categoryNames[index],
-    english: copy.value.categoryEnglish[index],
-    to: `/product?category=${route}`
-  }))
+  categoryRoutes.map((route, index) => {
+    const name = copy.value.categoryNames[index];
+    const english = copy.value.categoryEnglish[index];
+    return {
+      image: categoryImages[index],
+      name,
+      english,
+      // name 和 english 只进 aria-label 和 alt，卡面上并不显示文字。
+      // 英文版两者本来就是同一句，拼起来读屏会念两遍「Tent & Awning
+      // Tent & Awning」，相同就只留一份。
+      label: name === english ? name : `${name} ${english}`,
+      to: `/product?category=${route}`
+    };
+  })
 );
 
 // 顶部和商品两个轮播都要手滑切换，判定逻辑相同，抽出来共用。
@@ -359,13 +367,13 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
             :key="index"
             :to="item.to"
             class="home-category-card"
-            :aria-label="`${item.name} ${item.english}`"
+            :aria-label="item.label"
             :aria-hidden="item.clone ? 'true' : null"
             :tabindex="item.clone ? -1 : null"
           >
             <img
               :src="item.image"
-              :alt="item.clone ? '' : `${item.name} ${item.english}`"
+              :alt="item.clone ? '' : item.label"
               loading="lazy"
               decoding="async"
             />

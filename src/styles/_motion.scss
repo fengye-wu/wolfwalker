@@ -1,0 +1,96 @@
+@use 'core' as *;
+
+// ---------- 路由切换 ----------
+.route-enter-active,
+.route-leave-active {
+  transition: opacity 240ms ease, transform 240ms ease;
+}
+
+.route-enter-from {
+  opacity: 0;
+  transform: translateY(8px);
+}
+
+.route-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+// ---------- 关键帧 ----------
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes drift {
+  0%,
+  100% {
+    transform: scale(1.02);
+  }
+
+  50% {
+    transform: scale(1.06);
+  }
+}
+
+.animate-rise {
+  animation: rise 700ms $ease-rise both;
+}
+
+.animate-drift {
+  animation: drift 14s ease-in-out infinite;
+}
+
+.delay-1 {
+  animation-delay: 100ms;
+}
+
+.delay-2 {
+  animation-delay: 200ms;
+}
+
+// ---------- v-reveal 指令（见 src/main.js）----------
+// 不传值：mounted 时加 reveal-ready，进入视口后加 reveal-visible。
+.reveal-ready {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms ease, transform 700ms $ease-rise;
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+// 传 animate.css 类名：mounted 时只藏住，进视口那一刻换成动画类。
+// 这里不能带 transition，交给 keyframes 自己走。
+.reveal-hidden {
+  opacity: 0;
+}
+
+@include reduced-motion {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  // 关掉入场位移，否则元素会停在 translateY(24px) 上不来
+  .reveal-ready,
+  // reveal-hidden 同理：万一 IntersectionObserver 没触发（元素一直在
+  // 视口外、或被 display: none 的父级挡着），元素不能永远是隐形的
+  .reveal-hidden {
+    opacity: 1;
+    transform: none;
+  }
+}

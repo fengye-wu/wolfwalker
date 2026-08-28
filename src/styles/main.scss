@@ -1,0 +1,18 @@
+// 全站样式入口。
+//
+// @use 的模块 CSS 会按 @use 出现的顺序、整体排在本文件自身规则之前，
+// 所以下面这个顺序就是最终产物里的层叠顺序，等同于转换前 main.css 的排布：
+//
+//   1. tailwind      preflight / components / utilities 三条指令
+//   2. base          :root 变量、reset、::selection（要能压过 preflight）
+//   3. components    @layer components 里的 @apply 组件类
+//   4. element-plus  组件库全局覆盖
+//   5. motion        路由过渡、keyframes、v-reveal、减弱动效
+//
+// 调整顺序前请先想清楚会压过谁。变量和 mixin 见 _variables.scss / _mixins.scss，
+// 组件内通过 vite.config.js 的 additionalData 自动注入，无需手写 @use。
+@use 'tailwind';
+@use 'base';
+@use 'components';
+@use 'element-plus';
+@use 'motion';

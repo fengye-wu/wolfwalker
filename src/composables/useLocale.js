@@ -1,6 +1,6 @@
 import { computed, ref, watch } from 'vue'
 
-const initialLocale = localStorage.getItem('wolfwalker-locale') || 'en'
+const initialLocale = localStorage.getItem('wolfwalker-locale') || 'zh'
 const locale = ref(initialLocale)
 
 const dictionary = {

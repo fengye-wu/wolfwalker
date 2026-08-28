@@ -1,0 +1,6 @@
+// 变量 + mixin 的统一出口。vite.config.js 会把 `@use 'core' as *;`
+// 注入到每个 .vue 的 <style lang="scss"> 里，组件内无需再手写 @use。
+// 注意：src/styles/ 下的文件不参与注入（否则 _mixins 会和本文件循环依赖），
+// 这些文件需要变量时请自己写 `@use 'core' as *;`。
+@forward 'variables';
+@forward 'mixins';

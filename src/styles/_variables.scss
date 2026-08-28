@@ -1,0 +1,72 @@
+// 全站设计变量。取值全部照搬转换前的 CSS，没有做任何视觉调整。
+// 新增颜色请先确认是否已有同色变量，避免又冒出一堆近似色。
+
+// ---------- 品牌色：与 tailwind.config.js 的 theme.extend.colors 一一对应 ----------
+$ink: #17201b;
+$pine: #173d2b;
+$moss: #687c45;
+$signal: #e96b32;
+$signal-dark: #c95021;
+$mist: #f2f4ef;
+
+// ---------- 页面基底 ----------
+$page-bg: #f7f8f5;
+$white: #fff;
+
+// ---------- 首页 ----------
+$home-bg: #fff;
+$home-text: #2b2930;
+$home-rose: #9d5d62; // 同时通过 --home-rose 自定义属性下发给子元素
+$home-rose-link: #8e5b62;
+$home-muted: #5e5d64;
+$home-label: #4e4e56;
+$hero-bg: #143d50;
+$hero-cta: #9b7508;
+// 品牌横幅（bg3.jpg）的兜底色，取自图片底边一条的平均色。
+// 图加载出来之前铺这个色，不会先闪一块和画面无关的底。
+$brand-banner-edge: #483227;
+$dot: #91919a;
+$dot-active: #43444c;
+// 关于我们标题上方那组跑马灯圆点。和上面两个指示点变量不是一套配色，
+// 那两个偏灰、这组偏藏青，所以没有复用。
+$about-dot: #3f4166;
+$word-ghost: #ededff;
+$card-placeholder: #ddd;
+
+// ---------- 头部 ----------
+$header-text: #2d2c34;
+// 导航激活态。$home-rose / $signal 都偏暗偏橙，达不到设计稿要的正红，故新增。
+$nav-active: #e60012;
+
+// ---------- 页脚 ----------
+$footer-text: #4a4951;
+$footer-strong: #33313a;
+$footer-link: #949495;
+$footer-note: #77757d;
+$footer-legal: #aaa8ae;
+$footer-line: #f0eff2;
+
+// ---------- 字体 ----------
+$font-sans: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+$font-serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
+$font-georgia: Georgia, serif;
+// 整条写成字符串：这个值只用于 --el-font-family 自定义属性，
+// 插值时外层引号会被剥掉、内层引号保留，才能得到带引号的字体名。
+$font-el: 'Inter, Arial, "PingFang SC", "Microsoft YaHei", sans-serif';
+
+// ---------- 缓动 ----------
+$ease-rise: cubic-bezier(0.2, 0.7, 0.2, 1);
+// 首尾速度均为 0 的对称缓动，用于商品轮播推进
+$ease-symmetric: cubic-bezier(0.65, 0, 0.35, 1);
+
+// ---------- 断点 ----------
+// mobile / tablet 是向下覆盖的上界，desktop 是向上覆盖的下界。
+$bp-mobile: 767px;
+$bp-tablet: 1023px;
+$bp-desktop: 1024px;
+
+// ---------- 定宽容器最大宽度 ----------
+$shell-header: 1716px;
+$shell-hero: 1658px;
+$shell-wide: 1660px;
+$shell-footer: 1514px;

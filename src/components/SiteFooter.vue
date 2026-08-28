@@ -1,72 +1,242 @@
 <script setup>
-import { ArrowRight, Check, Instagram, Linkedin, Mail } from 'lucide-vue-next'
-import { ref } from 'vue'
-import BrandMark from './BrandMark.vue'
-import { categories } from '../data/products'
-import { useLocale } from '../composables/useLocale'
+import { computed } from 'vue';
+import { useLocale } from '../composables/useLocale';
+import { footerImages, footerRoutes, copy as footerCopy } from '../data/footer';
 
-const { locale, t } = useLocale()
-const email = ref('')
-const subscribed = ref(false)
-const subscribe = () => {
-  if (!email.value) return
-  subscribed.value = true
-  email.value = ''
-}
+const { locale } = useLocale();
+
+const copy = computed(() => footerCopy[locale.value]);
 </script>
 
 <template>
-  <footer id="site-footer" class="border-t-4 border-signal bg-ink text-white">
-    <div class="site-container">
-      <div class="grid gap-10 border-b border-white/10 py-11 sm:py-14 lg:grid-cols-[1fr_.9fr] lg:items-end lg:gap-20 lg:py-16">
-        <div>
-          <BrandMark light />
-          <p class="mt-5 max-w-md text-sm leading-7 text-white/60">{{ t.footerText }}</p>
-          <div class="mt-6 flex gap-2">
-            <a href="https://www.instagram.com" target="_blank" rel="noreferrer" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="Instagram"><Instagram :size="18" /></a>
-            <a href="https://www.linkedin.com" target="_blank" rel="noreferrer" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="LinkedIn"><Linkedin :size="18" /></a>
-            <a href="mailto:sales@wolfwalker.com" class="grid size-11 place-items-center border border-white/15 text-white/75 transition hover:border-signal hover:bg-signal hover:text-white focus:outline-none focus:ring-2 focus:ring-signal focus:ring-offset-2 focus:ring-offset-ink" aria-label="Email"><Mail :size="18" /></a>
-          </div>
-        </div>
+  <footer id="site-footer" class="site-footer">
+    <div class="site-footer__inner">
+      <RouterLink to="/" class="footer-brand" :aria-label="copy.brandHome">
+        <img :src="footerImages.logoMark" alt="" />
+      </RouterLink>
 
-        <div class="lg:max-w-xl lg:justify-self-end">
-          <h2 class="text-xs font-bold uppercase tracking-[0.18em] text-[#9eb2a5]">{{ t.newsletter }}</h2>
-          <p class="mt-3 text-sm leading-6 text-white/60">{{ t.newsletterCopy }}</p>
-          <form class="newsletter-form mt-5 flex min-h-12" @submit.prevent="subscribe">
-            <ElInput v-model="email" type="email" required :placeholder="t.email" :aria-label="t.email" />
-            <ElButton type="primary" native-type="submit" class="newsletter-submit" :aria-label="t.subscribe"><ArrowRight :size="19" /></ElButton>
-          </form>
-          <p v-if="subscribed" class="mt-3 flex items-center gap-2 text-xs text-[#b5d3a6]" aria-live="polite"><Check :size="15" />{{ locale === 'zh' ? '订阅成功。' : 'You are on the list.' }}</p>
-        </div>
+      <nav :aria-label="copy.products">
+        <h2>{{ copy.products }}</h2>
+        <RouterLink
+          v-for="(label, index) in copy.productLinks"
+          :key="label"
+          :to="footerRoutes.product[index] || '/product'"
+          >{{ label }}</RouterLink
+        >
+      </nav>
+
+      <nav :aria-label="copy.solutions">
+        <h2>{{ copy.solutions }}</h2>
+        <RouterLink
+          v-for="(label, index) in copy.solutionLinks"
+          :key="label"
+          :to="footerRoutes.solution[index] || '/factory'"
+          >{{ label }}</RouterLink
+        >
+      </nav>
+
+      <nav :aria-label="copy.about">
+        <h2>{{ copy.about }}</h2>
+        <RouterLink
+          v-for="(label, index) in copy.aboutLinks"
+          :key="label"
+          :to="footerRoutes.about[index] || '/AboutUs'"
+          >{{ label }}</RouterLink
+        >
+      </nav>
+
+      <div class="footer-contact">
+        <h2>{{ copy.contact }}</h2>
+        <p>{{ copy.phone }}</p>
+        <p>{{ copy.email }}</p>
+        <p>{{ copy.place }}</p>
       </div>
 
-      <div class="grid grid-cols-2 gap-x-7 py-9 sm:gap-x-12 lg:grid-cols-[.6fr_1.4fr] lg:gap-x-20 lg:py-12">
-        <nav aria-label="Footer navigation">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{{ t.navigation }}</h2>
-          <div class="mt-4 flex flex-col text-sm">
-            <RouterLink to="/" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.home }}</RouterLink>
-            <RouterLink to="/product" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.products }}</RouterLink>
-            <RouterLink to="/AboutUs" class="flex min-h-10 items-center border-b border-white/[0.07] transition hover:text-signal">{{ t.brand }}</RouterLink>
-            <RouterLink to="/contact" class="flex min-h-10 items-center transition hover:text-signal">{{ t.contact }}</RouterLink>
-          </div>
-        </nav>
-
-        <nav aria-label="Product categories">
-          <h2 class="text-[11px] font-bold uppercase tracking-[0.18em] text-white/40">{{ t.categories }}</h2>
-          <div class="mt-4 flex flex-col text-sm lg:grid lg:grid-cols-2 lg:gap-x-12">
-            <RouterLink v-for="category in categories" :key="category.key" :to="`/product?category=${category.key}`" class="flex min-h-10 items-center border-b border-white/[0.07] transition last:border-b-0 hover:text-signal">
-              {{ category[locale] }}
-            </RouterLink>
-          </div>
-        </nav>
-      </div>
-    </div>
-
-    <div class="border-t border-white/10 bg-black/10">
-      <div class="site-container flex flex-col gap-4 py-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
-        <p>© {{ new Date().getFullYear() }} WOLFWALKER. {{ t.rights }}</p>
-        <div class="flex gap-6"><a href="#" class="transition hover:text-white">{{ t.privacy }}</a><a href="#" class="transition hover:text-white">{{ t.terms }}</a></div>
+      <div class="footer-qr">
+        <img :src="footerImages.wechatQr" :alt="copy.wechatQrAlt" />
+        <p>{{ copy.scan }}</p>
       </div>
     </div>
   </footer>
 </template>
+
+<style scoped lang="scss">
+.site-footer {
+  background: $white;
+  color: $footer-text;
+  padding: clamp(90px, 8.6vw, 165px) 0 42px;
+  border-top: 1px solid $footer-line;
+
+  @include mobile {
+    padding: 40px 0 28px;
+  }
+
+  &__inner {
+    @include shell-width($shell-footer);
+
+    margin: 0 auto;
+    display: grid;
+    // 六列：品牌 + 三个链接栏 + 联系方式 + 二维码
+    grid-template-columns: 1.45fr repeat(3, 0.72fr) 1.25fr 0.72fr;
+    gap: clamp(28px, 3.1vw, 60px);
+    align-items: start;
+
+    @include tablet-down {
+      grid-template-columns: 1.2fr repeat(2, 1fr);
+    }
+
+    // 手机端六等分：三个链接栏各占 2 列并排成一行，
+    // 下一行联系方式占 4 列、二维码占 2 列。
+    // 原来是 2 列，三个链接栏折成两行、剩一格空着。
+    @include mobile {
+      width: calc(100% - 40px);
+      grid-template-columns: repeat(6, 1fr);
+      gap: 26px 14px;
+    }
+  }
+
+  h2 {
+    margin: 0 0 18px;
+    color: $footer-strong;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    // 三栏并排，每栏 2/6
+    @include mobile {
+      grid-column: span 2;
+      gap: 7px;
+    }
+  }
+
+  @include mobile {
+    h2 {
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+  }
+
+  &__legal {
+    @include shell-width($shell-footer);
+
+    margin: 70px auto 0;
+    color: $footer-legal;
+    font-size: 10px;
+
+    @include mobile {
+      width: calc(100% - 40px);
+      margin-top: 48px;
+      line-height: 1.6;
+    }
+  }
+}
+
+.footer-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  color: $footer-strong;
+  text-decoration: none;
+
+  @include mobile {
+    grid-column: 1 / -1;
+  }
+
+  img {
+    width: 286px;
+    height: 42px;
+    object-fit: contain;
+
+    // 286px 在 350 可用宽下几乎顶满，按 6.8:1 等比缩到 220
+    @include mobile {
+      width: 220px;
+      height: 32px;
+    }
+  }
+
+  strong {
+    font-size: clamp(15px, 1.15vw, 22px);
+    font-style: italic;
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+}
+
+// 链接和联系信息是同一套字号配色，合并成一条规则输出
+.site-footer nav a,
+.footer-contact p {
+  margin: 0;
+  color: $footer-link;
+  font-size: 12px;
+  line-height: 1.5;
+  text-decoration: none;
+}
+
+.site-footer nav a:hover {
+  color: $home-rose;
+}
+
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  @include tablet-down {
+    margin-top: 28px;
+  }
+
+  // 与二维码同排：占 4/6，剩下 2 列给二维码
+  @include mobile {
+    grid-column: span 4;
+    margin-top: 0;
+    gap: 7px;
+  }
+}
+
+.footer-qr {
+  @include tablet-down {
+    margin-top: 28px;
+  }
+
+  // 与联系方式同排，占右侧 2/6
+  @include mobile {
+    grid-column: span 2;
+    margin-top: 0;
+    justify-self: end;
+  }
+
+  img {
+    width: 112px;
+    height: 112px;
+    object-fit: contain;
+
+    // 2/6 栏在 350 可用宽下约 108px，缩到 96 留出呼吸
+    @include mobile {
+      width: 96px;
+      height: 96px;
+    }
+  }
+
+  // 说明文字与二维码同宽才能居中对齐
+  p {
+    width: 112px;
+    margin: 12px 0 0;
+    color: $footer-note;
+    font-size: 12px;
+    text-align: center;
+
+    @include mobile {
+      width: 96px;
+      margin-top: 8px;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+  }
+}
+</style>

@@ -246,7 +246,7 @@ const selectedImage = ref(0);
   </section>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 .image-swap-enter-active,
 .image-swap-leave-active {
   transition: opacity 220ms ease;

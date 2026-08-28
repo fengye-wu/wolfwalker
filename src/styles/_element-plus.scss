@@ -1,0 +1,269 @@
+@use 'core' as *;
+
+// Element Plus 全局覆盖。这些选择器必须是全局的（组件内 scoped 打不到），
+// 所以统一放这里；顺序与转换前一致，不要随意上移下移。
+
+.el-button {
+  font-weight: 700;
+  letter-spacing: 0;
+
+  // 组件库默认给相邻按钮加左边距，这里取消，间距一律交给容器的 gap
+  & + & {
+    margin-left: 0;
+  }
+}
+
+.el-input__wrapper,
+.el-textarea__inner {
+  border-radius: 0;
+  background: $mist;
+}
+
+.el-input__wrapper {
+  min-height: 48px;
+}
+
+.el-textarea__inner {
+  padding: 13px 15px;
+  line-height: 1.6;
+}
+
+.el-input__wrapper.is-focus,
+.el-textarea__inner:focus {
+  box-shadow: 0 0 0 1px $pine inset;
+}
+
+// ---------- UiLinkButton ----------
+.ui-link-button.el-button {
+  min-height: 48px;
+  padding: 12px 24px;
+  display: inline-flex;
+  gap: 8px;
+  border-color: $signal;
+  background: $signal;
+  color: $white;
+
+  &:hover,
+  &:focus {
+    border-color: $signal-dark;
+    background: $signal-dark;
+    color: $white;
+  }
+}
+
+.ui-link-button--dark.el-button {
+  border-color: $ink;
+  background: $ink;
+
+  &:hover,
+  &:focus {
+    border-color: $pine;
+    background: $pine;
+  }
+}
+
+.ui-link-button--outline.el-button {
+  border-color: rgba($ink, 0.25);
+  background: transparent;
+  color: $ink;
+
+  &:hover,
+  &:focus {
+    border-color: $ink;
+    background: $ink;
+    color: $white;
+  }
+}
+
+// ---------- 头部控件 ----------
+.brand-control.el-button {
+  height: 40px;
+  padding: 0 12px;
+  border-color: rgba(#000, 0.15);
+  color: $ink;
+
+  &:hover {
+    border-color: $pine;
+    background: $white;
+    color: $pine;
+  }
+}
+
+.brand-icon-button.el-button {
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border-color: rgba(#000, 0.15);
+  color: $ink;
+
+  &:hover {
+    border-color: $pine;
+    background: $pine;
+    color: $white;
+  }
+}
+
+// ---------- 商品列表页 ----------
+.product-search .el-input__wrapper {
+  background: $white;
+}
+
+.category-filter.el-button {
+  width: 100%;
+  height: auto;
+  min-height: 52px;
+  margin: 0;
+  padding: 12px;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(#000, 0.1);
+  color: rgba($ink, 0.6);
+
+  &:hover,
+  &.is-active {
+    background: transparent;
+    color: $signal;
+  }
+}
+
+// ---------- 商品详情页 ----------
+.thumbnail-button.el-button {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0;
+}
+
+.quantity-input.el-input-number {
+  width: 144px;
+  height: 48px;
+}
+
+.quantity-input .el-input__wrapper {
+  min-height: 48px;
+  background: $white;
+}
+
+// ---------- 首屏轮播控件 ----------
+.slide-dot.el-button {
+  &.is-text {
+    width: 28px;
+    min-width: 0;
+    height: 4px;
+    min-height: 0;
+    margin: 0;
+    padding: 0;
+    background: rgba($white, 0.4);
+
+    &:hover {
+      background: $white;
+    }
+  }
+
+  &.is-active {
+    width: 48px;
+    background: $signal;
+  }
+}
+
+.hero-nav-button.el-button {
+  width: 44px;
+  height: 44px;
+  margin: 0;
+  padding: 0;
+  border-color: rgba($white, 0.35);
+  background: transparent;
+  color: $white;
+
+  &:hover {
+    border-color: $white;
+    background: $white;
+    color: $ink;
+  }
+}
+
+.hero-carousel .el-carousel__container {
+  min-height: calc(100svh - var(--site-header-height));
+}
+
+.video-control.el-button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: $signal;
+  color: $white;
+
+  // 按钮本身用 translate(-50%, -50%) 居中，hover 放大要带上位移
+  &:hover {
+    background: $signal-dark;
+    color: $white;
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+}
+
+// ---------- 联系表单 ----------
+.contact-form {
+  .el-form-item {
+    margin-bottom: 0;
+  }
+
+  .el-form-item__label {
+    margin-bottom: 8px;
+    padding: 0;
+    color: rgba(#000, 0.45);
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-transform: uppercase;
+  }
+
+  // 校验文案改为占位排版，避免绝对定位盖住下一个字段
+  .el-form-item__error {
+    position: static;
+    padding-top: 6px;
+  }
+}
+
+// ---------- 页脚订阅 ----------
+.newsletter-form {
+  border: 1px solid rgba($white, 0.2);
+  background: rgba($white, 0.03);
+
+  &:focus-within {
+    border-color: rgba($white, 0.45);
+  }
+
+  .el-input__wrapper {
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .el-input__inner {
+    color: $white;
+
+    &::placeholder {
+      color: rgba($white, 0.35);
+    }
+  }
+}
+
+.newsletter-submit.el-button {
+  width: 48px;
+  height: 48px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+// ---------- 移动端导航抽屉 ----------
+// 这里的 72px 是移动端头部高度，与 --site-header-height 的桌面值（80px）无关，
+// 抽屉只在 1023px 以下出现，故写死。
+.mobile-nav-drawer {
+  &.el-drawer {
+    top: 72px;
+    height: calc(100% - 72px);
+  }
+
+  .el-drawer__body {
+    padding: 0;
+  }
+}

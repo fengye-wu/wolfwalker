@@ -1,5 +1,6 @@
 node_modules/
 dist/
 artifacts/
+lanhu-mcp/
 *.log
 .DS_Store

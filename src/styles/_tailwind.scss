@@ -1,0 +1,5 @@
+// Tailwind 三条指令单独成文件，为的是保证它最先输出：
+// preflight 必须排在 _base.scss 的 reset 之前，否则会把我们的 reset 覆盖掉。
+@tailwind base;
+@tailwind components;
+@tailwind utilities;

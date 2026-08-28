@@ -1,0 +1,71 @@
+@use 'core' as *;
+
+:root {
+  color: $ink;
+  background: $page-bg;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  // Element Plus 主题变量：组件库读的是这些自定义属性，
+  // 改品牌色时这里和 _variables.scss 要一起动。
+  --el-color-primary: #{$signal};
+  --el-color-primary-light-3: #ee9168;
+  --el-color-primary-light-5: #f4b599;
+  --el-color-primary-light-7: #f9d8c8;
+  --el-color-primary-light-9: #fdf0ea;
+  --el-color-primary-dark-2: #{$signal-dark};
+  --el-border-radius-base: 0px;
+  --el-border-radius-small: 0px;
+  --el-font-family: #{$font-el};
+  --el-text-color-primary: #{$ink};
+  --el-text-color-regular: #3f4742;
+  --el-border-color: rgba(23, 32, 27, 0.18);
+
+  // 头部高度给 hero 算可视高度用，桌面端在下面加高
+  --site-header-height: 72px;
+
+  @include desktop-up {
+    --site-header-height: 80px;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  background: $page-bg;
+
+  // 移动端抽屉展开时锁滚动
+  &.menu-open {
+    overflow: hidden;
+  }
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  color: $white;
+  background: $pine;
+}

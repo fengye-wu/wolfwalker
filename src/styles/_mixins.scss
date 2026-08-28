@@ -1,0 +1,72 @@
+@use 'variables' as *;
+
+// ---------- 断点 ----------
+// 转换前后的媒体查询条件保持一字不差，只是换成 mixin 就近书写。
+// 同一个选择器如果同时有 tablet-down 和 mobile 覆盖，必须按这个顺序写，
+// 否则窄屏会被平板区间的值反压回去（两者权重相同，靠先后决胜）。
+@mixin mobile {
+  @media (max-width: $bp-mobile) {
+    @content;
+  }
+}
+
+// mobile 的补集。宽度从 $bp-mobile 推出来而不是另写 768px，
+// 免得哪天调了 $bp-mobile 而这里没跟上，中间漏出一段没人覆盖的宽度。
+@mixin tablet-up {
+  @media (min-width: $bp-mobile + 1) {
+    @content;
+  }
+}
+
+@mixin tablet-down {
+  @media (max-width: $bp-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: $bp-desktop) {
+    @content;
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+// ---------- 布局 ----------
+// 定宽居中容器的宽度部分。只管 width，外边距各处自己写，
+// 因为 .site-footer__legal 这类还带上下外边距，统一处理反而容易写错。
+@mixin shell-width($max, $gutter: 64px) {
+  width: min(#{$max}, calc(100% - #{$gutter}));
+}
+
+// ---------- 排版 ----------
+// 首页两处栏目大标题（关于我们、商品分类）只差行高。
+@mixin serif-heading($line-height) {
+  margin: 0;
+  color: var(--home-rose);
+  font-family: $font-serif;
+  font-size: clamp(30px, 2.1vw, 40px);
+  font-weight: 500;
+  line-height: $line-height;
+  white-space: pre-line;
+}
+
+// ---------- 控件 ----------
+// 轮播指示点：首页 banner 用 button，商品轮播用 i，样式完全一致。
+@mixin dot($size: 7px) {
+  width: $size;
+  height: $size;
+  padding: 0;
+  border: 1px solid $dot;
+  border-radius: 50%;
+  background: transparent;
+}
+
+@mixin dot-active {
+  background: $dot-active;
+  border-color: $dot-active;
+}

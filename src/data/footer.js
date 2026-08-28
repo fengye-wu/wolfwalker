@@ -60,14 +60,16 @@ export const copy = {
     brandName: 'WOLF WALKER',
     brandHome: 'Wolf Walker home',
     products: 'Product Categories',
+    // 原来是逐字直译，「Moisture-proof Sleeping Pads」「Outdoor Soft Seating」
+    // 这类说法在英文产品目录里不成立。按同类产品的常见叫法重写。
     productLinks: [
-      'Wilderness Tents',
-      'Moisture-proof Sleeping Pads',
-      'Outdoor Soft Seating',
-      'Thermal Sleeping Bags',
+      'Backcountry Tents',
+      'Sleeping Pads',
+      'Camp Seating',
+      'Insulated Sleeping Bags',
       'Portable Tables & Chairs',
-      'Light Cycling Gear',
-      'Travel Accessories'
+      'Cycling Essentials',
+      'Trail Accessories'
     ],
     solutions: 'Our Factories',
     solutionLinks: ['Tent Factory', 'Air Mattress Factory'],
@@ -76,7 +78,9 @@ export const copy = {
     contact: 'Contact Us',
     phone: `Tel: ${contactInfo.phone}`,
     email: `Email: ${contactInfo.email}`,
-    place: contactInfo.place.en,
+    // 中文那条有「品牌地址：」前缀，英文原来只有地址本身，
+    // 三行并排时最后一行没有标签、对不齐
+    place: `Address: ${contactInfo.place.en}`,
     scan: 'Scan to contact us',
     rights: 'All rights reserved.',
     wechatQrAlt: 'Wolf Walker WeChat QR code'

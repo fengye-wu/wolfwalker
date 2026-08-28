@@ -55,14 +55,6 @@ watch(
           <Globe2 :size="17" />
           <span>{{ copy.currentLanguage }}</span>
         </button>
-        <RouterLink
-          to="/product"
-          class="home-tool"
-          :aria-label="copy.searchProducts"
-        >
-          <Search :size="18" />
-          <span>{{ copy.search }}</span>
-        </RouterLink>
         <button
           type="button"
           class="site-menu-button"

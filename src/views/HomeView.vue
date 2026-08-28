@@ -105,7 +105,7 @@ const createSwipe = ({ onLeft, onRight, onStart, onEnd }) => {
 const CATEGORY_PER_VIEW = 4;
 // 间隔必须大于 .home-category-track 的过渡时长（现为 1000ms），
 // 否则过渡会被下一次推进打断，transitionend 不触发，归零就会失效。
-const CATEGORY_INTERVAL = 10000;
+const CATEGORY_INTERVAL = 3000;
 
 const categoryTrack = computed(() => {
   const list = categories.value;
@@ -798,7 +798,14 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     }
 
     @include tablet-down {
-      padding-top: 90px;
+      // 这条原来是固定 90px，是左右两栏高度对不齐的唯一原因：
+      // align-self: stretch 只会把矮的一栏拉到和高的一样，不会把高的压下去。
+      // 图片高度随宽度走（flex-basis 58% + aspect-ratio），768 下只有 479px，
+      // 而 90px 死死加在正文上，让左栏净高 529px —— 左栏反过来成了撑高的那个，
+      // 图片底边就比链接下边框高出 50px。
+      // 换成跟着视口宽度走：768 下 34px、832 下 37px，左栏始终矮于图片，
+      // 高度重新由图片决定，stretch 才有东西可对齐。上限仍收在 90px。
+      padding-top: clamp(30px, 4.5vw, 90px);
       // 这个区间宽度不够锁 340px，放开让它继续收缩，否则会挤出横向溢出
       min-width: 0;
     }
@@ -841,8 +848,15 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     }
 
     h2 {
-      padding-top: 80px;
+      padding-top: 5cqw;
       @include serif-heading(1.35);
+
+      // 5cqw 在 768 下是 38px，加上 &__copy 自己的上留白，标题上方一共 73px，
+      // 而这个区间图片才 479px 高，装不下。收到 3.2cqw（≈25px）。
+      // 注意 cqw 在没有 container-type 的祖先时退化成 svw，所以这里等价于按视口宽算。
+      @include tablet-down {
+        padding-top: 3.2cqw;
+      }
 
       // 这条 80px 原先没在手机端覆盖，跑马灯和标题之间白掉一大块
       @include mobile {
@@ -854,6 +868,11 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     strong {
       display: block;
       margin-top: 18px;
+
+      // 窄端最后 6px：与手机端取同一个值，横排窄端和窄屏本来就该更紧凑。
+      @include tablet-down {
+        margin-top: 12px;
+      }
 
       @include mobile {
         margin-top: 12px;
@@ -867,7 +886,13 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       width: 14px;
       height: 3px;
       background-color: #000;
-      margin: 24px 0 32px 0;
+      margin: 20px 0 32px 0;
+
+      // 横排的窄端（768-800）左栏净高本来就顶到图片高度，英文文案比中文多一行，
+      // 32px 的下留白正好把它顶过去。收到 22px。
+      @include tablet-down {
+        margin-bottom: 22px;
+      }
 
       @include mobile {
         margin: 16px 0 0;
@@ -876,10 +901,16 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
 
     p {
       max-width: 340px;
-      margin: 30px 0 0;
+      margin: 20px 0 0;
       color: $home-muted;
       font-size: 13px;
       line-height: 2;
+
+      // 同上：这个区间左栏宽度只剩 308px，英文正文折到 7 行（中文 6 行），
+      // 2 倍行距下多出的那 26px 就是左右两栏高度差的来源。1.85 与手机端一致。
+      @include tablet-down {
+        line-height: 1.85;
+      }
 
       @include mobile {
         max-width: none;
@@ -898,6 +929,12 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       text-decoration: none;
       padding-bottom: 24px;
       border-bottom: 3px solid #000;
+
+      // 这条下边框要和图片底边齐平，所以它的 padding 也算在左栏净高里。
+      // 窄端把 24px 收到 18px，替左栏再腾出 6px。
+      @include tablet-down {
+        padding-bottom: 18px;
+      }
 
       // 横排区间吸到左栏底部：auto 外边距吃掉正文和它之间的全部剩余空间。
       // 左栏无 padding-bottom，所以这条下边框正好与图片底边齐平。
@@ -928,7 +965,7 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   }
 
   &__collage {
-    // 原始尺寸 715×979，宽度够时按原始像素展示（≥1227px）；不够时等比缩小，
+    // 原始尺寸 715×979，是宽高的上限；不够时等比缩小，
     // aspect-ratio 与原始比例一致，缩放时不会变形。
     width: 715px;
     max-width: 100%;
@@ -940,6 +977,15 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     // 不解的话图片一步不让，收缩全压在左栏身上。
     @include desktop-up {
       min-width: 0;
+
+      // 再加一道按视口高度的上限。原来只卡宽度，979px 的原始高度在
+      // 1920×1080 上超过可视区（去掉头部约剩 1000px），图的下半截要滚动
+      // 才看得到，两栏也跟着被拉长。
+      // 换算：aspect-ratio 已经锁住比例，所以只需给宽度设上限 ——
+      // 高度预算取 82vh，对应宽度 = 82vh × (715 / 979) ≈ 59.9vh。
+      // 两者取小：1080 高下得 647px（原尺寸的 90%），900 高下得 539px，
+      // 视口高到 1255px 以上才用满 715px。
+      width: min(715px, 59.9vh);
     }
 
     @include tablet-down {
@@ -980,13 +1026,23 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
 .home-categories {
   position: relative;
 
-  @include shell-width($shell-wide);
-
+  // 左右各留 7%，和 .home-about 的 padding: 0 7% 对齐，两个栏目左边缘同一条竖线。
+  // 这里不能写成「宽度 calc(100% - 64px) + margin: 0 7%」—— 那是两套各留边距的
+  // 算法叠在一起，宽度只扣 64px，margin 又要吃掉 14%，加起来超出父级：
+  // 1440 下 1376 + 201×2 = 1778px，右侧 338px 被 .home-page 的 overflow: hidden
+  // 裁掉，轨道最后一格和分页点都跑出去了。
+  // 所以留白只由一处负责：宽度取 86%（= 100% - 7%×2），margin: 0 auto 居中，
+  // 两侧自然各得 7%。$shell-wide 的上限保留 —— 视口宽过 1930px 后 86% 会超过
+  // 1660px，卡片会被拉到 400px 以上。到那时改由居中维持左右对称。
+  width: min($shell-wide, 86%);
   margin: 0 auto;
   padding: 60px 0 36px 0;
 
+  // 手机端 7% 只有 27px，太窄，仍用固定 20px；margin 必须跟着改回 auto，
+  // 否则继承上面那条 0 auto 之外的值时会再次溢出。
   @include mobile {
     width: calc(100% - 40px);
+    margin: 0 auto;
     padding: 44px 0 40px;
   }
 

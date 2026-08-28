@@ -58,8 +58,8 @@ export const copy = {
     factoryTitle: '专业工厂，品质从优',
     factorySubtitle: '深耕帐篷气垫行业十一年',
     factoryCta: '工厂介绍',
-    classifyTitle: '轻装上阵,景在眼前',
-    classifySubtitle: '轻量化装备,让每一步都从容',
+    classifyTitle: '轻装上阵，景在眼前',
+    classifySubtitle: '轻量化装备，让每一步都从容',
     customizationTitle: '你的风格，我们来实现',
     customizationSubtitle: '专属定制方案，灵活起订，品质如一',
     contactTitle: '让合作，从一次沟通开始',
@@ -69,8 +69,12 @@ export const copy = {
     contactImageAlt: 'Wolf Walker 联系我们',
     aboutTitle: '轻装简行，\n享受户外生活',
     aboutEnglish: 'TRAVEL LIGHT AND ENJOY\nOUTDOOR LIFE',
+    // 这段渲染在 .home-about__copy p 里，没有 white-space: pre-line，
+    // 原文里那七个 \n 不会换行、只会塌成多余的空格，所以全部去掉，
+    // 换行交给 max-width: 340px。另外原文「多元户外户外生活」重复了一个词，
+    // 末尾停在「公园休闲......」没说完，这里补完整。
     aboutBody:
-      '狼行者户外（WolfWalker Outdoor） 始创于2015年，是一家集研发、生产、\n 销售与服务于一体的综合性户外装备 \n品牌。我们专注于“为多元户外户外生活\n提供专业解决方案”，产品线覆盖公\n园休闲......',
+      '狼行者户外（WolfWalker Outdoor）始创于 2015 年，是一家集研发、生产、销售与服务于一体的综合性户外装备品牌。我们专注于为多元户外生活提供专业解决方案，产品线覆盖公园休闲、露营过夜、徒步远行与越野骑行。',
     more: '查看更多',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle: '多元户外装备\n露营 / 徒步 / 越野全覆盖',
@@ -103,47 +107,59 @@ export const copy = {
     carouselLabel: '品牌主题轮播'
   },
   en: {
-    heroTitle: 'Walk farther The mountains answer.',
-    heroSubtitle: 'Leave now for a sunset above the clouds.',
+    // 原文缺了句中的句号，读成一句会连在一起
+    heroTitle: 'Keep walking. The mountains answer.',
+    heroSubtitle: 'Set out now for dusk on the summit.',
     heroCta: 'Our Story',
-    factoryTitle: 'Professional factory. Proven quality.',
+    factoryTitle: 'Our own factory. Quality we can prove.',
     factorySubtitle: 'Eleven years focused on tents and air mattresses.',
     factoryCta: 'Factory Tour',
-    classifyTitle: 'Travel light, the view is right there.',
-    classifySubtitle: 'Lightweight gear that keeps every step easy.',
-    customizationTitle: 'Your style, built by us.',
+    classifyTitle: 'Pack light, the view comes closer.',
+    classifySubtitle: 'Lightweight gear that keeps every step unhurried.',
+    customizationTitle: 'Your style, made real by us.',
     customizationSubtitle:
       'Bespoke programmes, flexible minimums, consistent quality.',
-    contactTitle: 'Every partnership starts with a conversation.',
+    contactTitle: 'Partnership starts with one conversation.',
     contactSubtitle: 'Get in touch for a tailored proposal.',
     classifyImageAlt: 'Wolf Walker lightweight outdoor equipment',
     customizationImageAlt: 'Wolf Walker customisation service',
     contactImageAlt: 'Contact Wolf Walker',
     aboutTitle: 'Travel light,\nlive outdoors',
     aboutEnglish: 'TRAVEL LIGHT AND ENJOY\nOUTDOOR LIFE',
+    // 原文不是中文那段的翻译，是另写的一段，公司成立年份、业务范围、
+    // 产品线覆盖场景全都没有。这里改成跟中文对应。
     aboutBody:
-      'Life outside does not need to feel complicated. We focus on tents, air mattresses and practical camp equipment, combining dependable manufacturing with thoughtful design for easier journeys.',
-    more: 'Our Story',
+      'Founded in 2015, WolfWalker Outdoor is an integrated outdoor equipment brand covering research, manufacturing, sales and service. We focus on professional solutions for every kind of life outdoors, with a product line spanning park downtime, overnight camping, long-distance hiking and off-road cycling.',
+    more: 'Learn More',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle:
       'Versatile outdoor gear\nfor camp, trail and off-road travel',
+    // 卡片上两行叠着显示：中文版是「品名 + 英文品名」，英文版原来是
+    // 「品名 + XX Collection」，等于凭空多出一层分类名。改成与中文同构 ——
+    // 上行品名、下行沿用中文版那组英文，两个语言的卡片长得一样。
     categoryNames: [
       'Tents & Awnings',
       'Hiking Gear',
-      'Riding Gear',
-      'Sleep Systems'
+      'Cycling Gear',
+      'Sleeping Bags'
     ],
     categoryEnglish: [
-      'Shelter Collection',
-      'Trail Collection',
-      'Off-road Collection',
-      'Sleep Collection'
+      'Tent & Awning',
+      'Hiking Gear',
+      'Off-road Cycling',
+      'Sleeping Bags'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
-    brandTitle: 'Made for the wild. Loved out there.',
+    brandTitle: 'Into the wild, carried by love for it.',
+    // 中文是三行、英文原来只有一行 —— brandBodyLines 会把空值过滤掉，
+    // 于是两个语言的这一屏高度和节奏都不一样。补齐成对应的三行。
     brandBody:
-      'From quiet camps to demanding overland journeys, our equipment is made to support every considered escape.',
+      'A picnic on the grass, a climb over ridge after ridge, or a run across broken ground — whatever the trip, gear that is ready to hand and built to last',
+    brandBody2:
+      'is the surest footing for heading into nature. We work over every product with care, balancing real usability against long service life, so reliable kit looks after each journey you take.',
+    brandBody3:
+      'Set the small stuff down and head for open country. We have the full kit ready, waiting for all that quiet love of the outdoors you have been holding on to.',
     brandAria: 'Discover the Wolf Walker story',
     brandLogoAlt: 'Wolf Walker brand mark',
     previous: 'Previous slide',
@@ -153,7 +169,7 @@ export const copy = {
     factoryImageAlt: 'Wolf Walker professional factory',
     bannerImageAlt: 'Wolf Walker brand imagery',
     aboutImageAlt: 'Wolf Walker factory and outdoor life',
-    brandImageAlt: 'Made for the wild. Loved out there.',
+    brandImageAlt: 'Into the wild, carried by love for it.',
     carouselLabel: 'Brand story carousel'
   }
 };

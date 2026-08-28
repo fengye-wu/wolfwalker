@@ -60,6 +60,24 @@ a {
   -webkit-tap-highlight-color: transparent;
 }
 
+// 标题和 strong 全站加粗。preflight 把 h1-h6 的 font-weight 重置成 inherit
+// （跟 font-size 一起），所以不写这条，标题拿到的是父级的字重、并不粗。
+// 这里排在 preflight 之后所以压得住它；又排在 utilities 之前，
+// 模板里的 font-black / font-bold 之类仍然覆盖得了这条，粗细还能按需再调。
+// 组件里 scoped 的 font-weight 带 [data-v-x] 属性选择器，特异性更高也压得过，
+// 所以另有两处写着 500 的要单独改（见 _mixins.scss 的 serif-heading
+// 和 HomeView 的 .home-brand-banner__copy h2）。
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+strong,
+b {
+  font-weight: 700;
+}
+
 img {
   display: block;
   max-width: 100%;

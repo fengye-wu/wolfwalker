@@ -47,12 +47,27 @@ $footer-legal: #aaa8ae;
 $footer-line: #f0eff2;
 
 // ---------- 字体 ----------
-$font-sans: Arial, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-$font-serif: 'Noto Serif SC', 'Songti SC', Georgia, serif;
-$font-georgia: Georgia, serif;
+// 全站统一思源黑体。四个别名都写上是因为同一套字形在不同渠道装出来族名不一样：
+// SourceHanSansCN 是 Adobe 官方 OTF 的族名，「Source Han Sans CN/SC」是带空格的
+// 完整写法，Noto Sans SC 是 Google 渠道的同一套字（两家合作开发，字形完全一致）。
+// 谁装了哪一个都能命中，全都没有才落到 PingFang SC / 微软雅黑。
+//
+// 注意：这套字目前没有随包分发，也没有 @font-face —— 本机只装了 NotoSansSC-VF.ttf，
+// 所以实际命中的是 Noto Sans SC 那一档。要让所有访客都拿到同一套字形，得自托管
+// webfont（@fontsource/noto-sans-sc 解包 74MB，按 unicode-range 分片后实际只下
+// 用到的那几片），那是一次独立的改动。
+$font-han: 'SourceHanSansCN', 'Source Han Sans CN', 'Source Han Sans SC',
+  'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+
+// 下面三个别名保留，是为了不动 12 处调用点。全部指向同一套字：
+// $font-serif 原为 'Noto Serif SC', 'Songti SC', Georgia —— 实测 Noto Serif SC
+// 本机没装，一直落到 Songti/Georgia，也就是说「衬线标题」从来没按设计生效过。
+$font-sans: $font-han;
+$font-serif: $font-han;
+$font-georgia: $font-han;
 // 整条写成字符串：这个值只用于 --el-font-family 自定义属性，
 // 插值时外层引号会被剥掉、内层引号保留，才能得到带引号的字体名。
-$font-el: 'Inter, Arial, "PingFang SC", "Microsoft YaHei", sans-serif';
+$font-el: '"SourceHanSansCN", "Source Han Sans CN", "Source Han Sans SC", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif';
 
 // ---------- 缓动 ----------
 $ease-rise: cubic-bezier(0.2, 0.7, 0.2, 1);

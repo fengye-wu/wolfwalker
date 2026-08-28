@@ -50,7 +50,9 @@
   color: var(--home-rose);
   font-family: $font-serif;
   font-size: clamp(30px, 2.1vw, 40px);
-  font-weight: 500;
+  // 原为 500。这个 mixin 出在 scoped 块里，带 [data-v-x] 特异性高于
+  // _base.scss 那条全局 h1-h6，不在这里改的话标题不会跟着加粗。
+  font-weight: 700;
   line-height: $line-height;
   white-space: pre-line;
 }

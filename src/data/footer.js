@@ -23,7 +23,7 @@ export const footerRoutes = {
 
 export const contactInfo = {
   phone: '16605655602',
-  email: 'wolfwalker@163.com',
+  email: 'wolfwalkershop@163.com',
   place: {
     zh: '安徽省黄山市屯溪区百鸟亭路新城时代大厦A12',
     en: 'A12, Xincheng Times Building, Bainiaoting Road, Tunxi District, Huangshan, Anhui, China'

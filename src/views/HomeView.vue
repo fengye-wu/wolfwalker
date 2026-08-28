@@ -45,7 +45,6 @@ const brandBodyLines = computed(() =>
 );
 
 // categoryImages 已改为数组。分类数量以 categoryRoutes 为准，
-// 多出来的图片先忽略，等补齐 categoryNames / categoryEnglish 再启用。
 const categories = computed(() =>
   categoryRoutes.map((route, index) => {
     const name = copy.value.categoryNames[index];
@@ -141,10 +140,32 @@ const advanceCategory = () => {
 };
 
 // 往回退一格。自动播放只会前进，这条只给手滑用。
-// index 已经是 0 时没有可退的位置（轨道左端就在这里），直接忽略 ——
-// 尾部的克隆只够往前推进 PER_VIEW 格，左端没有对应的镜像可跳。
+//
+// index 为 0 时原来直接 return，第一张就右滑不动 —— 这是那个 bug。
+// 轨道只在尾部挂了克隆，左端确实没有镜像可退，但可以借尾部那份：
+// 推进到第 baseCount 格时画面与第 0 格完全一致（handleCategoryTransitionEnd
+// 就是靠这个等价性归零的），反过来用同一个等价性 —— 先无过渡地跳到
+// baseCount，那一帧看起来和现在没有区别，再正常退一格，
+// 于是从左边滑进来的是最后一张，循环两个方向都通了。
 const retreatCategory = () => {
-  if (categoryIndex.value <= 0) return;
+  const baseCount = categories.value.length;
+  if (!baseCount) return;
+
+  if (categoryIndex.value <= 0) {
+    // 跳过去的这一步必须关掉过渡，否则会看到整条轨道往右飞一遍
+    categoryAnimated.value = false;
+    categoryIndex.value = baseCount;
+    // 等跳位那一帧真的画出来再开过渡并后退，两件事挤在同一帧里
+    // 浏览器会合并成一次布局，结果还是能看到那一飞。
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        categoryAnimated.value = true;
+        categoryIndex.value -= 1;
+      });
+    });
+    return;
+  }
+
   categoryIndex.value -= 1;
 };
 
@@ -475,11 +496,16 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   // 左右被裁掉的越少：3:4（390×520）只能看到原图约四成宽度，1:1（390×390）
   // 能看到约五成半。文案区约需 200px，390 高下图面仍余 190px，放得下。
   // 必须排在 tablet-down 之后 —— 两者在手机上同时命中，靠先后决胜。
+  //
+  // 从 1/1 调到 4/5：390 屏由 390px 增到 488px，文案下方空间更宽裕，
+  // 首屏也更有气势。代价是 cover 下左右裁得更多（能看到的原图宽度由约
+  // 五成半降到约四成半）—— 加高和少裁这两件事在 cover 下是对立的。
+  // max-height 同步放到 78svh：还留 1/5 屏给下一屏露头，提示可以往下滚。
   @include mobile {
     height: auto;
     min-height: 0;
-    aspect-ratio: 1 / 1;
-    max-height: 68svh;
+    aspect-ratio: 4 / 5;
+    max-height: 78svh;
   }
 
   // ElCarousel 会给容器和每一项写死行内高度，只能用 !important 压
@@ -557,7 +583,13 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     top: 36%;
     right: 11.2%;
     z-index: 2;
-    max-width: min(650px, 43vw);
+    // 标题改成 nowrap 后，这个框要能被文字撑开：原来是 max-width: min(650px, 43vw)，
+    // 英文标题需要 1108px（1920 下），框只给 650px，多出来的部分朝右溢出，
+    // 被 .home-hero 的 overflow: hidden 切掉一截。
+    // max-content 让框贴合最长那行，right: 11.2% 仍钉住右边缘，文字向左生长。
+    // 上限收在距左边 88.8% 之内（= 100% - 11.2%），避免超长文案顶到屏幕左沿。
+    width: max-content;
+    max-width: 88.8%;
     color: $white;
     text-align: right;
     // 文案统一 800ms，逐级延迟写在各自的规则里，标题→副标题→按钮依次进场。
@@ -570,6 +602,11 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       inset: auto 20px 42px;
       top: auto;
       z-index: 3;
+      // 必须把上面那条 width: max-content 放掉，副标题才可能换行 ——
+      // max-content 的框按「所有子元素都不折行」算宽度，子元素自然永远换不了行。
+      // 改成 auto 后 left/right 同时生效，框宽 = 视口 - 40px，副标题超出即折行。
+      // 标题是 nowrap，这里不再需要收缩包裹的框（它另有 vw 字号保证一行装得下）。
+      width: auto;
       max-width: none;
       text-align: left;
       text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
@@ -590,18 +627,38 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     h1,
     h2 {
       margin: 0;
-      max-width: 690px;
       font-family: $font-serif;
-      font-size: clamp(40px, 3.5vw, 68px);
+      // 各断点均比原值小 2px（原为 clamp(40px, 3.5vw, 68px)）
+      font-size: clamp(38px, 3.5vw, 66px);
       line-height: 1.08;
-      white-space: pre-line;
+      // 强制一行：标题本身不带 \n，原先靠 max-width: 690px 自然折行，
+      // 英文那几句（最长 "Partnership starts with one conversation."）会折成两行。
+      // nowrap 之后宽度限制必须一起去掉，否则 690px 处照样断开；
+      // 父级 &__copy 的 max-width 也要放开，见上面那条注释。
+      white-space: nowrap;
       // 200ms 让 el-carousel 那 400ms 的横移先走掉一半，标题不至于跟着平移
       animation-delay: 200ms;
       --animate-duration: 900ms;
 
       @include mobile {
-        font-size: 30px;
+        // 中文最长「让合作，从一次沟通开始」在 360 屏上 28px 只要 308px，装得下
+        font-size: 28px;
         line-height: 1.16;
+      }
+    }
+
+    // 手机端英文单独收字号：可用宽只有 viewport - 40px（360 屏上 320px），
+    // 而最长那句 "Partnership starts with one conversation." 在 28px 下要 502px，
+    // 一行放不进去，会被 .home-hero 的 overflow: hidden 截断。
+    // 实测各屏所需上限几乎正比于视口宽（360→17.8px、390→19.5px、414→20.8px、
+    // 430→21.7px），取 4.9vw 贴着这条线的下方，再用 clamp 兜住极窄和极宽两端。
+    // 用 4.9 而不是 5：5vw 在 360 屏上得 18px，最长那句要 322px、只差 2px 装不下。
+    // 只降英文：中文在 28px 下本来就放得下，没必要一起变小。
+    // lang 由 useLocale 的 watch 同步到 documentElement，切语言即时生效。
+    :root:lang(en) & h1,
+    :root:lang(en) & h2 {
+      @include mobile {
+        font-size: clamp(16px, 4.9vw, 24px);
       }
     }
 
@@ -614,6 +671,9 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       @include mobile {
         margin-top: 10px;
         font-size: 14px;
+        // 允许折行后补一个行距：默认继承 body 的行距，两行副标题会挤在一起。
+        // 1.5 与站内其他小字一致。
+        line-height: 1.5;
       }
     }
 
@@ -1094,10 +1154,11 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
     --gap: 12px;
   }
 
-  // 手机端一屏两格：四格时每格只有 88px 宽，图里什么都看不清。
+  // 手机端一屏 1.5 格：两格时每格 170px，图还是偏小；1.5 格能到 230px，
+  // 图面放大约 35%，右侧露出半张也是「后面还有」的提示。
   // --per-view 是 --card 计算式的入参，改这一个值整条轨道跟着走。
   @include mobile {
-    --per-view: 2;
+    --per-view: 1.5;
     --gap: 10px;
     margin-top: 26px;
   }
@@ -1128,6 +1189,8 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
 
 .home-category-card {
   display: block;
+  // 遮罩用 ::after 定位，需要一个定位祖先
+  position: relative;
   flex: 0 0 var(--card);
   overflow: hidden;
   aspect-ratio: 397 / 535;
@@ -1142,6 +1205,28 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
 
   &:hover img {
     transform: scale(1.025);
+  }
+
+  // 常态压一层 30% 黑罩，鼠标移入褪去、移出复原 —— 让指针所在那张比邻居亮，
+  // 配合已有的 1.025 放大，指向性更明确。
+  // 只在 pc 端：手机没有 hover，罩子会永久压在图上，四张卡全程发暗。
+  // 用 ::after 而不是加一层 div：卡片里只有一张图，没有别的内容要盖，
+  // 而且 DOM 里那 11 个节点（含 4 个克隆）都要跟着多一层。
+  // 跟 img 同为 500ms ease，两个效果同步收尾。
+  @include tablet-up {
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      transition: opacity 500ms ease;
+      // 卡片本身是链接，罩子别拦点击
+      pointer-events: none;
+    }
+
+    &:hover::after {
+      opacity: 0;
+    }
   }
 }
 
@@ -1175,11 +1260,14 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   // 手机端高度与「露出多少宽度」是一个死结：图是 1920×990（比例 1.939），
   // cover 时按高度放大，渲染宽 = 高 × 1.939，露出的比例 = 390 / 渲染宽。
   // 所以框越高，左右裁掉的越多 —— 5:4（312px）只能看到原图 64%。
-  // 16:10 得到 244px，能看到 82%；隐藏 logo 后文案只要约 140px，装得下，
-  // 下面还留 100px 干净画面。要看满 100% 就得压到 201px，那文案会顶满整框。
+  // 16:10 得到 244px，能看到 82%；要看满 100% 就得压到 201px。
+  //
+  // 现在按需求把高度翻一倍：16/10 在 390 屏是 244px，4/5 得 488px，正好两倍。
+  // 代价就是上面那条死结的另一头 —— 露出的原图宽度从 82% 降到约 41%，
+  // 构图只剩中间一条。换来的是文案区宽松得多，logo 也放得回来（见 &__logo）。
   @include mobile {
     display: block;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 5;
     max-height: none;
     background: $brand-banner-edge;
   }
@@ -1196,7 +1284,9 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   &__copy {
     position: relative;
     z-index: 2;
-    width: min(760px, calc(100% - 48px));
+    // 原为 760px。中文正文加了 2px 字距后最长那行要 768px，差 8px 就得折行，
+    // 放到 800px 留一点余量。h2 是 pre-line、按文案里的换行断，不受这 40px 影响。
+    width: min(800px, calc(100% - 48px));
     margin: 0 auto;
     padding: 90px 0 70px;
     color: $white;
@@ -1222,7 +1312,8 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       margin: 0 0 50px;
       font-family: $font-georgia;
       font-size: clamp(30px, 2.5vw, 48px);
-      font-weight: 500;
+      // 原为 500。scoped 的特异性压过 _base.scss 那条全局 h1-h6，得单独改
+      font-weight: 700;
 
       @include tablet-down {
         margin-bottom: 34px;
@@ -1240,10 +1331,30 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       font-size: 14px;
       line-height: 1.8;
 
+      // pc 端加 2px 字距，正文更舒展。手机端保持原样：10px 的字再撑字距，
+      // 一行能放的字数明显变少，折行位置会乱。
+      @include tablet-up {
+        letter-spacing: 2px;
+      }
+
       @include mobile {
         margin-top: 5px;
         font-size: 10px;
         line-height: 1.6;
+      }
+    }
+
+    // 中文正文不折行。放在 desktop-up 而不是 tablet-up：加了字距后中文最长那行
+    // 要 768px，而 768-847px 这段框宽是 calc(100% - 48px)（720-799px），装不下；
+    // 真按 nowrap 会顶到屏幕两侧甚至溢出，所以那一段仍让它折行。
+    //
+    // 只给中文：英文同一行要 1528px —— 是框宽的两倍，1920 视口才勉强放得下，
+    // 1440 及以下连视口都装不进（1440 下差 88px）。字号收到能装下得压到 7px 上下，
+    // 没法读。英文这三行本来就是长句，折行是正常排版，这里只保留 2px 字距。
+    // :lang(zh) 前缀匹配 documentElement 上的 zh-CN，由 useLocale 的 watch 同步。
+    :root:lang(zh) & span {
+      @include desktop-up {
+        white-space: nowrap;
       }
     }
   }
@@ -1259,11 +1370,15 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
       margin-bottom: 34px;
     }
 
-    // 手机端不显示：省下的高度让容器变矮，图的左右就少裁一截。
-    // 用 display 而不是 v-if，是因为这纯粹是断点差异，不值得为它引入
-    // matchMedia 状态；代价是这张图仍会被下载。
+    // 原来手机端 display: none —— 那是为了省高度、让图少裁一截。
+    // 现在容器已经翻倍到 488px，这个理由不成立了，放回来。
+    // 宽度收到 150px：上面 tablet-down 那条 200px 在 390 屏上占了文案区
+    // （350px）的 57%，压着下面三行正文显得头重；150px 约四成三，配 20px
+    // 下留白，和正文之间还有呼吸。
     @include mobile {
-      display: none;
+      display: block;
+      width: 150px;
+      margin-bottom: 20px;
     }
   }
 }

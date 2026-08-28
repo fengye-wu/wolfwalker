@@ -1,10 +1,14 @@
-// 与 copy.categoryNames / categoryEnglish 及 categoryRoutes 逐项对应，长度必须一致。
-// OSS swiper 目录现有 first / second / three / four / five 五张，这里用前四张。
+// 与 copy.categoryNames / categoryEnglish 及 categoryRoutes 逐项对应，长度必须一致 ——
+// 少了会渲染出没有 aria-label、img 也没有 alt 的卡片（卡面只有图，读屏就完全念不出
+// 这个链接去哪），Vue 对 undefined 的属性是整条不输出，不会报错。
 export const categoryImages = [
   'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/first.jpg',
   'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/second.jpg',
   'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/three.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/four.jpg'
+  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/four.jpg',
+  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/five.jpg',
+  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/six.jpg',
+  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/seven.jpg',
 ];
 
 export const featureImages = {
@@ -23,14 +27,16 @@ export const sectionImages = [
 ];
 
 // 与 sectionImages 逐张对应。content 决定去 copy 里取哪一组
-// {content}Title / {content}Subtitle / {content}Cta / {content}ImageAlt，
-// 没有 Cta 的幻灯片改为点击副标题跳转。
-// 定制专区目前没有独立页面，导航栏里也是指向 /contact，这里保持一致。
+// {content}Title / {content}Subtitle / {content}Cta / {content}ImageAlt。
+// 目前五张都配了 Cta，统一用按钮跳转；HomeView 里「没有 Cta 就把副标题做成链接」
+// 那条分支现在走不到，删 Cta 时会重新生效。
 const heroSlideContent = [
   { content: 'hero', to: '/AboutUs' },
   { content: 'factory', to: '/factory' },
   { content: 'classify', to: '/product' },
-  { content: 'customization', to: '/contact' },
+  // 按钮文案是「定制专区」，就得去定制专区页。原来指向 /contact 是因为那时
+  // 没有这个页面，现在 /custom 已经存在（header.js 的同名菜单也指向它）。
+  { content: 'customization', to: '/custom' },
   { content: 'contact', to: '/contact' }
 ];
 
@@ -39,15 +45,20 @@ export const heroSlides = sectionImages.map((image, index) => ({
   ...heroSlideContent[index]
 }));
 
-// 这四个 key 必须是 products.js 里 categories 真实存在的（现有五类：
+// 每个 key 必须是 products.js 里 categories 真实存在的（现有五类：
 // tent / sleepingpad / sofa / tableAndchair / accessories）。
 // ProductView 对未知 key 会静默回落到「全部」，所以拼错不会报错、只会筛不出东西。
 // 顺序同时决定 categoryImages 和 copy.categoryNames 的对应关系，三者一动全动。
+// 现在是 7 张卡配 5 个品类，末两张（tableAndchair / accessories）和第 3、2 张
+// 重复 —— 轨道一屏 4 张，7 张能凑够两屏多，但重复的卡点进去筛出的是同一批商品。
 export const categoryRoutes = [
   'tent',
   'accessories',
   'tableAndchair',
-  'sleepingpad'
+  'sleepingpad',
+  'sofa',
+  'tableAndchair',
+  'accessories',
 ];
 
 export const carouselConfig = {
@@ -64,10 +75,13 @@ export const copy = {
     factoryCta: '工厂介绍',
     classifyTitle: '轻装上阵，景在眼前',
     classifySubtitle: '轻量化装备，让每一步都从容',
+    classifyCta: '商品分类',
     customizationTitle: '你的风格，我们来实现',
     customizationSubtitle: '专属定制方案，灵活起订，品质如一',
+    customizationCta: '定制专区',
     contactTitle: '让合作，从一次沟通开始',
     contactSubtitle: '欢迎联系我们获取定制方案',
+    contactCta: '联系我们',
     classifyImageAlt: 'Wolf Walker 轻量化户外装备',
     customizationImageAlt: 'Wolf Walker 定制服务',
     contactImageAlt: 'Wolf Walker 联系我们',
@@ -86,16 +100,27 @@ export const copy = {
     // 原来是「帐篷 / 徒步 / 骑行 / 睡袋」，后三个商品库里没有这些品类：点「徒步产品」
     // 实际筛到配件、「骑行产品」筛到桌椅，「睡袋」也不等于 sleepingpad（那是睡垫）。
     // 改任何一项都要同步核对 categoryRoutes 同下标的 key。
-    categoryNames: ['帐篷产品', '配件产品', '桌椅产品', '睡垫产品'],
+    categoryNames: [
+      '帐篷产品',
+      '配件产品',
+      '桌椅产品',
+      '睡垫产品',
+      '沙发产品',
+      '桌椅产品',
+      '配件产品'
+    ],
     categoryEnglish: [
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads'
+      'Sleeping Pads',
+      'Inflatable Sofas',
+      'Tables & Chairs',
+      'Camp Accessories'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
-    brandTitle: '奔赴山野，备受热爱',
+    brandTitle: '奔赴山野，备妥热爱',
     brandBody:
       '无论是草坪野餐的松弛露营，翻山越岭的徒步探索，还是驰骋路况的越野出行，一套趁手耐用的装备，',
     brandBody2:
@@ -111,24 +136,30 @@ export const copy = {
     factoryImageAlt: 'Wolf Walker 专业工厂',
     bannerImageAlt: 'Wolf Walker 品牌形象',
     aboutImageAlt: 'Wolf Walker 工厂与户外生活',
-    brandImageAlt: '奔赴山野，备受热爱',
+    brandImageAlt: '奔赴山野，备妥热爱',
     carouselLabel: '品牌主题轮播'
   },
   en: {
     // 原文缺了句中的句号，读成一句会连在一起
-    heroTitle: 'Keep walking. The mountains answer.',
-    heroSubtitle: 'Set out now for dusk on the summit.',
+    heroTitle: 'Keep walking. The mountains answer',
+    heroSubtitle: 'Set out now for dusk on the summit',
     heroCta: 'Our Story',
-    factoryTitle: 'Our own factory. Quality we can prove.',
-    factorySubtitle: 'Eleven years focused on tents and air mattresses.',
+    factoryTitle: 'Our own factory. Quality we can prove',
+    factorySubtitle: 'Eleven years focused on tents and air mattresses',
     factoryCta: 'Factory Tour',
-    classifyTitle: 'Pack light, the view comes closer.',
-    classifySubtitle: 'Lightweight gear that keeps every step unhurried.',
-    customizationTitle: 'Your style, made real by us.',
+    classifyTitle: 'Pack light, the view comes closer',
+    classifySubtitle: 'Lightweight gear that keeps every step unhurried',
+    // 对应中文的「商品分类 / 定制专区 / 联系我们」。
+    // 与 header 导航同名的三项沿用导航里的英文（Products / Custom / Contact Us），
+    // 免得同一个去处在站内出现两种叫法。
+    classifyCta: 'Browse Products',
+    customizationTitle: 'Your style, made real by us',
     customizationSubtitle:
-      'Bespoke programmes, flexible minimums, consistent quality.',
-    contactTitle: 'Partnership starts with one conversation.',
-    contactSubtitle: 'Get in touch for a tailored proposal.',
+      'Bespoke programmes, flexible minimums, consistent quality',
+    customizationCta: 'Custom Service',
+    contactTitle: 'Partnership starts with one conversation',
+    contactSubtitle: 'Get in touch for a tailored proposal',
+    contactCta: 'Contact Us',
     classifyImageAlt: 'Wolf Walker lightweight outdoor equipment',
     customizationImageAlt: 'Wolf Walker customisation service',
     contactImageAlt: 'Contact Wolf Walker',
@@ -137,7 +168,7 @@ export const copy = {
     // 原文不是中文那段的翻译，是另写的一段，公司成立年份、业务范围、
     // 产品线覆盖场景全都没有。这里改成跟中文对应。
     aboutBody:
-      'Founded in 2015, WolfWalker Outdoor is an integrated outdoor equipment brand covering research, manufacturing, sales and service. We focus on professional solutions for every kind of life outdoors, with a product line spanning park downtime, overnight camping, long-distance hiking and off-road cycling.',
+      'Founded in 2015, WolfWalker Outdoor is an integrated outdoor equipment brand covering research, manufacturing, sales and service. We focus on professional solutions for every kind of life outdoors, with a product line spanning park downtime, overnight camping, long-distance hiking and off-road cycling',
     more: 'Learn More',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle:
@@ -149,25 +180,35 @@ export const copy = {
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads'
+      'Sleeping Pads',
+      'Inflatable Sofas',
+      'Tables & Chairs',
+      'Camp Accessories'
     ],
     categoryEnglish: [
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads'
+      'Sleeping Pads',
+      'Inflatable Sofas',
+      'Tables & Chairs',
+      'Camp Accessories'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
-    brandTitle: 'Into the wild, carried by love for it.',
+    // 「备受热爱」→「备妥热爱」：从被动的「广受喜爱」改成主动的「把热爱也备齐」，
+    // 和上下文「备好全套好物」的「备」字扣上。英文跟着从 carried by（被它带着走）
+    // 换成 packed and ready（连热爱一起打包备好），双关落在 pack 上 —— 装备要打包，
+    // 热爱也一并打包。句号去掉，与本节其余文案一致。
+    brandTitle: 'Into the wild, love packed and ready',
     // 中文是三行、英文原来只有一行 —— brandBodyLines 会把空值过滤掉，
     // 于是两个语言的这一屏高度和节奏都不一样。补齐成对应的三行。
     brandBody:
       'A picnic on the grass, a climb over ridge after ridge, or a run across broken ground — whatever the trip, gear that is ready to hand and built to last',
     brandBody2:
-      'is the surest footing for heading into nature. We work over every product with care, balancing real usability against long service life, so reliable kit looks after each journey you take.',
+      'is the surest footing for heading into nature. We work over every product with care, balancing real usability against long service life, so reliable kit looks after each journey you take',
     brandBody3:
-      'Set the small stuff down and head for open country. We have the full kit ready, waiting for all that quiet love of the outdoors you have been holding on to.',
+      'Set the small stuff down and head for open country. We have the full kit ready, waiting for all that quiet love of the outdoors you have been holding on to',
     brandAria: 'Discover the Wolf Walker story',
     brandLogoAlt: 'Wolf Walker brand mark',
     previous: 'Previous slide',
@@ -177,7 +218,7 @@ export const copy = {
     factoryImageAlt: 'Wolf Walker professional factory',
     bannerImageAlt: 'Wolf Walker brand imagery',
     aboutImageAlt: 'Wolf Walker factory and outdoor life',
-    brandImageAlt: 'Into the wild, carried by love for it.',
+    brandImageAlt: 'Into the wild, love packed and ready',
     carouselLabel: 'Brand story carousel'
   }
 };

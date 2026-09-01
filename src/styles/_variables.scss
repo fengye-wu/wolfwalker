@@ -33,6 +33,19 @@ $about-dot: #3f4166;
 $word-ghost: #ededff;
 $card-placeholder: #ddd;
 
+// ---------- 工厂介绍 ----------
+// 取值全部来自蓝湖设计稿的图层数据，没有做视觉调整。
+// 这套棕色系和首页的 $home-rose(#9d5d62) 不是一套，别互相代用。
+$factory-brown: #93563a; // 标题、数值、深色数据格底
+$factory-cell: #f6f6f6; // 浅色数据格底
+$factory-band: #ececec; // 厂房数据那一排的灰色色带
+$factory-card-band: #dfdfdf; // 两张工厂卡外面那条灰底
+$factory-contact: #575757; // 联系方式文字、下划线、图标线稿
+// 「查看」按钮的 hover 态。设计稿没给，按 $factory-brown 压暗一档，
+// 和 $signal / $signal-dark 是同一个套路。
+$factory-brown-dark: #7d4931;
+$factory-text: #000; // 设计稿正文就是纯黑，不是 $ink
+
 // ---------- 头部 ----------
 $header-text: #2d2c34;
 // 导航激活态。$home-rose / $signal 都偏暗偏橙，达不到设计稿要的正红，故新增。
@@ -85,3 +98,6 @@ $shell-header: 1716px;
 $shell-hero: 1658px;
 $shell-wide: 1660px;
 $shell-footer: 1514px;
+// 工厂介绍页两种栏宽：正文区 174..1772，标题那一屏更宽，120..1828。
+$shell-factory: 1598px;
+$shell-factory-wide: 1708px;

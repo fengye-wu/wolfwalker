@@ -2,6 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref } from 'vue';
 import { ChevronLeft, ChevronRight } from 'lucide-vue-next';
 import { useLocale } from '../composables/useLocale';
+import { createSwipe } from '../composables/useSwipe';
 import {
   categoryImages,
   featureImages,
@@ -62,62 +63,23 @@ const categories = computed(() =>
   })
 );
 
-// 顶部和商品两个轮播都要手滑切换，判定逻辑相同，抽出来共用。
-// 只在 touchend 结算，全程不拦 touchmove —— 一拦就连页面竖向滚动一起吃掉了。
-// 横向不足 40px 当误触；横向没超过纵向说明用户其实在滚页面，也不接管。
-const SWIPE_MIN_X = 40;
-
-const createSwipe = ({ onLeft, onRight, onStart, onEnd }) => {
-  let startX = 0;
-  let startY = 0;
-  let swiped = false;
-
-  return {
-    start(event) {
-      const touch = event.changedTouches[0];
-      startX = touch.clientX;
-      startY = touch.clientY;
-      swiped = false;
-      onStart?.();
-    },
-    end(event) {
-      const touch = event.changedTouches[0];
-      const deltaX = touch.clientX - startX;
-      const deltaY = touch.clientY - startY;
-      onEnd?.();
-      if (
-        Math.abs(deltaX) < SWIPE_MIN_X ||
-        Math.abs(deltaX) <= Math.abs(deltaY)
-      )
-        return;
-      swiped = true;
-      if (deltaX < 0) onLeft();
-      else onRight();
-    },
-    // 滑动松手后浏览器还会补一个 click。两个轮播里都是 RouterLink，
-    // 不拦就会在滑动的同时跳走。捕获阶段先手截住，stopPropagation 让
-    // 链接自己的处理器根本收不到这个事件。
-    guardClick(event) {
-      if (!swiped) return;
-      swiped = false;
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  };
-};
-
-// 商品轮播：固定四格，每秒往左推进一格，循环播放。
+// 商品轮播：pc 端一屏四格左对齐，手机端一屏「上一张的 1/5 + 当前整张 +
+// 下一张的 1/5」、当前那张居中。每 3 秒往左推进一格，循环播放。
 // 把开头的 PER_VIEW 张复制到末尾，推进到第 baseCount 格时画面与第 0 格
 // 完全一致，此刻去掉过渡瞬间归零，所以看不出重置。
 const CATEGORY_PER_VIEW = 4;
-// 间隔必须大于 .home-category-track 的过渡时长（现为 1000ms），
+// 间隔必须大于 .home-category-track 的过渡时长（pc 1000ms / 手机 420ms），
 // 否则过渡会被下一次推进打断，transitionend 不触发，归零就会失效。
 const CATEGORY_INTERVAL = 3000;
 
+// 手机端当前那张居中，它左边那格要露出 1/5，所以轨道头部也得挂一张克隆
+// （末尾那张），否则第 0 格左侧是空的，居中后左边就是一块白。
+// pc 端左对齐用不到这一张，但轨道数组两端共用，靠 CSS 的 --lead 把它移出视窗。
 const categoryTrack = computed(() => {
   const list = categories.value;
   if (!list.length) return [];
   return [
+    { ...list[list.length - 1], clone: true },
     ...list.map((item) => ({ ...item, clone: false })),
     ...Array.from({ length: CATEGORY_PER_VIEW }, (_, index) => ({
       ...list[index % list.length],
@@ -129,6 +91,10 @@ const categoryTrack = computed(() => {
 const categoryTrackRef = ref(null);
 const categoryIndex = ref(0);
 const categoryAnimated = ref(true);
+// 手指按住时的实时横向偏移（px）。轨道位移是「整格位移 + 这个值」，
+// 图跟着手走，松手才吸附到最近的格。
+const categoryDrag = ref(0);
+const categoryDragging = ref(false);
 let categoryTimer = null;
 
 const activeCategory = computed(() =>
@@ -142,11 +108,13 @@ const advanceCategory = () => {
 // 往回退一格。自动播放只会前进，这条只给手滑用。
 //
 // index 为 0 时原来直接 return，第一张就右滑不动 —— 这是那个 bug。
-// 轨道只在尾部挂了克隆，左端确实没有镜像可退，但可以借尾部那份：
-// 推进到第 baseCount 格时画面与第 0 格完全一致（handleCategoryTransitionEnd
-// 就是靠这个等价性归零的），反过来用同一个等价性 —— 先无过渡地跳到
-// baseCount，那一帧看起来和现在没有区别，再正常退一格，
-// 于是从左边滑进来的是最后一张，循环两个方向都通了。
+// 轨道左端没有可退的格，但可以借尾部那份：推进到第 baseCount 格时画面与
+// 第 0 格完全一致（handleCategoryTransitionEnd 就是靠这个等价性归零的），
+// 反过来用同一个等价性 —— 先无过渡地跳到 baseCount，那一帧看起来和现在
+// 没有区别，再正常退一格，于是从左边滑进来的是最后一张。
+//
+// 改成跟手后这个分支基本不会走：beginCategoryDrag 在按下那一刻（drag 还是
+// 0、画面没动）就已经归位过了。留着是给非跟手的调用兜底。
 const retreatCategory = () => {
   const baseCount = categories.value.length;
   if (!baseCount) return;
@@ -196,12 +164,62 @@ const startCategoryAutoplay = () => {
   categoryTimer = setInterval(advanceCategory, CATEGORY_INTERVAL);
 };
 
+// 实测一格宽度。阈值取卡片的 22%（390 屏约 58px），跟着卡片大小走，
+// 不写死 px —— 卡片在各断点差一倍多，固定值在小屏偏钝、大屏偏灵。
+const categoryCardWidth = () => {
+  const first = categoryTrackRef.value?.firstElementChild;
+  return first?.getBoundingClientRect().width ?? 240;
+};
+
+// 跟手期间不让轨道跑出克隆能覆盖的范围。两端各有克隆兜着，
+// 拖过一格多就已经没有内容可露，夹住免得拖出空白。
+const CATEGORY_DRAG_LIMIT = 1.2;
+
+// touchstart：只停自动播放。此时方向还没定，不能动轨道状态 ——
+// 竖着滚页面的手势也会经过这里。
+const beginCategoryDrag = () => {
+  stopCategoryAutoplay();
+};
+
+// 方向锁定为横向后才真正进入跟手态。
+const lockCategoryDrag = () => {
+  // index 为 0 时左端没有可退的格。retreatCategory 用「先无过渡跳到
+  // baseCount」来借尾部的等价画面，但跟手模式不能等到松手才跳 ——
+  // 那一下会在已经拖出 80px 的画面上瞬移。所以在这里先归位：
+  // 此刻 drag 还是 0（轴锁阈值 8px 内不动轨道），跳过去画面没有变化。
+  const baseCount = categories.value.length;
+  if (baseCount && categoryIndex.value <= 0) {
+    categoryAnimated.value = false;
+    categoryIndex.value = baseCount;
+  }
+
+  categoryDragging.value = true;
+  categoryAnimated.value = false;
+};
+
+const moveCategoryDrag = (deltaX) => {
+  const limit = categoryCardWidth() * CATEGORY_DRAG_LIMIT;
+  categoryDrag.value = Math.max(-limit, Math.min(limit, deltaX));
+};
+
+// 松手：偏移归零 + 翻页在同一次更新里做完，过渡才是从当前手指位置
+// 平滑接到目标格。分两帧做会先弹回原位再走一格，看着是两段。
+const settleCategoryDrag = (step) => {
+  categoryDragging.value = false;
+  categoryDrag.value = 0;
+  categoryAnimated.value = true;
+  if (step === 1) advanceCategory();
+  else if (step === -1) retreatCategory();
+  startCategoryAutoplay();
+};
+
 // 手滑期间停自动播放，松手后重开：不停的话刚滑完可能立刻被定时器再推一格
 const categorySwipe = createSwipe({
-  onLeft: advanceCategory,
-  onRight: retreatCategory,
-  onStart: stopCategoryAutoplay,
-  onEnd: startCategoryAutoplay
+  onStart: beginCategoryDrag,
+  onLock: lockCategoryDrag,
+  onMove: moveCategoryDrag,
+  onSettle: settleCategoryDrag,
+  threshold: () => categoryCardWidth() * 0.22
 });
 
 // 后台标签页不推进，避免回到前台时积压一堆待归零的位移
@@ -373,14 +391,18 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
         @focusin="stopCategoryAutoplay"
         @focusout="startCategoryAutoplay"
         @touchstart.passive="categorySwipe.start"
+        @touchmove.passive="categorySwipe.move"
         @touchend.passive="categorySwipe.end"
         @click.capture="categorySwipe.guardClick"
       >
         <div
           ref="categoryTrackRef"
           class="home-category-track"
-          :class="{ 'is-animated': categoryAnimated }"
-          :style="{ '--index': categoryIndex }"
+          :class="{
+            'is-animated': categoryAnimated,
+            'is-dragging': categoryDragging
+          }"
+          :style="{ '--index': categoryIndex, '--drag': categoryDrag + 'px' }"
           @transitionend="handleCategoryTransitionEnd"
         >
           <RouterLink
@@ -1150,28 +1172,56 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   --per-view: 4;
   --gap: clamp(16px, 1.25vw, 24px);
 
+  // 每格宽度 = (视窗宽 - 间距总和) / 每屏格数，一屏 P 格时中间有 P-1 道间距。
+  // --card 和下面的 --lead 必须声明在同一个元素上：自定义属性在声明它的元素
+  // 上就地解析，--lead 写在这里而 --card 写在轨道上的话，这里的 var(--card)
+  // 取不到值，整条 --lead 变成无效。
+  // 百分比在 flex-basis 里按弹性容器（轨道）宽算，在 transform 里按被变换元素
+  // （也是轨道）宽算 —— 轨道与本元素同宽，所以两处结果一致。
+  --card: calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
+  // pc 端左对齐：轨道头部那张克隆要移出视窗左侧，所以起手就退一格。
+  --lead: calc(-1 * (var(--card) + var(--gap)));
+  // 只有手机端跟手，pc 端恒为 0
+  --drag: 0px;
+
   @include tablet-down {
     --gap: 12px;
   }
 
-  // 手机端一屏 1.5 格：两格时每格 170px，图还是偏小；1.5 格能到 230px，
-  // 图面放大约 35%，右侧露出半张也是「后面还有」的提示。
-  // --per-view 是 --card 计算式的入参，改这一个值整条轨道跟着走。
+  // 手机端：当前那张居中，左右各露出相邻那张的 1/5。
+  //
+  // 满幅铺开 —— 父级 .home-categories 手机端留了左右各 20px，轮播用负 margin
+  // 顶回视口边缘。图能宽 40px，而两侧露出的 1/5 本身就是视觉留白，
+  // 不需要再额外留边。标题仍在父级的 20px 内缩里，左边缘照旧对齐。
+  //
+  // 一屏装的是 0.2 + 1 + 0.2 = 1.4 格外加两道间距，所以 --card 不能走
+  // 通用式（那条按 per-view - 1 道间距算），这里直接给：
+  //   card = (视窗宽 - 2 × gap) / 1.4
+  // 390 屏：(390 - 20) / 1.4 = 264px，比原来的 230px 大 15%（面积 +32%）。
   @include mobile {
-    --per-view: 1.5;
     --gap: 10px;
-    margin-top: 26px;
+    margin: 26px -20px 0;
+
+    // 一屏是 0.2 + 1 + 0.2 格，两侧各切了一刀，所以有 2 道完整间距，
+    // 上面那条通用式按 per-view - 1 道算，套不上，单独给。
+    --card: calc((100% - 2 * var(--gap)) / 1.4);
+
+    // 当前格要居中：它左边只该露出一个 peek（= card / 5），所以整条轨道
+    // 在左对齐的基础上再右移 peek + 一道间距。
+    // 化简后是 -0.8 × card；390 屏 card = 264，lead = -211.2px。
+    --lead: calc(var(--card) / 5 + var(--gap) - (var(--card) + var(--gap)));
   }
 }
 
 .home-category-track {
   display: flex;
   gap: var(--gap);
-  // 每格宽度 = (视窗宽 - 间距总和) / 每屏格数
-  --card: calc((100% - (var(--per-view) - 1) * var(--gap)) / var(--per-view));
-
+  // --lead 把「第 0 格该停在哪」一次算清（见 .home-category-carousel），
+  // 这里只负责按 index 整格推进，再叠上跟手的实时偏移。
   transform: translate3d(
-    calc(-1 * var(--index) * (var(--card) + var(--gap))),
+    calc(
+      var(--lead) - var(--index) * (var(--card) + var(--gap)) + var(--drag)
+    ),
     0,
     0
   );
@@ -1179,11 +1229,28 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   // 不提层会在位移途中出现亚像素抖动
   will-change: transform;
   backface-visibility: hidden;
+  // 竖向照旧交给页面滚动，横向手势归轨道。不写这条的话跟手时浏览器
+  // 会一边滚页面一边拖轨道，两个方向打架。
+  touch-action: pan-y;
 
   &.is-animated {
     // 首尾速度均为 0 的对称缓动，起步不再突然发力、落位自然收住。
     // 时长须小于 CATEGORY_INTERVAL，留出静止间隙。
     transition: transform 1000ms $ease-symmetric;
+
+    // 手机端 1000ms 是「不够丝滑」的主因：手指已经松开半秒图还在慢慢挪。
+    // 触屏上的翻页手感落在 300-450ms，取 420ms —— 仍远小于
+    // CATEGORY_INTERVAL(3000ms)，自动播放的静止间隙不受影响。
+    // 缓动换成末端更长的收势，落位干脆但不生硬。
+    @include mobile {
+      transition: transform 420ms cubic-bezier(0.22, 0.61, 0.24, 1);
+    }
+  }
+
+  // 跟手期间必须无过渡：有过渡的话每次 touchmove 都要重新起一段动画，
+  // 图会滞后于手指，正好是「不丝滑」的另一半原因。
+  &.is-dragging {
+    transition: none;
   }
 }
 

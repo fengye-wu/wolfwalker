@@ -45,17 +45,20 @@ export const heroSlides = sectionImages.map((image, index) => ({
   ...heroSlideContent[index]
 }));
 
-// 每个 key 必须是 products.js 里 categories 真实存在的（现有五类：
-// tent / sleepingpad / sofa / tableAndchair / accessories）。
+// 每个 key 必须是 products.js 里 categories 真实存在的（现有七类：
+// tent / airpad / foampad / NeckPillow / sofa / tableAndchair / accessories）。
 // ProductView 对未知 key 会静默回落到「全部」，所以拼错不会报错、只会筛不出东西。
 // 顺序同时决定 categoryImages 和 copy.categoryNames 的对应关系，三者一动全动。
-// 现在是 7 张卡配 5 个品类，末两张（tableAndchair / accessories）和第 3、2 张
-// 重复 —— 轨道一屏 4 张，7 张能凑够两屏多，但重复的卡点进去筛出的是同一批商品。
+// 第 4 格原来是 sleepingpad（睡垫总类），该类已拆分下线，这里接给 airpad —— 图是
+// 睡垫题材，充气卧垫是最贴的继承者。
+// 末两张仍和第 3、2 张重复：卡位数（7）现在正好等于品类数（7），把它们换成
+// foampad / NeckPillow 就能一卡一类，但 six.jpg / seven.jpg 拍的是桌椅和配件，
+// 换了标签就和图对不上，要换得先换图。
 export const categoryRoutes = [
   'tent',
   'accessories',
   'tableAndchair',
-  'sleepingpad',
+  'airpad',
   'sofa',
   'tableAndchair',
   'accessories',
@@ -96,15 +99,15 @@ export const copy = {
     more: '查看更多',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle: '多元户外装备\n露营 / 徒步 / 越野全覆盖',
-    // 逐项对应 categoryRoutes 的 tent / accessories / tableAndchair / sleepingpad。
+    // 逐项对应 categoryRoutes 的 tent / accessories / tableAndchair / airpad。
     // 原来是「帐篷 / 徒步 / 骑行 / 睡袋」，后三个商品库里没有这些品类：点「徒步产品」
-    // 实际筛到配件、「骑行产品」筛到桌椅，「睡袋」也不等于 sleepingpad（那是睡垫）。
+    // 实际筛到配件、「骑行产品」筛到桌椅，「睡袋」也不等于睡垫。
     // 改任何一项都要同步核对 categoryRoutes 同下标的 key。
     categoryNames: [
       '帐篷产品',
       '配件产品',
       '桌椅产品',
-      '睡垫产品',
+      '充气卧垫',
       '沙发产品',
       '桌椅产品',
       '配件产品'
@@ -113,7 +116,7 @@ export const copy = {
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads',
+      'Inflatable Sleeping Mats',
       'Inflatable Sofas',
       'Tables & Chairs',
       'Camp Accessories'
@@ -180,7 +183,7 @@ export const copy = {
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads',
+      'Inflatable Sleeping Mats',
       'Inflatable Sofas',
       'Tables & Chairs',
       'Camp Accessories'
@@ -189,7 +192,7 @@ export const copy = {
       'Tent & Awning',
       'Camp Accessories',
       'Tables & Chairs',
-      'Sleeping Pads',
+      'Inflatable Sleeping Mats',
       'Inflatable Sofas',
       'Tables & Chairs',
       'Camp Accessories'

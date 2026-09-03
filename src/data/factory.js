@@ -179,8 +179,8 @@ export const factoryCopy = {
   },
 };
 
-// 两张卡的「查看」按钮去处：帐篷卡去帐篷品类，气垫卡去睡垫品类。
+// 两张卡的「查看」按钮去处：帐篷卡去帐篷品类，气垫卡去充气卧垫品类。
 // key 必须是 products.js 里真实存在的分类，和首页分类卡同一套写法。
-export const factoryLinks = ['/product?category=tent', '/product?category=sleepingpad'];
+export const factoryLinks = ['/product?category=tent', '/product?category=airpad'];
 
 export { statIcons };

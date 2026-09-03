@@ -46,6 +46,14 @@ $factory-contact: #575757; // 联系方式文字、下划线、图标线稿
 $factory-brown-dark: #7d4931;
 $factory-text: #000; // 设计稿正文就是纯黑，不是 $ink
 
+// ---------- 定制专区 ----------
+// 取值全部来自蓝湖「产品定制」设计稿的图层数据，没有做视觉调整。
+$custom-blue: #254e94; // 大标题、章节标题、步骤芯片底、箭头、短横条
+$custom-body: #4f4f4f; // 步骤正文、英文副题、页尾告知
+// 芯片 hover 态。设计稿没给，按 $custom-blue 压暗一档，
+// 和 $factory-brown / $factory-brown-dark 同一个套路。
+$custom-blue-dark: #1d3f7a;
+
 // ---------- 头部 ----------
 $header-text: #2d2c34;
 // 导航激活态。$home-rose / $signal 都偏暗偏橙，达不到设计稿要的正红，故新增。
@@ -93,6 +101,13 @@ $bp-mobile: 767px;
 $bp-tablet: 1023px;
 $bp-desktop: 1024px;
 
+// ---------- 公共头部两态高度（桌面端）----------
+// 顶部态无背景、跟页面滚；滚过 92-72=20px 换成吸顶态，
+// 那一刻顶部态正好只剩 72px 露在视口里，下沿连续、不跳。
+// JS 侧的同一组数字在 composables/useHeaderScroll.js，两处要一起改。
+$header-height-top: 92px;
+$header-height-stuck: 72px;
+
 // ---------- 定宽容器最大宽度 ----------
 $shell-header: 1716px;
 $shell-hero: 1658px;
@@ -101,3 +116,7 @@ $shell-footer: 1514px;
 // 工厂介绍页两种栏宽：正文区 174..1772，标题那一屏更宽，120..1828。
 $shell-factory: 1598px;
 $shell-factory-wide: 1708px;
+// 定制专区。设计稿流程区是 x54..1861，正好 1807；
+// 定制优势区在稿子里是 x87..1885（左 87 右 35，不对称），
+// 这里统一收到同一条左边界上 —— 那 52px 的偏差是手摆出来的，照抄没有意义。
+$shell-custom: 1807px;

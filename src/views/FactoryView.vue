@@ -13,7 +13,7 @@ import {
   factoryIcons,
   factoryImages,
   factoryLinks,
-  statIcons,
+  statIcons
 } from '../data/factory';
 
 const { locale } = useLocale();
@@ -24,7 +24,7 @@ const copy = computed(() => factoryCopy[locale.value] ?? factoryCopy.zh);
 const stats = computed(() =>
   copy.value.stats.map((item, index) => ({
     ...item,
-    icon: statIcons[index],
+    icon: statIcons[index]
   }))
 );
 
@@ -35,7 +35,7 @@ const factories = computed(() =>
   copy.value.factories.map((item, index) => ({
     ...item,
     image: cardImages[index],
-    to: factoryLinks[index],
+    to: factoryLinks[index]
   }))
 );
 
@@ -68,16 +68,20 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     <!-- 十一年，只为一件事：左标题右正文 -->
     <section class="factory-intro">
       <div class="factory-intro__inner">
-        <div v-reveal class="factory-intro__lead">
+        <div class="factory-intro__lead" v-reveal="'animate__bounceInLeft'">
           <h1>{{ copy.introTitle }}</h1>
-          <p class="factory-intro__tagline">{{ copy.introTagline }}</p>
+          <p class="factory-intro__tagline">
+            {{ copy.introTagline }}
+          </p>
         </div>
-        <p v-reveal class="factory-intro__body">{{ copy.introBody }}</p>
+        <p v-reveal="'animate__bounceInRight'" class="factory-intro__body">
+          {{ copy.introBody }}
+        </p>
       </div>
     </section>
 
     <!-- 厂房面积 -->
-    <section v-reveal class="factory-area">
+    <section v-reveal="'animate__bounceIn'" class="factory-area">
       <strong class="factory-area__value">{{ copy.areaValue }}</strong>
       <h2 class="factory-area__label">{{ copy.areaLabel }}</h2>
       <p class="factory-area__note">{{ copy.areaNote }}</p>
@@ -87,7 +91,11 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     <section class="factory-stats">
       <div class="factory-stats__band" aria-hidden="true"></div>
       <ul class="factory-stats__list">
-        <li v-for="item in stats" :key="item.label" v-reveal>
+        <li
+          v-for="item in stats"
+          :key="item.label"
+          v-reveal="'animate__fadeInDown'"
+        >
           <img :src="item.icon" alt="" aria-hidden="true" loading="lazy" />
           <strong>{{ item.value }}</strong>
           <span>{{ item.label }}</span>
@@ -116,6 +124,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
             <li
               v-for="cell in item.cells"
               :key="cell.label"
+              v-reveal="'animate__fadeInUp'"
               :class="`is-${cell.tone}`"
             >
               <i
@@ -136,7 +145,11 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     <section class="factory-contact">
       <div class="factory-contact__inner">
         <h2 v-reveal class="factory-contact__title">{{ copy.ctaTitle }}</h2>
-        <ul v-reveal class="factory-contact__list" :aria-label="copy.contactLabel">
+        <ul
+          v-reveal
+          class="factory-contact__list"
+          :aria-label="copy.contactLabel"
+        >
           <li v-for="row in contactRows" :key="row.text">
             <a :href="row.href">
               <i
@@ -358,6 +371,23 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
       width: d(186);
       height: d(186);
       margin: 0 auto;
+      transition: scale 500ms ease;
+    }
+
+    // 鼠标移入放大 5%。这里比工厂卡那 2.5% 大一档：图标只有 186px，
+    // 同样的比例在小图上几乎看不出来。
+    //
+    // 不裁切也不用包裹层 —— 一栏宽 453（1813 / 4），图标 186 居中，
+    // 两侧各有 133px 余量，放大 5% 只多出 4.65px，落在余量里。
+    // 悬停判定给整个 li 而不是 img：一栏里数值和标签都在图标正下方，
+    // 指针落在文字上时图标跟着放大更自然。
+    //
+    // li 挂着 v-reveal（fadeInDown 用 transform），这里改的是 img 的
+    // scale —— 独立属性，两者不共用一个属性槽，不会互相抹掉。
+    @media (hover: hover) {
+      li:hover img {
+        scale: 1.05;
+      }
     }
 
     strong {
@@ -444,6 +474,19 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: scale 500ms ease;
+  }
+
+  // 鼠标移入放大 2.5%，跟首页分类卡一个量。外层有 overflow: hidden，
+  // 多出来的部分被框裁掉，版面不动。
+  // 只在有真实指针的设备上：触屏点一下 hover 会一直粘着，图会一直保持放大。
+  // 用 scale 而不是 transform：卡片外层挂着 v-reveal，虽然入场位移在
+  // article 上、这里是子级的 img，但统一用独立属性，以后给图自己加 reveal
+  // 也不会打架。
+  @media (hover: hover) {
+    &:hover img {
+      scale: 1.025;
+    }
   }
 }
 
@@ -461,6 +504,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
   // 上下按 55 高居中，左右按文字 32 / 圆点右侧 15.8
   padding: 0 d(15.8) 0 d(32);
   height: d(55);
+  border-radius: d(27.5);
   background: $factory-brown;
   color: $white;
   font-size: d(38.64);
@@ -515,6 +559,45 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     // 设计稿里图标贴右上、数值和标签贴左下，两行格子高度不同（194 / 236）
     // 也是这么排的，所以用 margin-top: auto 顶到底，而不是写死间距。
     padding: d(11) d(16) d(17) d(25);
+    // 入场动效由 v-reveal 的 animate__fadeInUp 负责，收得比默认的 1s 快一点，
+    // 四格错开后整组才不至于拖太长。
+    --animate-duration: 620ms;
+    // hover 用独立的 translate / scale，不用 transform ——
+    // animate.css 是 fill-mode: both，动画结束后 transform 停在终值上并继续
+    // 占着这个属性，hover 再写 transform 会把两个意图挤到一处。
+    transition:
+      translate 320ms $ease-rise,
+      scale 320ms $ease-rise;
+  }
+
+  // 四格依次进场，每格错 90ms。顺序按视觉位置而不是 DOM 顺序 ——
+  // 下面的 grid-area 把第 2 格放在了右上、第 3 格放在左下，
+  // 而 DOM 里它们是 1→2→3→4，视觉上正好是「左上、右上、左下、右下」，
+  // 两者一致，所以直接按 nth-child 排延迟就行。
+  li:nth-child(2) {
+    animation-delay: 90ms;
+  }
+
+  li:nth-child(3) {
+    animation-delay: 180ms;
+  }
+
+  li:nth-child(4) {
+    animation-delay: 270ms;
+  }
+
+  // 鼠标移入整格上浮 4px 并微放大。只在有真实指针的设备上：
+  // 触屏 hover 会一直粘着，格子会保持抬起。
+  @media (hover: hover) {
+    li:hover {
+      translate: 0 -4px;
+      scale: 1.012;
+    }
+
+    // 格子抬起时图标同步放大一点，两个动作一起收尾
+    li:hover .factory-card__icon {
+      scale: 1.12;
+    }
   }
 
   li:nth-child(1) {
@@ -551,6 +634,15 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     line-height: 0.72;
   }
 
+  // _motion.scss 的全局兜底把 animation-duration 压到 0.01ms，但没管
+  // animation-delay。animate.css 是 fill-mode: both，延迟期间格子停在
+  // opacity: 0 —— 不清掉延迟，后三格会先空着再突然出现。
+  @include reduced-motion {
+    li {
+      animation-delay: 0ms !important;
+    }
+  }
+
   span {
     // 数值底到标签顶，两行格子都是 31
     margin-top: d(31);
@@ -568,6 +660,9 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
   mask-repeat: no-repeat;
   mask-size: 100% 100%;
   background-color: currentcolor;
+  // 跟着格子的 hover 一起放大（规则在 .factory-card__grid 里）。
+  // 时长与格子一致，两个动作同时收尾。
+  transition: scale 320ms $ease-rise;
 
   // 两张卡的图标原始尺寸不同，各自按原尺寸给，别互相拉伸
   &.is-tent {
@@ -629,8 +724,15 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
   gap: d(16);
   // 标题顶 3600 到第一行图标顶 3685
   margin: d(85) 0 0;
-  padding: 0;
+  // 加了外框，得给内容留出与框的间距，否则文字贴在线上。
+  // 左右比上下宽一档：右侧要留住三行右对齐的视觉边界，左侧最长那行的
+  // 图标也不能顶着框。
+  padding: d(30) d(38);
   list-style: none;
+  // 2px 实线不跟着 d() 缩 —— 与行内那条下划线同理，缩到 1px 以下会看不见。
+  border: 2px solid #000;
+  // 20px 是定值，不随视口缩：圆角跟着缩会在窄屏几乎看不出弧度。
+  border-radius: 20px;
 
   a {
     display: inline-flex;
@@ -645,7 +747,9 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     font-weight: 700;
     line-height: 1;
     text-decoration: none;
-    transition: color 300ms ease, border-color 300ms ease;
+    transition:
+      color 300ms ease,
+      border-color 300ms ease;
 
     &:hover,
     &:focus-visible {
@@ -856,6 +960,8 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
       align-items: flex-start;
       gap: 14px;
       margin-top: 0;
+      // 堆叠后这一列是满宽，框内留白按固定值给（d() 在窄屏会缩到十几px）
+      padding: 20px 24px;
 
       a {
         gap: 12px;
@@ -1054,6 +1160,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
 
     &__list {
       gap: 12px;
+      padding: 16px 18px;
 
       a {
         gap: 10px;

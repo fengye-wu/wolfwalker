@@ -6,15 +6,19 @@ export const footerImages = {
 };
 
 // 与 copy.*Links 逐项对应，长度必须一致。
-// 恒温睡袋 / 轻骑装备 暂无对应分类，先指向全部产品页。
+//
+// 七项现在都有真实分类可指，不再有回落到全部产品页的了。
+// category 的值必须是 data/products.js 里 categories 真实存在的 key ——
+// ProductView 对未知 key 会静默回落到「全部」，拼错不报错、只会筛不出东西。
+// NeckPillow 的大小写照抄，别改成小写。
 export const footerRoutes = {
   product: [
     '/product?category=tent',
-    '/product?category=sleepingpad',
+    '/product?category=airpad',
+    '/product?category=foampad',
     '/product?category=sofa',
-    '/product',
+    '/product?category=NeckPillow',
     '/product?category=tableAndchair',
-    '/product',
     '/product?category=accessories'
   ],
   solution: ['/factory', '/factory'],
@@ -35,13 +39,14 @@ export const copy = {
     brandName: 'WOLF WALKER',
     brandHome: 'Wolf Walker 首页',
     products: '产品分类',
+    // 与 data/products.js 的 categories 逐项同名，顺序照 footerRoutes。
     productLinks: [
       '山野帐篷',
-      '隔潮睡垫',
+      '充气卧垫',
+      '棉护睡垫',
       '户外软座',
-      '恒温睡袋',
+      '舒柔枕头',
       '便携桌椅',
-      '轻骑装备',
       '随行配件'
     ],
     solutions: '工厂介绍',
@@ -60,15 +65,16 @@ export const copy = {
     brandName: 'WOLF WALKER',
     brandHome: 'Wolf Walker home',
     products: 'Product Categories',
-    // 原来是逐字直译，「Moisture-proof Sleeping Pads」「Outdoor Soft Seating」
-    // 这类说法在英文产品目录里不成立。按同类产品的常见叫法重写。
+    // 不逐字直译 ——「Moisture-proof Sleeping Pads」「Outdoor Soft Seating」
+    // 这类说法在英文产品目录里不成立，按同类产品的常见叫法写。
+    // 下标与 footerRoutes.product 和 zh.productLinks 一一对应，长度必须一致。
     productLinks: [
       'Backcountry Tents',
-      'Sleeping Pads',
+      'Inflatable Sleeping Mats',
+      'Foam Sleeping Pads',
       'Camp Seating',
-      'Insulated Sleeping Bags',
+      'Camp Pillows',
       'Portable Tables & Chairs',
-      'Cycling Essentials',
       'Trail Accessories'
     ],
     solutions: 'Our Factories',

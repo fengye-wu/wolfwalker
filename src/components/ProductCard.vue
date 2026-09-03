@@ -44,7 +44,7 @@ const productName = props.product.name;
         </p>
         <RouterLink
           :to="`/product/${props.product.category}/${props.product.id}`"
-          class="shrink-0"
+          class="group/arrow shrink-0"
           :aria-label="`${t.viewProduct}: ${productName.zh}`"
         >
           <img
@@ -53,7 +53,7 @@ const productName = props.product.name;
             width="42"
             height="16"
             loading="lazy"
-            class="h-4 w-[42px] max-w-none object-contain"
+            class="h-4 w-[42px] max-w-none object-contain transition-transform duration-300 ease-out group-hover/arrow:translate-x-1"
           />
         </RouterLink>
       </div>

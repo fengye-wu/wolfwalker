@@ -54,48 +54,101 @@ export const categories = [
   { key: 'accessories', zh: '随行配件', en: 'Trail Accessories', introZh: '从充气到收纳，让营地搭建更轻松的小型装备。', introEn: 'Compact essentials that make setup, inflation and packing effortless.' },
 ]
 
+// 商品清单以 src/utils/products.json 为准。
+// 中文名 / 编号按 JSON 原样保留；英文名是我按品名补的对应译法。
+// JSON 里枕头分类写成了 "Neck Pillow"，路由和详情页仍用 NeckPillow，
+// 这里继续用路由那个 key，否则 /product/NeckPillow/:id 会 404。
+// 主图还没有到位：每类先循环现有占位图，详情页再从同类商品里抽两张补齐
+// 三张缩略图。后期真图到了，只替换 images 对应下标即可。
 const names = {
   tent: [
-    ['云阁充气小屋', 'Cloud Pavilion Air Cabin'], ['中号充气帐篷', 'Medium Inflatable Tent'],
-    ['单人破舰者', 'Solo Breaker Tent'], ['充气凉棚', 'Inflatable Sun Shelter'],
-    ['支架款更衣帐篷', 'Frame Privacy Tent'], ['速开款更衣帐篷', 'Quick-open Privacy Tent'],
-    ['行军床帐篷', 'Cot Tent'],
+    ['云阁充气帐篷', 'Cloud Pavilion Air Tent', 'Lxz-1150-1102'],
+    ['中号充气帐篷', 'Medium Inflatable Tent', 'LXZ-1150-1116'],
+    ['破舰者帐篷', 'Breaker Tent', 'lxz-1200-0001'],
+    ['充气凉棚天幕', 'Inflatable Shade Canopy', 'lxz-1150-1117'],
+    ['支架更衣帐篷', 'Frame Changing Tent', 'lxz-1100-1'],
+    ['折叠式更衣帐篷', 'Folding Changing Tent', 'lxz-1101-1001'],
+    ['行军床帐篷', 'Cot Tent', 'lxz-1221-001'],
+    ['充气穹顶天幕', 'Inflatable Dome Canopy', 'lxz-1001-0017'],
+    ['阔野·半自动天幕', 'Widefield Semi-auto Canopy', 'lxz-1000-1330'],
+    ['袋鼠帐篷', 'Kangaroo Tent', 'lxz-1201-0012'],
+    ['行者隧道帐篷', 'Wanderer Tunnel Tent', 'LXZ-1148-1105'],
+    ['大号半球形帐篷', 'Large Dome Tent', 'lxz-1143-5001'],
+    ['狼堡支架帐篷', 'Wolfkeep Frame Tent', 'LXZ-1144-1201-1'],
+    ['屋檐天幕', 'Eave Canopy', 'LXZ-1152-1304'],
+    ['船形速开帐篷', 'Boat Instant Tent', 'lxz-1136-1304'],
+    ['游侠·铝杆帐篷', 'Ranger Aluminum-pole Tent', 'lxz-1200-0013'],
+    ['冰屋圆形帐篷', 'Igloo Round Tent', 'lxz-1143-2122'],
+    ['手搭穹顶天幕', 'Hand-pitch Dome Canopy', 'lxz-1000-1138'],
+    ['自动穹顶天幕', 'Auto Dome Canopy', 'lxz-1000-2030'],
+    ['六角速开帐篷', 'Hex Instant Tent', 'lxz-1151-1204'],
+    ['驼峰天幕', 'Hump Canopy', 'LXZ-1152-1302'],
+    ['单层弹簧帐篷', 'Single-layer Spring Tent', 'lxz-1002'],
+    ['苍狼·半球形帐篷', 'Greywolf Dome Tent', 'lxz-1143-2002'],
+    ['单层弹簧帐篷', 'Single-layer Spring Tent', 'lxz-1002-4'],
+    ['印第安型帐篷', 'Tipi Tent', 'lxz-1143-1401'],
+    ['风衫天幕', 'Windshirt Canopy', 'lxz-1141-1101'],
   ],
-  // 原睡垫总类的 17 款按属性拆进了 airpad / foampad / NeckPillow：
-  // 充气的进 airpad，不充气的海绵坐垫进 foampad，枕头进 NeckPillow，
-  // tpu直拉带是配件件不是垫子，归到 accessories。一款都没丢。
-  sofa: [
-    ['悠扬·双人躺卧沙发', 'Serenade Double Lounger'], ['星野双人坐式沙发', 'Starfield Double Sofa'],
-    ['单人坐桶沙发', 'Solo Barrel Sofa'], ['升级款单人沙发', 'Upgraded Solo Sofa'], ['悠扬·单人充气沙发', 'Serenade Solo Air Sofa'],
-  ],
-  tableAndchair: [
-    ['单横杆椅子', 'Single-bar Camp Chair'], ['碳纤维椅子', 'Carbon Fiber Chair'], ['四角马扎', 'Four-corner Folding Stool'],
-    ['双横杆躺椅', 'Double-bar Recliner'], ['后背提拉椅子', 'Lift-back Camp Chair'],
-  ],
-  accessories: [
-    ['水桶', 'Collapsible Water Bucket'], ['排气收纳包', 'Vented Storage Bag'], ['气密收纳包', 'Airtight Storage Bag'],
-    ['云朵包', 'Cloud Carry Bag'], ['手打泵', 'Manual Air Pump'], ['智能充气泵', 'Smart Electric Pump'], ['小泵', 'Mini Pump'],
-    ['tpu直拉带', 'TPU Straight Pull Strap'],
-  ],
-  // 下面三类里带 ★ 的商品名是我拟的补充款，其余都是原睡垫总类里的真实清单。
-  // 拿到产品部的正式清单后替换即可，id 按下标顺延、不影响别处。
   airpad: [
-    ['薄款奶酪垫', 'Slim Cheese Mat'], ['星栖奶酪垫', 'Starrest Cheese Mat'], ['战术奶酪垫', 'Tactical Cheese Mat'],
-    ['拉丝垫子', 'Drop-stitch Mat'], ['拉丝云床', 'Drop-stitch Cloud Bed'], ['电动加厚充气床', 'Electric Comfort Air Bed'],
-    ['带枕菱形脚踩气垫', 'Diamond Foot-pump Mat with Pillow'], ['V型气垫', 'V-shaped Air Mat'],
-    ['多点位恒温气垫', 'Multi-zone Thermal Air Mat'], ['星途恒温气垫', 'Startrail Thermal Air Mat'],
+    ['拉丝矮垫', 'Low-profile Drop-stitch Mat', 'lxz-4339-1106'],
+    ['星途恒温气垫', 'Startrail Thermal Air Mat', 'lxz-4042-1208'],
+    ['电动加厚充气床', 'Electric Thick Air Bed', 'lxz-4217-92'],
+    ['两用坐垫', 'Dual-use Seat Pad', 'lxz-4381-1206'],
+    ['恒温坐垫', 'Thermal Seat Pad', 'lxz-4381-1211'],
+    ['海绵拉丝云床', 'Foam Drop-stitch Cloud Bed', 'lxzqd1206'],
+    ['tpu直拉带气垫', 'TPU Straight-strap Air Mat', 'lxz-4135-4'],
+    ['带枕菱形脚踩气垫', 'Diamond Foot-pump Mat with Pillow', 'lxz-4154-1002'],
+    ['V型气垫', 'V-shaped Air Mat', 'lxz-4039-1'],
+    ['糖葫芦充气床', 'Candy-stick Air Bed', 'LXZ-4239-1122'],
+    ['双人加厚TPU充气床', 'Double Thick TPU Air Bed', 'lxz-4217-7'],
+    ['花棱形双人带枕脚踩充气垫', 'Faceted Double Foot-pump Mat with Pillow', 'lxz-4316-4'],
   ],
   foampad: [
-    ['恒温坐垫', 'Thermal Seat Pad'], ['普通坐垫', 'Classic Seat Pad'],
-    // ★ 补充款
-    ['云憩棉护睡垫', 'Cloudrest Foam Pad'], ['加厚棉护折叠垫', 'Thick Folding Foam Pad'],
-    ['铝膜保温棉垫', 'Foil-backed Insulated Foam Pad'], ['蛋巢棉护垫', 'Egg-nest Foam Pad'],
+    ['薄款奶酪垫', 'Slim Cheese Pad', 'lxz-4339-4001'],
+    ['星栖奶酪垫', 'Starrest Cheese Pad', 'lxz-4339-1115'],
+    ['战术奶酪垫', 'Tactical Cheese Pad', 'lxz-4339-1103'],
+    ['双人波点形自动充气垫', 'Double Dotted Self-inflating Pad', 'lxz-4335-1402'],
+    ['单人波点形自动充气垫', 'Solo Dotted Self-inflating Pad', 'lxz-4335-1403'],
+    ['一键式充放奶酪床', 'One-touch Cheese Bed', 'lxz-4239-1113'],
+    ['青春版奶酪床', 'Youth Cheese Bed', 'LXZ-4239-1105'],
+    ['猛禽奶酪垫', 'Raptor Cheese Pad', 'lxz-3145-1104'],
+  ],
+  sofa: [
+    ['双人躺靠式充气沙发', 'Double Reclining Air Sofa', 'LXZ-4321-1106'],
+    ['双人坐式充气沙发', 'Double Seated Air Sofa', 'LXZ-4321-1312'],
+    ['单人两用沙发', 'Solo Dual-use Sofa', 'LXZ-4321-2001'],
+    ['头等舱单人充气沙发', 'First-class Solo Air Sofa', 'LXZ-4321-3001'],
+    ['悠然·单人充气沙发', 'Leisure Solo Air Sofa', 'LXZ-4321-1203'],
   ],
   NeckPillow: [
-    ['羽绒枕头', 'Down Pillow'], ['战术枕头', 'Tactical Pillow'],
-    ['云憩海绵软枕', 'Cloudrest Foam Pillow'], ['U型充气枕', 'U-shaped Air Pillow'],
-    // ★ 补充款
-    ['记忆棉营地枕', 'Memory Foam Camp Pillow'],
+    ['羽绒充气枕头', 'Down Inflatable Pillow', 'lxz-4332-1605'],
+    ['U型旅行枕头', 'U-shaped Travel Pillow', 'lxz-4339-1120'],
+    ['海绵舒适软枕', 'Soft Foam Camp Pillow', 'lxz-4332-1602'],
+    ['战术风格充气枕头', 'Tactical Inflatable Pillow', 'lxz-4339-1109'],
+    ['卡其色奶酪枕', 'Khaki Cheese Pillow', 'lxz-4339-1501'],
+    ['魔方自动充气枕', 'Cube Self-inflating Pillow', 'lxz-4332-1201'],
+  ],
+  tableAndchair: [
+    ['小号单横杆月亮椅', 'Small Single-bar Moon Chair', 'lxz-3145-1115'],
+    ['碳纤维月亮椅', 'Carbon Fiber Moon Chair', 'lxz-6128-2610'],
+    ['四角马扎', 'Four-corner Folding Stool', 'lxz-6128-2604'],
+    ['双横杆折叠躺椅', 'Double-bar Folding Recliner', 'lxz-6131-1507'],
+    ['后背提拉椅', 'Lift-back Camp Chair', 'lxz-3145-1125'],
+    ['四方躺平椅', 'Square Flat Recliner', 'lxz-6131-1513'],
+    ['战术蝴蝶椅', 'Tactical Butterfly Chair', 'lxz-3145-1111'],
+    ['车载钓鱼椅', 'Car-mount Fishing Chair', 'lxz-3145-1105'],
+    ['轻便折叠布面桌', 'Lightweight Folding Fabric Table', 'lxz-3145-1801'],
+  ],
+  accessories: [
+    ['户外折叠水桶', 'Collapsible Outdoor Bucket', 'LXZ-3124-3002'],
+    ['排气式收纳包', 'Vented Storage Bag', 'lxz-4042-1218'],
+    ['气密式收纳包', 'Airtight Storage Bag', 'lxz-4042-3201'],
+    ['云朵背包', 'Cloud Backpack', 'lxz-4381-4201'],
+    ['手持气泵', 'Handheld Air Pump', 'lxz-3125-8891'],
+    ['智能充气泵', 'Smart Electric Pump', 'lxz-3125-8890'],
+    ['mini款充气泵', 'Mini Air Pump', 'lxz-3125-1101'],
+    ['户外徒步雨衣', 'Trail Rain Jacket', 'lxz-3436-1009'],
+    ['户外速干毛巾', 'Quick-dry Outdoor Towel', 'lxz-4381-2006'],
   ],
 }
 
@@ -145,9 +198,9 @@ const categoryDetails = {
 }
 
 export const products = Object.entries(names).flatMap(([category, items]) =>
-  items.map(([zh, en], index) => ({
+  items.map(([zh, en, sku], index) => ({
     id: String(index + 1),
-    sku: `${category}-${String(index + 1).padStart(2, '0')}`,
+    sku,
     category,
     name: { zh, en },
     description: { zh: categoryDetails[category].zh, en: categoryDetails[category].en },

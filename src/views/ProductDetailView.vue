@@ -34,14 +34,19 @@ const related = computed(() =>
         .slice(0, 4)
     : []
 );
-const detailImages = computed(() =>
-  product.value
-    ? [
-        product.value.image,
-        ...related.value.slice(0, 2).map((item) => item.image)
-      ]
-    : []
-);
+// 真图还没到：主图用当前商品图，另外两张从同类循环补齐，保证详情页始终有 3 张。
+const detailImages = computed(() => {
+  if (!product.value) return [];
+  const pool = [
+    product.value.image,
+    ...products
+      .filter((item) => item.category === product.value.category)
+      .map((item) => item.image)
+      .filter((image) => image !== product.value.image),
+  ];
+  const unique = [...new Set(pool)];
+  return Array.from({ length: 3 }, (_, index) => unique[index % unique.length]);
+});
 const selectedImage = ref(0);
 
 </script>

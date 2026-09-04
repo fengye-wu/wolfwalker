@@ -6,9 +6,12 @@ const images = {
     'https://images.unsplash.com/photo-1533873984035-25970ab07461?auto=format&fit=crop&w=1200&q=85',
   ],
   sofa: [
-    'https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=1200&q=85',
-    'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=85',
-    'https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=1200&q=85',
+    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/sofa/sofa-1.png',
+    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/sofa/sofa-2.png',
+    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/sofa/sofa-3.png',
+    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/sofa/sofa-4.png',
+    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/sofa/sofa-5.png',
+   
   ],
   tableAndchair: [
     'https://images.unsplash.com/photo-1475483768296-6163e08872a1?auto=format&fit=crop&w=1200&q=85',

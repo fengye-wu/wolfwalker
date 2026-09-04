@@ -11,15 +11,20 @@ export const footerImages = {
 // category 的值必须是 data/products.js 里 categories 真实存在的 key ——
 // ProductView 对未知 key 会静默回落到「全部」，拼错不报错、只会筛不出东西。
 // NeckPillow 的大小写照抄，别改成小写。
+//
+// 链接带 #product-list（/product 页商品列表区的锚点）：与首页分类轮播
+// 的跳转保持同一行为，进页后由 router/index.js 的 scrollBehavior 滚到
+// 商品列表，不停在满屏首屏上。这里同时是首页 categoryRoutes 的顺序基准，
+// 两边顺序不同会出现同一序号指向不同分类的错位感。
 export const footerRoutes = {
   product: [
-    '/product?category=tent',
-    '/product?category=airpad',
-    '/product?category=foampad',
-    '/product?category=sofa',
-    '/product?category=NeckPillow',
-    '/product?category=tableAndchair',
-    '/product?category=accessories'
+    '/product?category=tent#product-list',
+    '/product?category=airpad#product-list',
+    '/product?category=foampad#product-list',
+    '/product?category=sofa#product-list',
+    '/product?category=NeckPillow#product-list',
+    '/product?category=tableAndchair#product-list',
+    '/product?category=accessories#product-list'
   ],
   solution: ['/factory', '/factory'],
   about: ['/AboutUs']

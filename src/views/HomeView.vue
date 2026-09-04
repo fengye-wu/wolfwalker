@@ -57,8 +57,10 @@ const categories = computed(() =>
       // name 和 english 只进 aria-label 和 alt，卡面上并不显示文字。
       // 英文版两者本来就是同一句，拼起来读屏会念两遍「Tent & Awning
       // Tent & Awning」，相同就只留一份。
+      // to 带 #product-list：跳到 /product 后由 router 的 scrollBehavior
+      // 平滑滚到商品列表区，不停在满屏首屏上。
       label: name === english ? name : `${name} ${english}`,
-      to: `/product?category=${route}`
+      to: `/product?category=${route}#product-list`
     };
   })
 );

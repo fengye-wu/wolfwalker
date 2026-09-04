@@ -49,17 +49,18 @@ export const heroSlides = sectionImages.map((image, index) => ({
 // tent / airpad / foampad / NeckPillow / sofa / tableAndchair / accessories）。
 // ProductView 对未知 key 会静默回落到「全部」，所以拼错不会报错、只会筛不出东西。
 // 顺序同时决定 categoryImages 和 copy.categoryNames 的对应关系，三者一动全动。
-// 第 4 格原来是 sleepingpad（睡垫总类），该类已拆分下线，这里接给 airpad —— 图是
-// 睡垫题材，充气卧垫是最贴的继承者。
-// 末两张仍和第 3、2 张重复：卡位数（7）现在正好等于品类数（7），把它们换成
-// foampad / NeckPillow 就能一卡一类，但 six.jpg / seven.jpg 拍的是桌椅和配件，
-// 换了标签就和图对不上，要换得先换图。
+//
+// 顺序必须与 data/footer.js 的 footerRoutes.product 逐项一致 ——
+// 首页分类轮播和公共底部的产品分类是同一套跳转入口，两边顺序不同
+// 会出现「首页第 N 张卡和底部第 N 个链接指向不同分类」的错位感。
+// 跳转目标带 #product-list：/product 页的商品列表区锚点，进页后由
+// router/index.js 的 scrollBehavior 滚到商品列表，不停在满屏首屏上。
 export const categoryRoutes = [
   'tent',
-  'accessories',
-  'tableAndchair',
   'airpad',
+  'foampad',
   'sofa',
+  'NeckPillow',
   'tableAndchair',
   'accessories',
 ];
@@ -99,27 +100,27 @@ export const copy = {
     more: '查看更多',
     categoryLabel: 'PRODUCT CATEGORY',
     categoryTitle: '多元户外装备\n露营 / 徒步 / 越野全覆盖',
-    // 逐项对应 categoryRoutes 的 tent / accessories / tableAndchair / airpad。
-    // 原来是「帐篷 / 徒步 / 骑行 / 睡袋」，后三个商品库里没有这些品类：点「徒步产品」
-    // 实际筛到配件、「骑行产品」筛到桌椅，「睡袋」也不等于睡垫。
+    // 逐项对应 categoryRoutes 的 tent / airpad / foampad / sofa / NeckPillow /
+    // tableAndchair / accessories。叫法直接用 categories 里的标准名，与底部
+    // productLinks、商品卡角标同词，不另起「帐篷产品」这类别名。
     // 改任何一项都要同步核对 categoryRoutes 同下标的 key。
     categoryNames: [
-      '帐篷产品',
-      '配件产品',
-      '桌椅产品',
+      '山野帐篷',
       '充气卧垫',
-      '沙发产品',
-      '桌椅产品',
-      '配件产品'
+      '棉护睡垫',
+      '户外软座',
+      '舒柔枕头',
+      '便携桌椅',
+      '随行配件'
     ],
     categoryEnglish: [
-      'Tent & Awning',
-      'Camp Accessories',
-      'Tables & Chairs',
+      'Backcountry Tents',
       'Inflatable Sleeping Mats',
-      'Inflatable Sofas',
-      'Tables & Chairs',
-      'Camp Accessories'
+      'Foam Sleeping Pads',
+      'Camp Seating',
+      'Camp Pillows',
+      'Portable Tables & Chairs',
+      'Trail Accessories'
     ],
     brandEyebrow:
       'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',

@@ -25,12 +25,7 @@ const productName = props.product.name;
         :loading="priority ? 'eager' : 'lazy'"
         class="size-full object-cover transition duration-700 group-hover:scale-105"
       />
-      <!-- right-3 而不是只给 left-3：分类名跟公共底部对齐后变长了（Portable Tables
-           & Chairs 这类），窄屏上角标会顶到卡片右沿，留出和左边同样的 12px。 -->
-      <span
-        class="absolute left-3 right-3 top-3 w-fit bg-white/90 px-2.5 py-1 text-[10px] font-bold uppercase leading-4 tracking-[0.12em] text-ink backdrop-blur"
-        >{{ getCategory(props.product.category)[locale] }}</span
-      >
+      
     </RouterLink>
     <div class="pt-4">
       <h3 class="text-base font-bold leading-6 text-ink sm:text-lg">
@@ -48,7 +43,7 @@ const productName = props.product.name;
           :aria-label="`${t.viewProduct}: ${productName.zh}`"
         >
           <img
-            src="https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/jt.png"
+            src="https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/jt.jpg"
             alt=""
             width="42"
             height="16"

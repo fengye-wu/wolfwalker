@@ -1,6 +1,6 @@
 <script setup>
 import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-vue-next';
-import { computed, nextTick, ref, watch } from 'vue';
+import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ProductCard from '../components/ProductCard.vue';
 import ProductHero from '../components/ProductHero.vue';
@@ -49,6 +49,22 @@ const chooseCategory = async (key) => {
   await nextTick();
   productList.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
+
+// 跨页跳转带 #product-list 时在这里补滚。App.vue 的路由转场是 out-in：
+// 旧页离场 240ms 后本组件才插入 DOM，而 vue-router 的 scrollBehavior 在
+// DOM 更新后就执行，那一刻锚点还不存在，findTargetEl 找不到会静默放弃，
+// 页面就停在上一页离开时的滚动位置（实测停在首页点击处附近）。
+// 挂载后延一帧再滚，保证晚于 scrollBehavior 的 nextTick 执行；
+// scrollIntoView 尊重锚点的 scroll-mt-24（96px），标题区最终落在吸顶头
+// 下沿约 24px 处。平滑滚动来自 html 上的全局 scroll-behavior: smooth。
+onMounted(() => {
+  if (route.hash !== '#product-list') return;
+  nextTick(() => {
+    requestAnimationFrame(() => {
+      document.getElementById('product-list')?.scrollIntoView({ block: 'start' });
+    });
+  });
+});
 </script>
 
 <template>
@@ -58,9 +74,18 @@ const chooseCategory = async (key) => {
          还会把商品列表滚进视口，否则点完人还停在首屏。 -->
     <ProductHero @select="chooseCategory" />
 
+    <!-- 跳转锚点 #product-list 挂在标题区顶上，不挂 section 也不挂商品网格：
+         挂 section 会把 py-14/lg:py-20 的顶部留白也滚进视野，标题和吸顶头
+         之间隔一大段空；挂商品网格则标题区整个滚出视口上方。挂在标题区，
+         滚动终点正好是「轮播图被滚过、商品分类/全部商品紧贴吸顶头下沿」。 -->
     <section class="site-container py-14 lg:py-20">
+      <!-- productList ref 也挂在标题区：ProductHero 的 CTA 按钮走 chooseCategory
+           滚到这里，与跨页 #product-list 跳转的落点完全一致（原先挂在商品网格，
+           点完按钮标题区会被滚出视口上方）。 -->
       <div
-        class="flex flex-col gap-6 border-b border-black/10 pb-8 lg:flex-row lg:items-end lg:justify-between"
+        id="product-list"
+        ref="productList"
+        class="scroll-mt-24 flex flex-col gap-6 border-b border-black/10 pb-8 lg:scroll-mt-28 lg:flex-row lg:items-end lg:justify-between"
       >
         <div>
           <p class="eyebrow">{{ t.categories }}</p>
@@ -117,11 +142,7 @@ const chooseCategory = async (key) => {
           </div>
         </aside>
 
-        <div
-          id="product-list"
-          ref="productList"
-          class="scroll-mt-24 lg:scroll-mt-28"
-        >
+        <div>
           <div class="mb-7 flex items-center justify-between">
             <p class="text-sm text-black/50">
               <strong class="text-ink">{{ filteredProducts.length }}</strong>

@@ -139,7 +139,7 @@ const names = {
     ['驼峰天幕', 'Hump Canopy', 'LXZ-1152-1302'],
     ['单层弹簧帐篷', 'Single-layer Spring Tent', 'lxz-1002'],
     ['苍狼·半球形帐篷', 'Greywolf Dome Tent', 'lxz-1143-2002'],
-    ['摩托车帐篷', 'Motorcycle Camping Tent', 'lxz-1002-4'],
+    ['摩托车帐篷', 'Motorcycle Camping Tent', 'lxz-1066'],
     ['印第安型帐篷', 'Tipi Tent', 'lxz-1143-1401'],
     ['风衫天幕', 'Windshirt Canopy', 'lxz-1141-1101'],
   ],

@@ -45,13 +45,12 @@ watch(
     :class="{
       'site-header--overlay': overlay,
       'site-header--dark': darkText,
-      'site-header--stuck': stuck,
+      'site-header--stuck': stuck
     }"
   >
     <div class="site-header__inner">
       <RouterLink to="/" class="site-brand" :aria-label="copy.brandHome">
         <img :src="headerImages.logoMark" alt="" />
-        <strong>{{ copy.brandName }}</strong>
       </RouterLink>
 
       <nav class="site-nav" :aria-label="copy.mainNav">
@@ -116,8 +115,11 @@ watch(
   backdrop-filter: blur(14px);
   // 背景/字色渐变过渡，两态之间不硬切。
   // 不写 height 和 position：这两个在阈值处是瞬变的，让它们过渡反而会看见抽动。
-  transition: background-color 260ms ease, backdrop-filter 260ms ease,
-    color 260ms ease, box-shadow 260ms ease;
+  transition:
+    background-color 260ms ease,
+    backdrop-filter 260ms ease,
+    color 260ms ease,
+    box-shadow 260ms ease;
 }
 
 // ---------- 桌面端两态 ----------
@@ -185,6 +187,30 @@ watch(
   .site-header:not(.site-header--overlay) {
     height: $header-height-stuck;
   }
+
+  // 顶部态（透明、未吸顶）的文字整体加大 2px —— 92px 的大头部配大一号的字；
+  // 吸顶后恢复原字号（需求：固定态字体现在这样就行）。
+  // 只作用于 overlay 页面的顶部态：手机端头部一直是固定白底条、白底页
+  // （product-detail 等）没有大号顶部态，两处的字都保持原值。
+  // :not(--stuck) 保证滚过 20px 后立即回到原字号。
+  // is-active 的加号套路照旧（原值 +2px），顶部态即 +4px。
+  .site-header--overlay:not(.site-header--stuck) {
+    .site-brand strong {
+      font-size: calc(clamp(15px, 1.15vw, 22px) + 2px);
+    }
+
+    .site-nav a {
+      font-size: calc(clamp(14px, 1.12vw, 21px) + 2px);
+
+      &.is-active {
+        font-size: calc(clamp(14px, 1.12vw, 21px) + 4px);
+      }
+    }
+
+    .home-tool {
+      font-size: calc(clamp(12px, 0.82vw, 15px) + 2px);
+    }
+  }
 }
 
 .site-header__inner {
@@ -193,16 +219,20 @@ watch(
   height: 100%;
   margin: 0 auto;
   display: grid;
-    // 两侧列 1fr 等分，nav 自然落在正中。
-    // 下限原为 210px，但 1024-1040 这段装不下：英文六个菜单的 nav 要 536px
-    // （中文只要 478px），加上 210×2 和两道 gap 共需 1017px，而这里的壳只有
-    // 976px —— 溢出 41px，页面出现 17px 横向滚动，nav 还被顶得偏右 20px，
-    // 正好和这条下限想维持的居中相反。
-    // 收到 150px：brand 实测最宽 220px（1920 下）、tools 190-412px，都由内容
-    // 撑开，用不到下限；下限只在内容异常窄时兜个底，所以降它不影响任何断点的
-    // 居中（实测 1024-2560 偏移全为 0）。
-    grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
-    align-items: center;
+  // 两侧列 1fr 等分，nav 自然落在正中。
+  // 下限原为 210px，但 1024-1040 这段装不下：英文六个菜单的 nav 要 536px
+  // （中文只要 478px），加上 210×2 和两道 gap 共需 1017px，而这里的壳只有
+  // 976px —— 溢出 41px，页面出现 17px 横向滚动，nav 还被顶得偏右 20px，
+  // 正好和这条下限想维持的居中相反。
+  // 收到 150px：brand 实测最宽 220px（1920 下）、tools 190-412px，都由内容
+  // 撑开，用不到下限；下限只在内容异常窄时兜个底，所以降它不影响任何断点的
+  // 居中（实测 1024-2560 偏移全为 0）。
+  grid-template-columns: minmax(150px, 1fr) auto minmax(150px, 1fr);
+  // 底部对齐：logo 放大到 246x41 后，导航、工具与 logo 底边取平，
+  // 观感上是一排「坐」在同一条基线上。padding-bottom 让文字不贴死
+  // border-bottom。92 → 72 两态切换时 inner 高度不变，底线依旧不动。
+  align-items: end;
+  padding-bottom: 12px;
   gap: clamp(20px, 3vw, 60px);
   border-bottom: 1px solid rgba(39, 38, 45, 0.13);
   transition: border-bottom-color 260ms ease;
@@ -211,6 +241,10 @@ watch(
     width: calc(100% - 36px);
     grid-template-columns: 1fr auto;
     gap: 16px;
+    // 手机端头部一直是固定白底条，没有底对齐的大 logo 语境，
+    // 恢复垂直居中，不被桌面端的新规则带偏
+    align-items: center;
+    padding-bottom: 0;
   }
 }
 
@@ -244,8 +278,12 @@ watch(
   text-decoration: none;
 
   img {
-    width: 44px;
-    height: 24px;
+    // logo 原图就是 246x41，这里只做上限约束、按自然尺寸等比呈现，
+    // 不再压成 44x24 的小图标（设计稿的整标就是这个尺寸）。
+    max-width: 246px;
+    max-height: 41px;
+    width: auto;
+    height: auto;
     object-fit: contain;
   }
 
@@ -259,7 +297,9 @@ watch(
 
 .site-nav {
   display: flex;
-  align-items: center;
+  // 链接沉到 nav 底部：文字底线与 logo 底线平齐（inner 已改 end 对齐，
+  // nav 自身仍占满行高，这里不让链接垂直居中，否则字悬在半空对不上 logo）。
+  align-items: flex-end;
   gap: clamp(26px, 3.25vw, 62px);
   height: 100%;
 
@@ -271,13 +311,24 @@ watch(
     position: relative;
     display: flex;
     align-items: center;
-    height: 100%;
+    // 原为 height: 100%：链接撑满行高、文字悬在行中央，与底对齐的 logo 错位。
+    // 改随内容高，底边与 logo 底边取平。
+    // line-height: 1 消掉行盒的 descender 空隙 —— 不收的话文字视觉底边
+    // 比元素底边高出约 5px，logo 底线对齐后导航仍像悬在半空。
+    line-height: 1;
     color: inherit;
     font-family: $font-serif;
     font-size: clamp(14px, 1.12vw, 21px);
     font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
+    // 字色随 hover/激活平滑过渡，与头部的 260ms 节奏一致
+    transition: color 180ms ease;
+
+    // hover 变红：与激活态同一个红，给非激活菜单一个明确的可点反馈
+    &:hover {
+      color: $nav-active;
+    }
 
     // 激活态：变红并放大 2px。用 calc 包住整条 clamp，各断点都是「原值 + 2px」，
     // 不用把三个尺寸各写一遍。同时只有一项会激活，宽度变化不至于挤动其它菜单。
@@ -335,6 +386,12 @@ watch(
 }
 
 .home-tool {
+  // min-height: 40 会让文字在按钮里垂直居中、底边比 logo 底线悬高约 13px，
+  // 与底对齐的导航不齐。压到内容高并让内容沉底后，文字底边与 logo 底线取平；
+  // 代价是点击区变小（桌面端鼠标操作可接受），手机端菜单按钮不在此列。
+  min-height: 0;
+  align-items: flex-end;
+
   @include tablet-down {
     display: none;
   }

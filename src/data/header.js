@@ -1,5 +1,5 @@
 export const headerImages = {
-  logoMark: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo.png'
+  logoMark: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png'
 }
 
 export const headerConfig = {

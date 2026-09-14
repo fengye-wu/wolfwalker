@@ -1,8 +1,10 @@
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home';
+
 export const footerImages = {
   logoMark:
-    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-black.png',
+    `${OSS}/sub/logo-black.png`,
   wechatQr:
-    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/qrcode.png'
+    `${OSS}/sub/qrcode.png`
 };
 
 // 与 copy.*Links 逐项对应，长度必须一致。

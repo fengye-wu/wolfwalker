@@ -9,34 +9,36 @@
 // 换图只要替换 OSS 上的同名文件，代码不用动。
 // 首屏图。设计稿里是一张照片压一层从下往上收的白蒙版，照片到 y483 就全白了，
 // 所以只导出可见的那 1920×490，下面接的白底由页面背景延续，不用整张大图。
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom';
+
 export const customImages = {
-  hero: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/hero.webp',
+  hero: `${OSS}/hero.webp`,
   // 定制优势的三个椭圆。设计稿 415×645，软边羽化（四角 alpha=0），
   // 三个在 x753 / 1118 / 1470，间距 365 / 352 < 宽度 415，是刻意互相压边的。
-  advantages: ['https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/adv-a.png', 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/adv-b.png', 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/adv-c.png'],
+  advantages: [`${OSS}/adv-a.png`, `${OSS}/adv-b.png`, `${OSS}/adv-c.png`],
   // 流程箭头。设计稿只有「向右」「向下」两种图形，
   // 第 2、4 排的左向箭头是同一张图的水平镜像（已核对切图像素一致），所以只存两张。
-  arrowH: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/arrow-h.png',
-  arrowV: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/arrow-v.png',
+  arrowH: `${OSS}/arrow-h.png`,
+  arrowV: `${OSS}/arrow-v.png`,
   // 大标题下面那条六段短横，设计稿 349×35，纯色 #254E94
-  dashBar: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/dash.png',
+  dashBar: `${OSS}/dash.png`,
 };
 
 // 12 张步骤图，已按「流程顺序」而不是「设计稿从左到右」编号。
 // 设计稿是回形走位（第 1、3 排从左到右，第 2、4 排从右到左），
 // 每排最后一步那张都是窄的 496 宽，前两步是 568 宽 —— 顺序换过来正好对上。
-const step01 = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-01.png';
-const step02 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-02.png"
-const step03 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-03.png"
-const step04 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-04.png"
-const step05 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-05.png"
-const step06 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-06.png"
-const step07 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-07.png"
-const step08 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-08.png"
-const step09 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-09.png"
-const step10 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-10.png"
-const step11 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-11.png"
-const step12 = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/step-12.png"
+const step01 = `${OSS}/step-01.png`;
+const step02 = `${OSS}/step-02.png`;
+const step03 = `${OSS}/step-03.png`;
+const step04 = `${OSS}/step-04.png`;
+const step05 = `${OSS}/step-05.png`;
+const step06 = `${OSS}/step-06.png`;
+const step07 = `${OSS}/step-07.png`;
+const step08 = `${OSS}/step-08.png`;
+const step09 = `${OSS}/step-09.png`;
+const step10 = `${OSS}/step-10.png`;
+const step11 = `${OSS}/step-11.png`;
+const step12 = `${OSS}/step-12.png`;
 
 export const stepImages = [
   step01,

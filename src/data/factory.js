@@ -3,21 +3,23 @@
 // 所以中英文两套都是设计师给定的原文，不是我译的（见 zh / en 两块）。
 //
 // 设计稿画板 1920×4885，与 CSS px 1:1，本文件里出现的尺寸注释都按这个基准。
-// 图片是设计稿里的位图图层（不是可下载切图），已按 1:1 裁到 src/images/factory/。
-// 上线前若要换成 OSS 托管，把下面几个 import 换成 URL 字符串即可，其余不用动。
+// 图片是设计稿里的位图图层（不是可下载切图），已按 1:1 裁切后托管到阿里云 OSS，
+// 前缀统一为 images/factory/，文件名与原本地文件（src/images/factory/，留档
+// 不再参与打包）一一对应。图片路径只有下面这一处，换图传 OSS 同名替换即可。
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/factory';
 
-import airFactory from '../images/factory/air-factory.jpg';
-import engineersIcon from '../images/factory/engineers.png';
-import equipmentIcon from '../images/factory/equipment.png';
-import heroImage from '../images/factory/hero.jpg';
-import mailIcon from '../images/factory/icon-mail.png';
-import mobileIcon from '../images/factory/icon-mobile.png';
-import padIcon from '../images/factory/icon-pad.png';
-import telIcon from '../images/factory/icon-tel.png';
-import tentIcon from '../images/factory/icon-tent.png';
-import patentsIcon from '../images/factory/patents.png';
-import tentFactory from '../images/factory/tent-factory.jpg';
-import workersIcon from '../images/factory/workers.png';
+const airFactory = `${OSS}/air-factory.jpg`;
+const engineersIcon = `${OSS}/engineers.png`;
+const equipmentIcon = `${OSS}/equipment.png`;
+const heroImage = `${OSS}/hero.jpg`;
+const mailIcon = `${OSS}/icon-mail.png`;
+const mobileIcon = `${OSS}/icon-mobile.png`;
+const padIcon = `${OSS}/icon-pad.png`;
+const telIcon = `${OSS}/icon-tel.png`;
+const tentIcon = `${OSS}/icon-tent.png`;
+const patentsIcon = `${OSS}/patents.png`;
+const tentFactory = `${OSS}/tent-factory.jpg`;
+const workersIcon = `${OSS}/workers.png`;
 
 // 首屏大图，设计稿 1920×1044（比例 1.839），紧贴在 146px 高的头部下面。
 export const factoryImages = {

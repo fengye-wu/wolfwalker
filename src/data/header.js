@@ -1,5 +1,7 @@
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home';
+
 export const headerImages = {
-  logoMark: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png'
+  logoMark: `${OSS}/sub/logo-write.png`
 }
 
 export const headerConfig = {

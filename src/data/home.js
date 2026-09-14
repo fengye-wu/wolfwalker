@@ -1,29 +1,31 @@
 // 与 copy.categoryNames / categoryEnglish 及 categoryRoutes 逐项对应，长度必须一致 ——
 // 少了会渲染出没有 aria-label、img 也没有 alt 的卡片（卡面只有图，读屏就完全念不出
 // 这个链接去哪），Vue 对 undefined 的属性是整条不输出，不会报错。
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home';
+
 export const categoryImages = [
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/first.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/second.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/three.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/four.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/five.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/six.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/swiper/seven.jpg',
+  `${OSS}/swiper/first.jpg`,
+  `${OSS}/swiper/second.jpg`,
+  `${OSS}/swiper/three.jpg`,
+  `${OSS}/swiper/four.jpg`,
+  `${OSS}/swiper/five.jpg`,
+  `${OSS}/swiper/six.jpg`,
+  `${OSS}/swiper/seven.jpg`,
 ];
 
 export const featureImages = {
   aboutCollage:
-    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/bg1.jpg',
+    `${OSS}/sub/bg1.jpg`,
   brandBanner:
-    'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/bg3.jpg'
+    `${OSS}/sub/bg3.jpg`
 };
 
 export const sectionImages = [
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/banner/one.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/banner/second.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/banner/three.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/banner/four.jpg',
-  'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/banner/five.jpg'
+  `${OSS}/banner/one.jpg`,
+  `${OSS}/banner/second.jpg`,
+  `${OSS}/banner/three.jpg`,
+  `${OSS}/banner/four.jpg`,
+  `${OSS}/banner/five.jpg`
 ];
 
 // 与 sectionImages 逐张对应。content 决定去 copy 里取哪一组
@@ -123,7 +125,7 @@ export const copy = {
       'Trail Accessories'
     ],
     brandEyebrow:
-      'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
+      `${OSS}/sub/logo-write.png`,
     brandTitle: '奔赴山野，备妥热爱',
     brandBody:
       '无论是草坪野餐的松弛露营，翻山越岭的徒步探索，还是驰骋路况的越野出行，一套趁手耐用的装备，',
@@ -199,7 +201,7 @@ export const copy = {
       'Camp Accessories'
     ],
     brandEyebrow:
-      'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-write.png',
+      `${OSS}/sub/logo-write.png`,
     // 「备受热爱」→「备妥热爱」：从被动的「广受喜爱」改成主动的「把热爱也备齐」，
     // 和上下文「备好全套好物」的「备」字扣上。英文跟着从 carried by（被它带着走）
     // 换成 packed and ready（连热爱一起打包备好），双关落在 pack 上 —— 装备要打包，

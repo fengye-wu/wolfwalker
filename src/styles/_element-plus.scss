@@ -200,28 +200,8 @@
   }
 }
 
-// ---------- 联系表单 ----------
-.contact-form {
-  .el-form-item {
-    margin-bottom: 0;
-  }
-
-  .el-form-item__label {
-    margin-bottom: 8px;
-    padding: 0;
-    color: rgba(#000, 0.45);
-    font-size: 12px;
-    font-weight: 700;
-    line-height: 1.4;
-    text-transform: uppercase;
-  }
-
-  // 校验文案改为占位排版，避免绝对定位盖住下一个字段
-  .el-form-item__error {
-    position: static;
-    padding-top: 6px;
-  }
-}
+// 联系表单已换成原生 form + Tailwind（见 ContactView.vue），
+// 原 .contact-form 的 el-form-item 覆盖随之删除。
 
 // ---------- 页脚订阅 ----------
 .newsletter-form {

@@ -31,11 +31,6 @@ const dictionary = {
     cultureText: 'Stay curious. Respect nature. Make useful things. We work openly, test honestly and improve every detail that can make a night outdoors more comfortable.',
     visionText: 'To make considered outdoor living accessible across borders, and become a trusted long-term partner for retailers and adventurers worldwide.',
     values: ['Useful by design', 'Tested in the field', 'Responsible growth'],
-    contactTitle: 'Let’s build the next journey', contactLead: 'Tell us what you need. Our international sales team usually replies within one business day.',
-    office: 'Head office & factory', address: 'Building 2, Phase I, No. 13 Furong Road, Huangshan Economic Development Zone, Anhui, China',
-    sales: 'International sales', hours: 'Monday–Friday · 08:30–17:30 CST',
-    name: 'Name', company: 'Company', phone: 'Phone', message: 'How can we help?', send: 'Send message',
-    formSuccess: 'Thank you. Your inquiry has been recorded.', locate: 'View larger map',
   },
   zh: {
     home: '首页', products: '商品', brand: '品牌', contact: '联系我们',
@@ -64,11 +59,6 @@ const dictionary = {
     cultureText: '保持好奇，尊重自然，制造真正有用的产品。我们开放协作、诚实测试，持续改善每一个让户外之夜更舒适的细节。',
     visionText: '让高品质户外生活跨越地域触手可及，成为全球零售伙伴与户外爱好者长期信赖的品牌。',
     values: ['实用设计', '实地验证', '责任成长'],
-    contactTitle: '一起开启下一段旅程', contactLead: '告诉我们您的需求，国际销售团队通常会在一个工作日内回复。',
-    office: '总部及工厂', address: '中国安徽省黄山市经济开发区芙蓉路13号一期2号厂房',
-    sales: '国际销售', hours: '周一至周五 · 08:30–17:30（北京时间）',
-    name: '姓名', company: '公司名称', phone: '联系电话', message: '请描述您的需求', send: '提交留言',
-    formSuccess: '感谢您的留言，我们已记录您的询盘。', locate: '在地图中查看',
   },
 }
 

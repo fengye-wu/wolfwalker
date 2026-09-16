@@ -15,7 +15,10 @@ const mainPad = computed(() =>
 </script>
 
 <template>
-  <div class="flex min-h-screen min-w-0 flex-col overflow-x-hidden">
+  <!-- overflow 用 clip 而不是 hidden：hidden 会把这里变成滚动容器，
+       页面内 position: sticky 的元素（如详情页右栏）就没法相对视口粘住；
+       clip 同样裁掉横向溢出，但不建立滚动上下文。 -->
+  <div class="flex min-h-screen min-w-0 flex-col overflow-x-clip">
     <SiteHeader />
     <main class="flex-1" :class="mainPad">
       <RouterView v-slot="{ Component }">

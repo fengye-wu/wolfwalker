@@ -194,12 +194,6 @@ try {
   );
   await page.goto(`${baseUrl}/AboutUs`, { waitUntil: 'domcontentloaded' });
   assert((await page.locator('video').count()) === 1, 'Brand video is missing');
-  await page.goto(`${baseUrl}/contact`, { waitUntil: 'domcontentloaded' });
-  assert(
-    (await page.locator('iframe[title="Wolfwalker location map"]').count()) ===
-      1,
-    'Location map is missing'
-  );
 
   const desktopContext = await browser.newContext({
     viewport: { width: 1440, height: 900 }

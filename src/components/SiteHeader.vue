@@ -111,6 +111,11 @@ watch(
   z-index: 999999;
   height: 72px;
   color: $header-text;
+  // 头部整体用思源宋体。$font-serif 目前在 _variables.scss 里被指到黑体
+  // （本机字体历史原因），且被首页大标题、产品页 hero 共用，不能全局改回，
+  // 所以头部单独用真宋体栈：思源宋体各渠道族名 + 系统宋体兜底。
+  font-family: 'SourceHanSerifCN', 'Source Han Serif CN', 'Source Han Serif SC',
+    'Noto Serif SC', 'Songti SC', 'SimSun', serif;
   background: rgba($white, 0.96);
   backdrop-filter: blur(14px);
   // 背景/字色渐变过渡，两态之间不硬切。
@@ -120,6 +125,13 @@ watch(
     backdrop-filter 260ms ease,
     color 260ms ease,
     box-shadow 260ms ease;
+
+  // 手机端（≤1023，固定条形态）改深色底：logo 是白色字标，
+  // 白底上「WOLF WALKER」完全看不见 —— 深底白字 + 文字图标反白。
+  @include tablet-down {
+    color: $white;
+    background: $ink;
+  }
 }
 
 // ---------- 桌面端两态 ----------
@@ -241,10 +253,12 @@ watch(
     width: calc(100% - 36px);
     grid-template-columns: 1fr auto;
     gap: 16px;
-    // 手机端头部一直是固定白底条，没有底对齐的大 logo 语境，
-    // 恢复垂直居中，不被桌面端的新规则带偏
+    // 手机端头部是固定条形态，没有底对齐的大 logo 语境，
+    // 恢复垂直居中，不被桌面端的新规则带偏；
+    // 深色底上原来的深灰分隔线不可见，换成浅色。
     align-items: center;
     padding-bottom: 0;
+    border-bottom-color: rgba($white, 0.16);
   }
 }
 
@@ -285,6 +299,12 @@ watch(
     width: auto;
     height: auto;
     object-fit: contain;
+
+    // 手机端窄屏调小一档
+    @include mobile {
+      max-width: 180px;
+      max-height: 30px;
+    }
   }
 
   strong {
@@ -317,7 +337,7 @@ watch(
     // 比元素底边高出约 5px，logo 底线对齐后导航仍像悬在半空。
     line-height: 1;
     color: inherit;
-    font-family: $font-serif;
+    // font-family 跟随 .site-header 的思源宋体（原 $font-serif 现指向黑体）
     font-size: clamp(14px, 1.12vw, 21px);
     font-weight: 700;
     text-decoration: none;
@@ -337,25 +357,9 @@ watch(
       font-size: calc(clamp(14px, 1.12vw, 21px) + 2px);
     }
 
-    // 只有不透明的头部才有下划线动效 —— 透明态压在照片上，加条线太脏。
-    // 现在全站都有透明态，所以判据从「非首页」改成「非透明态」：
-    // 吸顶后有白底，线就回来。
-    .site-header:not(.site-header--overlay) &,
-    .site-header--stuck & {
-      &::after {
-        content: '';
-        position: absolute;
-        inset: auto 0 0;
-        height: 2px;
-        background: $home-rose;
-        transform: scaleX(0);
-        transition: transform 180ms ease;
-      }
-
-      &.is-active::after {
-        transform: scaleX(1);
-      }
-    }
+    // 激活下划线已整体移除：头部吸顶是常态，需求是「固定时激活 tab
+    // 不显示横线」，白底页（product-detail 等）头部同样是固定的，一并去掉。
+    // 激活态只剩颜色区分（$nav-active 红）。
   }
 }
 

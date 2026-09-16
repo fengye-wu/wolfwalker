@@ -1,5 +1,5 @@
 <script setup>
-import { ArrowRight, Building2, Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
+import { ArrowRight, Clock3, Mail, MapPin, Phone } from 'lucide-vue-next'
 import { computed, reactive, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useLocale } from '../composables/useLocale'
@@ -7,7 +7,6 @@ import {
   contactChannels,
   contactCopy,
   contactFields,
-  contactMap,
   fieldClass,
   formEndpoint,
   labelClass,
@@ -210,29 +209,6 @@ watch(locale, (value, previous) => {
           </p>
         </div>
       </form>
-    </section>
-
-    <section class="relative h-[520px] overflow-hidden bg-[#dfe4dc]">
-      <iframe
-        :title="copy.mapTitle"
-        :src="contactMap.embed"
-        class="size-full border-0 grayscale-[.25]"
-        loading="lazy"
-        allowfullscreen
-        referrerpolicy="no-referrer-when-downgrade"
-      ></iframe>
-      <div class="pointer-events-none absolute bottom-5 left-5 max-w-sm bg-ink p-6 text-white shadow-lift sm:bottom-8 sm:left-8">
-        <Building2 :size="21" class="text-signal" />
-        <p class="mt-4 text-xs font-bold uppercase tracking-[0.14em] text-white/40">{{ copy.hqEyebrow }}</p>
-        <p class="mt-2 text-sm leading-6 text-white/75">{{ copy.address }}</p>
-        <a
-          class="pointer-events-auto mt-4 inline-flex items-center gap-2 text-xs font-bold text-white hover:text-signal"
-          :href="contactMap.link"
-          target="_blank"
-          rel="noreferrer"
-          >{{ copy.locate }} <ArrowRight :size="15" /></a
-        >
-      </div>
     </section>
   </div>
 </template>

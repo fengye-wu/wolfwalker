@@ -41,13 +41,9 @@ export const contactFields = [
   { name: 'message', labelKey: 'message', multiline: true, rows: 5, required: true },
 ]
 
-// 地图。address 是给 Google Maps 的查询串，不带「中国」前缀 —— 带上前缀
-// 定位会飘到国家级。两个 URL 都由它 encodeURIComponent 得来，不要各写一份编码值。
-const mapQuery = '安徽省黄山市经济开发区芙蓉路13号一期2号厂房'
-export const contactMap = {
-  embed: `https://www.google.com/maps?q=${encodeURIComponent(mapQuery)}&output=embed`,
-  link: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(mapQuery)}`,
-}
+// 地图模块已整块移除：原 Google Maps embed 大陆无法加载，换高德 marker 页后
+// 产品侧仍决定不要地图，地址信息由左栏渠道行承载。contactMap 与
+// mapTitle / locate 文案一并删除；要恢复时从 git 历史找这次改动前的版本。
 
 export const contactCopy = {
   zh: {
@@ -83,9 +79,6 @@ export const contactCopy = {
 
     // 询盘预填。从详情页「获取报价」带 product / quantity 过来时填进留言框。
     inquiry: (product, quantity) => `商品：${product}\n数量：${quantity}`,
-
-    mapTitle: '狼行者总部位置地图',
-    locate: '在地图中查看',
   },
   en: {
     eyebrow: 'CONTACT / WOLFWALKER',
@@ -120,9 +113,6 @@ export const contactCopy = {
     },
 
     inquiry: (product, quantity) => `Product: ${product}\nQuantity: ${quantity}`,
-
-    mapTitle: 'Wolfwalker location map',
-    locate: 'View larger map',
   },
 }
 

@@ -1,53 +1,43 @@
 <script setup>
-import {
-  ArrowLeft,
-  ArrowRight,
-  Check,
-  ShieldCheck,
-  Truck,
-  Wrench
-} from 'lucide-vue-next';
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
-import ProductCard from '../components/ProductCard.vue';
 import UiLinkButton from '../components/UiLinkButton.vue';
-import { getCategory, getProduct, products } from '../data/products';
+import { getCategory, getProduct } from '../data/products';
+import {
+  detailList,
+  leadTimeByCategory,
+  moqByCategory,
+} from '../data/detail';
 import { useLocale } from '../composables/useLocale';
 
 const route = useRoute();
 const { locale, t } = useLocale();
-const quantity = ref(50);
+
 const product = computed(() =>
   getProduct(route.params.category, route.params.id)
 );
 const category = computed(() =>
   product.value ? getCategory(product.value.category) : null
 );
-const related = computed(() =>
-  product.value
-    ? products
-        .filter(
-          (item) =>
-            item.category === product.value.category &&
-            item.id !== product.value.id
-        )
-        .slice(0, 4)
-    : []
+const leadValue = computed(
+  () => leadTimeByCategory[product.value?.category]?.[locale.value] ?? leadTimeByCategory.tent[locale.value]
 );
-// 真图还没到：主图用当前商品图，另外两张从同类循环补齐，保证详情页始终有 3 张。
-const detailImages = computed(() => {
-  if (!product.value) return [];
-  const pool = [
-    product.value.image,
-    ...products
-      .filter((item) => item.category === product.value.category)
-      .map((item) => item.image)
-      .filter((image) => image !== product.value.image),
-  ];
-  const unique = [...new Set(pool)];
-  return Array.from({ length: 3 }, (_, index) => unique[index % unique.length]);
+const moq = computed(() => moqByCategory[product.value?.category] ?? moqByCategory.tent);
+// 起订量同时是询价输入的下限和初值，切换品类时跟随
+const quantity = ref(0);
+watch(moq, (value) => {
+  quantity.value = value;
+}, { immediate: true });
+
+// 详情展示数据来自 detail.js 的 detailList：条目按产品 id 顺序排列（下标 = id - 1），
+// video / common 渲染在顶部，img 列表纵向依次往下排。
+const EMPTY_DETAIL = { video: "", common: "", img: [] };
+const detailMeta = computed(() => {
+  if (!product.value) return EMPTY_DETAIL;
+  const list = detailList[product.value.category];
+  return list?.[Number(route.params.id) - 1] ?? EMPTY_DETAIL;
 });
-const selectedImage = ref(0);
+const detailImages = computed(() => detailMeta.value.img);
 
 </script>
 
@@ -67,35 +57,51 @@ const selectedImage = ref(0);
     <section
       class="site-container grid gap-10 pb-16 lg:grid-cols-[1.15fr_.85fr] lg:gap-16 lg:pb-24"
     >
+      <!-- 左列：视频 → 公共图 → 详情图，纵向依次往下排，随页面滚动。
+           图片多且长，右栏（sticky）的粘滞空间由这里自然撑出来。
+           @error 兜底（方案 D）：OSS 上缺图/漏传时隐藏破图与黑框，
+           counts 配置的小偏差不会以破图形式露出。 -->
       <div class="min-w-0">
-        <div class="aspect-[5/4] overflow-hidden bg-[#e9ebe5]">
-          <Transition name="image-swap" mode="out-in">
-            <img
-              :key="detailImages[selectedImage]"
-              :src="detailImages[selectedImage]"
-              :alt="product.imageAlt[locale]"
-              class="size-full object-cover"
-            />
-          </Transition>
-        </div>
-        <div class="mt-3 grid grid-cols-3 gap-3">
-          <ElButton
-            v-for="(image, index) in detailImages"
-            :key="`${image}-${index}`"
-            class="thumbnail-button aspect-[4/3] overflow-hidden border-2 bg-[#e9ebe5] transition"
-            :class="
-              selectedImage === index
-                ? 'border-signal'
-                : 'border-transparent opacity-70 hover:opacity-100'
-            "
-            @click="selectedImage = index"
-          >
-            <img :src="image" alt="" class="size-full object-cover" />
-          </ElButton>
-        </div>
+        <video
+          v-if="detailMeta.video"
+          :src="detailMeta.video"
+          :poster="product.image"
+          controls
+          playsinline
+          preload="metadata"
+          class="w-full bg-black"
+          @error="$event.target.style.display = 'none'"
+        ></video>
+        <img
+          v-if="detailMeta.common"
+          :src="detailMeta.common"
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          class="mt-3 w-full"
+          @error="$event.target.style.display = 'none'"
+        />
+        <img
+          v-for="(image, index) in detailImages"
+          :key="image"
+          :src="image"
+          :alt="`${product.name[locale]} 详情图 ${index + 1}`"
+          loading="lazy"
+          decoding="async"
+          class="mt-3 w-full"
+          @error="$event.target.style.display = 'none'"
+        />
       </div>
 
-      <div class="min-w-0 lg:sticky lg:top-28 lg:self-start">
+      <!-- 右栏粘性。粘滞区间 = 行高 - 右栏高；左列是视频 + 图片长流，
+           高度远超右栏，粘滞空间自然充足。粘滞方向取 bottom（底部钉住
+           视口底）而不是 top + max-h 内滚 —— 内容完整渲染，不出现
+           内部滚动条：初始首屏可见名称/报价，往下滚参数表钉在视口底，
+           滚回顶部名称描述自然回归。 -->
+      <div
+        class="detail-aside min-w-0 lg:sticky lg:bottom-0 lg:self-end"
+      >
         <p class="eyebrow">{{ category[locale] }}</p>
         <h1
           class="break-title max-w-full font-display text-4xl font-black uppercase leading-[1.02] text-ink sm:text-5xl"
@@ -114,7 +120,7 @@ const selectedImage = ref(0);
               class="mt-2 block text-xs"
               >{{ t.leadTime }}</strong
             ><span class="mt-1 block text-[11px] text-black/45">{{
-              t.leadValue
+              leadValue
             }}</span>
           </div>
           <div class="border-r border-black/10 px-2">
@@ -122,8 +128,7 @@ const selectedImage = ref(0);
               class="mt-2 block text-xs"
               >{{ t.quantity }}</strong
             ><span class="mt-1 block text-[11px] text-black/45">{{
-              t.moqValue
-            }}</span>
+              moq }} {{ locale === 'zh' ? '件' : 'pieces' }}</span>
           </div>
           <div class="px-2">
             <Wrench class="mx-auto text-pine" :size="21" /><strong
@@ -135,13 +140,13 @@ const selectedImage = ref(0);
           </div>
         </div>
 
-        <div class="mt-8">
+        <div class="mt-9">
           <label
             class="mb-2 block text-xs font-bold uppercase tracking-[0.13em] text-black/45"
             >{{ t.quantity }}</label
           >
           <div class="flex gap-3">
-            <ElInputNumber v-model="quantity" :min="50" :step="10" class="quantity-input" />
+            <ElInputNumber v-model="quantity" :min="moq" :step="10" class="quantity-input" />
             <UiLinkButton
               :to="{
                 path: '/contact',
@@ -160,6 +165,19 @@ const selectedImage = ref(0);
             {{ t.specs }}
           </h2>
           <dl class="mt-4 border-t border-black/10">
+            <!-- 头两行固定为商品标识：货号取 sku，类型取品类名；后面跟 specs 数据 -->
+            <div class="grid grid-cols-2 border-b border-black/10 py-3 text-sm">
+              <dt class="text-black/45">{{
+                locale === 'zh' ? '产品货号' : 'SKU'
+              }}</dt>
+              <dd class="font-medium text-ink">{{ product.sku }}</dd>
+            </div>
+            <div class="grid grid-cols-2 border-b border-black/10 py-3 text-sm">
+              <dt class="text-black/45">{{
+                locale === 'zh' ? '产品类型' : 'Category'
+              }}</dt>
+              <dd class="font-medium text-ink">{{ category[locale] }}</dd>
+            </div>
             <div
               v-for="spec in product.specs[locale]"
               :key="spec[0]"
@@ -170,69 +188,6 @@ const selectedImage = ref(0);
             </div>
           </dl>
         </div>
-      </div>
-    </section>
-
-    <section class="bg-white py-16 lg:py-24">
-      <div
-        class="site-container grid gap-10 lg:grid-cols-[.75fr_1.25fr] lg:gap-20"
-      >
-        <div v-reveal>
-          <p class="eyebrow">
-            {{ locale === 'zh' ? 'WOLFWALKER 品质标准' : 'WOLFWALKER QUALITY' }}
-          </p>
-          <h2 class="section-title">{{ t.overview }}</h2>
-        </div>
-        <div v-reveal class="space-y-6 text-base leading-8 text-black/60">
-          <p>{{ product.description[locale] }}</p>
-          <div class="grid gap-4 sm:grid-cols-2">
-            <p
-              v-for="text in locale === 'zh'
-                ? [
-                    '精选耐用材料，适应高频户外使用。',
-                    '结构经过反复测试，搭建收纳简单直观。',
-                    '支持品牌、颜色与包装定制。',
-                    '标准化品控流程，稳定服务全球订单。'
-                  ]
-                : [
-                    'Durable materials selected for frequent outdoor use.',
-                    'Repeatedly tested structures with intuitive setup.',
-                    'Brand, color and packaging customization available.',
-                    'Standardized quality control for dependable global orders.'
-                  ]"
-              :key="text"
-              class="flex gap-3 border-t border-black/10 pt-4"
-            >
-              <Check :size="18" class="mt-1 shrink-0 text-signal" />{{ text }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="site-container py-16 lg:py-24">
-      <div class="flex items-end justify-between">
-        <div>
-          <p class="eyebrow">
-            {{ locale === 'zh' ? '更多探索' : 'MORE TO EXPLORE' }}
-          </p>
-          <h2 class="section-title">{{ t.related }}</h2>
-        </div>
-        <RouterLink
-          to="/product"
-          class="hidden items-center gap-2 text-sm font-bold sm:flex"
-          >{{ t.backProducts }} <ArrowRight :size="18"
-        /></RouterLink>
-      </div>
-      <div
-        class="mt-10 grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-4 md:gap-6"
-      >
-        <ProductCard
-          v-for="item in related"
-          :key="item.sku"
-          v-reveal
-          :product="item"
-        />
       </div>
     </section>
   </div>
@@ -252,12 +207,19 @@ const selectedImage = ref(0);
 </template>
 
 <style scoped lang="scss">
-.image-swap-enter-active,
-.image-swap-leave-active {
-  transition: opacity 220ms ease;
-}
-.image-swap-enter-from,
-.image-swap-leave-to {
-  opacity: 0;
+// 详情图纵向长图流，无切换动效；间距统一交给模板里的 mt-3。
+
+// 右栏粘滞方向按视口高度切换：
+//   默认（矮视口，内容放不下）—— 底部粘滞（bottom-0 / self-end），
+//   参数表等关键信息钉在视口底，顶部内容靠页面滚动查看，无内部滚动条；
+//   屏幕足够高（≥800px：内容约 640px + 吸顶头部 112px 能完整放下）——
+//   改为顶部对齐（top: 112px），与左侧视频顶部取平，消除首屏顶部空白。
+// 内容高度随语言/字号有小幅波动，800 的阈值留了余量。
+.detail-aside {
+  @media (min-width: 1024px) and (min-height: 800px) {
+    top: 112px;
+    bottom: auto;
+    align-self: start;
+  }
 }
 </style>

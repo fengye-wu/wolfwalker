@@ -4,10 +4,15 @@
 @layer components {
   .site-container {
     @apply mx-auto w-full max-w-[1440px] px-5 sm:px-8 lg:px-12;
+    // 容器内默认字号 24px：只影响未显式设置字号的文本，
+    // 各处 text-xs / text-sm 等显式字号不受牵连。
+    font-size: 24px;
   }
 
   .eyebrow {
-    @apply mb-3 text-xs font-bold uppercase tracking-[0.18em] text-signal;
+    // 原为 text-xs（12px），按需求放大到 24px
+    @apply mb-3 font-bold uppercase tracking-[0.18em] text-signal;
+    font-size: 24px;
   }
 
   .display-title {

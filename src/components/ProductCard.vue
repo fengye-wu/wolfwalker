@@ -28,7 +28,9 @@ const productName = props.product.name;
       
     </RouterLink>
     <div class="pt-4">
-      <h3 class="text-base font-bold leading-6 text-ink sm:text-lg">
+      <h3
+        class="text-base font-bold leading-6 text-ink transition-colors hover:text-[#93563a] sm:text-lg"
+      >
         {{ productName.zh }}
       </h3>
       <div

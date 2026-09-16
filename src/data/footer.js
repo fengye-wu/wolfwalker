@@ -25,8 +25,8 @@ export const footerRoutes = {
     '/product?category=foampad#product-list',
     '/product?category=sofa#product-list',
     '/product?category=NeckPillow#product-list',
-    '/product?category=tableAndchair#product-list',
-    '/product?category=accessories#product-list'
+    '/product?category=accessories#product-list',
+    '/product?category=tableAndchair#product-list'
   ],
   solution: ['/factory', '/factory'],
   about: ['/AboutUs']
@@ -53,8 +53,8 @@ export const copy = {
       '棉护睡垫',
       '户外软座',
       '舒柔枕头',
-      '便携桌椅',
-      '随行配件'
+      '随行配件',
+      '便携桌椅'
     ],
     solutions: '工厂介绍',
     solutionLinks: ['帐篷工厂', '气垫工厂'],
@@ -81,8 +81,8 @@ export const copy = {
       'Foam Sleeping Pads',
       'Camp Seating',
       'Camp Pillows',
-      'Portable Tables & Chairs',
-      'Trail Accessories'
+      'Trail Accessories',
+      'Portable Tables & Chairs'
     ],
     solutions: 'Our Factories',
     solutionLinks: ['Tent Factory', 'Air Mattress Factory'],

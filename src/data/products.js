@@ -101,13 +101,13 @@ const images = {
 // NeckPillow 的大小写是刻意的：路由里就写成 /product/NeckPillow/1，
 // 路由参数大小写敏感，这里必须和路由枚举、footerRoutes 三处完全一致。
 export const categories = [
-  { key: 'tent', zh: '山野帐篷', en: 'Backcountry Tents', introZh: '从快速搭建到宽敞充气结构，为营地提供可靠庇护。', introEn: 'Reliable shelter, from quick-pitch privacy tents to spacious inflatable cabins.' },
-  { key: 'airpad', zh: '充气卧垫', en: 'Inflatable Sleeping Mats', introZh: '一次充气撑起整夜支撑，收起来只有一只水壶大小。', introEn: 'Full-night support from a single inflation, packing down to the size of a water bottle.' },
-  { key: 'foampad', zh: '棉护睡垫', en: 'Foam Sleeping Pads', introZh: '海绵夹层不怕扎、不用充气，铺开即睡。', introEn: 'Puncture-proof foam cores that need no inflation — unroll and sleep.' },
-  { key: 'NeckPillow', zh: '舒柔枕头', en: 'Camp Pillows', introZh: '贴合颈部曲线的营地枕，长途车程与帐篷里都用得上。', introEn: 'Neck-contoured pillows that work as well on long drives as they do in the tent.' },
-  { key: 'sofa', zh: '户外软座', en: 'Camp Seating', introZh: '将居家般的放松体验带到草地、海边与营地。', introEn: 'Lounge-level comfort designed for campsites, beaches and backyards.' },
-  { key: 'tableAndchair', zh: '便携桌椅', en: 'Portable Tables & Chairs', introZh: '稳定轻量的营地家具，适合用餐、休息和社交。', introEn: 'Stable, lightweight camp furniture for dining, resting and gathering.' },
-  { key: 'accessories', zh: '随行配件', en: 'Trail Accessories', introZh: '从充气到收纳，让营地搭建更轻松的小型装备。', introEn: 'Compact essentials that make setup, inflation and packing effortless.' },
+  { key: 'tent', zh: '山野帐篷', en: 'tent', introZh: '从快速搭建到宽敞充气结构，为营地提供可靠庇护。', introEn: 'Reliable shelter, from quick-pitch privacy tents to spacious inflatable cabins.' },
+  { key: 'airpad', zh: '充气卧垫', en: 'airpad', introZh: '一次充气撑起整夜支撑，收起来只有一只水壶大小。', introEn: 'Full-night support from a single inflation, packing down to the size of a water bottle.' },
+  { key: 'foampad', zh: '棉护睡垫', en: 'foampad', introZh: '海绵夹层不怕扎、不用充气，铺开即睡。', introEn: 'Puncture-proof foam cores that need no inflation — unroll and sleep.' },
+  { key: 'NeckPillow', zh: '舒柔枕头', en: 'neckpillow', introZh: '贴合颈部曲线的营地枕，长途车程与帐篷里都用得上。', introEn: 'Neck-contoured pillows that work as well on long drives as they do in the tent.' },
+  { key: 'sofa', zh: '户外软座', en: 'sofa', introZh: '将居家般的放松体验带到草地、海边与营地。', introEn: 'Lounge-level comfort designed for campsites, beaches and backyards.' },
+  { key: 'accessories', zh: '随行配件', en: 'accessories', introZh: '从充气到收纳，让营地搭建更轻松的小型装备。', introEn: 'Compact essentials that make setup, inflation and packing effortless.' },
+  { key: 'tableAndchair', zh: '便携桌椅', en: 'tableAndchair', introZh: '稳定轻量的营地家具，适合用餐、休息和社交。', introEn: 'Stable, lightweight camp furniture for dining, resting and gathering.' },
 ]
 
 // 商品清单以 src/utils/products.json 为准。
@@ -212,44 +212,46 @@ const categoryDetails = {
   tent: {
     zh: '采用耐磨防泼水面料与稳定支撑结构，兼顾通风、搭建效率和全天候营地体验。',
     en: 'Built with abrasion-resistant, water-repellent fabric and a stable support system for ventilation, fast setup and reliable all-weather use.',
-    specsZh: [['外帐面料', '210D 牛津布'], ['防水指数', 'PU 3000 mm'], ['适用季节', '三季'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Flysheet', '210D Oxford'], ['Waterproof rating', 'PU 3000 mm'], ['Season', '3 season'], ['Custom', 'Color / Logo / Package']],
+    // 详情页参数表头两行固定为「产品货号 / 产品类型」（渲染层生成），
+    // 这里只保留品类特有的剩余参数。
+    specsZh: [['适用季节', '三季'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Season', '3 season'], ['Custom', 'Color / Logo / Package']],
   },
   sofa: {
     zh: '宽大承托面配合稳定气室，快速充放气，在营地也能拥有松弛舒适的休息空间。',
     en: 'A generous support area and stable air chambers create a relaxed camp lounge that inflates and packs quickly.',
-    specsZh: [['材质', '耐磨 PVC 复合面料'], ['气阀', '大流量气阀'], ['承重', '150–240 kg'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Material', 'Durable PVC composite'], ['Valve', 'High-flow valve'], ['Load', '150–240 kg'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['承重', '150–240 kg'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Load', '150–240 kg'], ['Custom', 'Color / Logo / Package']],
   },
   tableAndchair: {
     zh: '轻量金属结构与高强度座布相结合，展开快捷、支撑稳定，满足多种营地活动。',
     en: 'A lightweight metal frame and high-strength fabric deliver quick setup and dependable support around camp.',
-    specsZh: [['支架', '轻量合金'], ['面料', '600D 牛津布'], ['结构', '快速折叠'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Frame', 'Lightweight alloy'], ['Fabric', '600D Oxford'], ['Structure', 'Quick folding'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['结构', '快速折叠'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Structure', 'Quick folding'], ['Custom', 'Color / Logo / Package']],
   },
   accessories: {
     zh: '围绕营地搭建、充气与收纳设计，体积小巧、使用直观，是户外系统中不可缺少的一环。',
     en: 'Designed around setup, inflation and storage, this compact essential keeps every camp system working smoothly.',
-    specsZh: [['设计', '轻量便携'], ['适用', '多场景户外'], ['包装', '独立包装'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Design', 'Lightweight / Portable'], ['Use', 'Multi-scene outdoor'], ['Packing', 'Individual pack'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['包装', '独立包装'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Packing', 'Individual pack'], ['Custom', 'Color / Logo / Package']],
   },
   airpad: {
     zh: '内置支撑气室撑起均匀承托，双向气阀快充快放，收纳后仅一只水壶大小。',
     en: 'Internal support chambers spread weight evenly, while a two-way valve inflates and empties fast — packed down, it is no bigger than a water bottle.',
-    specsZh: [['表层材质', '40D 尼龙 TPU 复合'], ['气阀', '快速双向阀'], ['收纳尺寸', '约 φ12 × 25 cm'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Surface', '40D nylon TPU composite'], ['Valve', 'Fast two-way valve'], ['Packed size', 'Approx. φ12 × 25 cm'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['收纳尺寸', '约 φ12 × 25 cm'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Packed size', 'Approx. φ12 × 25 cm'], ['Custom', 'Color / Logo / Package']],
   },
   foampad: {
     zh: '海绵夹层不用充气也不怕扎破，铺开即睡；折叠后可当营地坐垫。',
     en: 'A foam core needs no inflation and shrugs off punctures — unroll to sleep, fold it up to sit on.',
-    specsZh: [['芯材', '高回弹海绵'], ['表层', '抗撕拉面料'], ['结构', '折叠 / 卷收'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Core', 'High-resilience foam'], ['Surface', 'Tear-resistant fabric'], ['Format', 'Folding / roll-up'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['结构', '折叠 / 卷收'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Format', 'Folding / roll-up'], ['Custom', 'Color / Logo / Package']],
   },
   NeckPillow: {
     zh: '贴合颈部曲线的支撑造型，亲肤外套可拆洗，长途车程与帐篷里都用得上。',
     en: 'Neck-contoured support with a removable, washable cover — equally at home on a long drive or in the tent.',
-    specsZh: [['芯材', '记忆棉 / 充气气室'], ['外套', '可拆洗亲肤面料'], ['收纳', '附收纳袋'], ['定制', '颜色 / 品牌标识 / 包装']],
-    specsEn: [['Core', 'Memory foam / air chamber'], ['Cover', 'Removable soft-touch fabric'], ['Storage', 'Stuff sack included'], ['Custom', 'Color / Logo / Package']],
+    specsZh: [['收纳', '附收纳袋'], ['定制', '颜色 / 品牌标识 / 包装']],
+    specsEn: [['Storage', 'Stuff sack included'], ['Custom', 'Color / Logo / Package']],
   },
 }
 

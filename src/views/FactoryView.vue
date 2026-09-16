@@ -305,7 +305,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     display: block;
     color: $factory-brown;
     font-family: $font-serif;
-    font-size: d(240.4);
+    font-size: d(160);
     // 设计稿这个文本框 180 高、字号 240.4，行高压到 0.75 才是这个高度；
     // 默认 1.2 会白多出 100 多 px，下面两行的位置就全错了。
     line-height: 0.75;
@@ -820,7 +820,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     padding-top: 72px;
 
     &__value {
-      font-size: 96px;
+      font-size: 92px;
     }
 
     &__label {

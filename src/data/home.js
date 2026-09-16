@@ -9,8 +9,8 @@ export const categoryImages = [
   `${OSS}/swiper/three.jpg`,
   `${OSS}/swiper/four.jpg`,
   `${OSS}/swiper/five.jpg`,
-  `${OSS}/swiper/six.jpg`,
   `${OSS}/swiper/seven.jpg`,
+  `${OSS}/swiper/six.jpg`,
 ];
 
 export const featureImages = {
@@ -63,8 +63,8 @@ export const categoryRoutes = [
   'foampad',
   'sofa',
   'NeckPillow',
-  'tableAndchair',
   'accessories',
+  'tableAndchair',
 ];
 
 export const carouselConfig = {
@@ -112,8 +112,8 @@ export const copy = {
       '棉护睡垫',
       '户外软座',
       '舒柔枕头',
-      '便携桌椅',
-      '随行配件'
+      '随行配件',
+      '便携桌椅'
     ],
     categoryEnglish: [
       'Backcountry Tents',
@@ -121,8 +121,8 @@ export const copy = {
       'Foam Sleeping Pads',
       'Camp Seating',
       'Camp Pillows',
-      'Portable Tables & Chairs',
-      'Trail Accessories'
+      'Trail Accessories',
+      'Portable Tables & Chairs'
     ],
     brandEyebrow:
       `${OSS}/sub/logo-write.png`,
@@ -182,23 +182,26 @@ export const copy = {
     // 这两组只进 aria-label / alt，卡面上不显示文字（早先的注释说「两行叠着显示」，
     // 已经不是现在的实现）。英文版两组内容相同，HomeView 里会去重，读屏不会念两遍。
     // 同样逐项对应 categoryRoutes，改动要跟着核对 key。
+    // 英文版两组只进 aria-label / alt，内容相同（HomeView 会去重）。
+    // 原先还是「Tent & Awning」旧文案、与 categoryRoutes 逐项错位，整组对齐为
+    // 与 zh.categoryEnglish 相同的标准叫法，顺序同样随 categoryRoutes。
     categoryNames: [
-      'Tent & Awning',
-      'Camp Accessories',
-      'Tables & Chairs',
+      'Backcountry Tents',
       'Inflatable Sleeping Mats',
-      'Inflatable Sofas',
-      'Tables & Chairs',
-      'Camp Accessories'
+      'Foam Sleeping Pads',
+      'Camp Seating',
+      'Camp Pillows',
+      'Trail Accessories',
+      'Portable Tables & Chairs'
     ],
     categoryEnglish: [
-      'Tent & Awning',
-      'Camp Accessories',
-      'Tables & Chairs',
+      'Backcountry Tents',
       'Inflatable Sleeping Mats',
-      'Inflatable Sofas',
-      'Tables & Chairs',
-      'Camp Accessories'
+      'Foam Sleeping Pads',
+      'Camp Seating',
+      'Camp Pillows',
+      'Trail Accessories',
+      'Portable Tables & Chairs'
     ],
     brandEyebrow:
       `${OSS}/sub/logo-write.png`,

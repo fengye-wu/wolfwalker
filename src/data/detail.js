@@ -5,6 +5,7 @@
 // 桌椅、配件较短；起订量按件型反比 —— 小件起订更高。
 const OSS = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/detail";
 const common = `${OSS}/common/1.jpg`;
+const common2 = `${OSS}/common/2.jpg`;
 
 // 交货时间（zh / en 两个格式）：帐篷、沙发 50-60 天，其余 40-50 天。
 export const leadTimeByCategory = {
@@ -43,6 +44,8 @@ export const moqByCategory = {
 const DETAIL_META = {
   tent: {
     video: "tent.mp4",
+    // 帐篷类的详情公共图单独用第二张（common2），其余分类仍共用 common/1.jpg
+    common: common2,
     counts: [
       12, 6, 11, 11, 9, 9, 9, 10, 12, 11, 8, 10, 11, 12, 8, 11, 13, 11, 11, 10,
       7, 8, 10, 7, 8, 8,
@@ -85,7 +88,7 @@ export const detailList = Object.fromEntries(
     category,
     meta.counts.map((_, i) => ({
       video: meta.video ? `${OSS}/video/${meta.video}` : "",
-      common,
+      common: meta.common ?? common,
       img: detailImages(category, i),
     })),
   ]),

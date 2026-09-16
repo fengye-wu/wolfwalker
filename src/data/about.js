@@ -19,14 +19,6 @@ import imgNeckPillow from '../images/about/NeckPillow.jpg'
 import imgAccessories from '../images/about/accessories.jpg'
 // 全球布局区的渠道 logo 切图（蓝湖按 1-8 编号，与设计稿顺序一致）：
 // 抖音商城 / Facebook / 京东 / 拼多多 / Amazon / 淘宝 / 天猫 / 阿里巴巴国际站
-import channel1 from '../images/about/1.png'
-import channel2 from '../images/about/2.png'
-import channel3 from '../images/about/3.png'
-import channel4 from '../images/about/4.png'
-import channel5 from '../images/about/5.png'
-import channel6 from '../images/about/6.png'
-import channel7 from '../images/about/7.png'
-import channel8 from '../images/about/8.png'
 import bg from '../images/about/bg.png'
 import worldMap from '../images/about/world-map.png'
 import channels from '../images/about/world-map.png'
@@ -48,6 +40,7 @@ import bg5 from '../images/about/5.png'
 import bg6 from '../images/about/6.png'
 import bg7 from '../images/about/7.png'
 import bg8 from '../images/about/8.png'
+import logo from '../images/about/logo.png'
 
 export const aboutImages = {
   hero,
@@ -56,7 +49,7 @@ export const aboutImages = {
   bg,
   // Hero 玻璃卡顶部的品牌字标（红狼头 + 深色字，卡内照片背景偏亮），
   // 直接复用公共头部的 OSS 资源，不另存一份
-  logo: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/home/sub/logo-black.png',
+  logo,
   cards: [card10yrs, cardSales, cardChannels, cardPatents],
   worldMap,
   channels,

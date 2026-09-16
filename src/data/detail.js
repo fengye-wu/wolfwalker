@@ -73,6 +73,20 @@ const DETAIL_META = {
   },
   accessories: {
     video: null,
+    // 产品级视频（下标 = 产品序 - 1，长度必须与 counts 一致）：
+    // 1/2/5/6 号用帐篷视频，3/4 号用气垫视频，其余没有视频（null 不渲染视频位）。
+    // 配了 videos 时按产品取值，未配的分类仍回落到 video 单值。
+    videos: [
+      "tent.mp4",
+      "tent.mp4",
+      "airpad.mp4",
+      "airpad.mp4",
+      "tent.mp4",
+      "tent.mp4",
+      null,
+      null,
+      null,
+    ],
     counts: [9, 9, 9, 9, 9, 9, 9, 9, 9],
   },
 };
@@ -86,11 +100,15 @@ const detailImages = (category, index) =>
 export const detailList = Object.fromEntries(
   Object.entries(DETAIL_META).map(([category, meta]) => [
     category,
-    meta.counts.map((_, i) => ({
-      video: meta.video ? `${OSS}/video/${meta.video}` : "",
-      common: meta.common ?? common,
-      img: detailImages(category, i),
-    })),
+    meta.counts.map((_, i) => {
+      // 产品级 videos[i] 优先于分类级 video，两者都没有则不渲染视频位
+      const video = meta.videos?.[i] ?? meta.video;
+      return {
+        video: video ? `${OSS}/video/${video}` : "",
+        common: meta.common ?? common,
+        img: detailImages(category, i),
+      };
+    }),
   ]),
 );
 

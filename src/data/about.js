@@ -1,58 +1,52 @@
 // 关于我们页（品牌介绍）文案与图片。设计稿：蓝湖「品牌介绍」（1920×9871）。
-// 图片已从设计稿切出/裁剪到 src/images/about/（上线前可迁 OSS，方式同 factory.js）。
+// 页面图片统一从阿里云 OSS 的 images/about 目录加载。
 //
 // 分类胶囊复用 products.js 的 categories（名称/顺序/跳转一处维护），
 // 黄色图标按分类 key 映射到切图。
 
-import hero from '../images/about/hero.png'
-import calligraphy from '../images/about/calligraphy.png'
-import card10yrs from '../images/about/card-10yrs.png'
-import cardSales from '../images/about/card-sales.png'
-import cardChannels from '../images/about/card-channels.png'
-import cardPatents from '../images/about/card-patents.png'
-import outdoorchair from '../images/about/outdoor-chair.jpg'
-import imgTent from '../images/about/tent.jpg'
-import imgAirpad from '../images/about/airpad.jpg'
-import imgAirsofa from '../images/about/airsofa.jpg'
-import imgFoampad from '../images/about/foampad.jpg'
-import imgNeckPillow from '../images/about/NeckPillow.jpg'
-import imgAccessories from '../images/about/accessories.jpg'
-// 全球布局区的渠道 logo 切图（蓝湖按 1-8 编号，与设计稿顺序一致）：
-// 抖音商城 / Facebook / 京东 / 拼多多 / Amazon / 淘宝 / 天猫 / 阿里巴巴国际站
-import bg from '../images/about/bg.png'
-import worldMap from '../images/about/world-map.png'
-import channels from '../images/about/world-map.png'
-import certificates from '../images/about/certificates.png'
-import mountain from '../images/about/mountain.png'
-import icon5 from '../images/about/icon-5.png'
-import icon6 from '../images/about/icon-6.png'
-// 蓝湖切图文件编号与图形错位（已核对实际像素）：icon-3=时钟、icon-2=钱币、
-// icon-4=飞机、icon-1=书。这里按图形语义重命名，别按编号想当然。
-import iconClock from '../images/about/icon-3.png'
-import iconCoin from '../images/about/icon-2.png'
-import iconPlane from '../images/about/icon-4.png'
-import iconBook from '../images/about/icon-1.png'
-import bg1 from '../images/about/1.png'
-import bg2 from '../images/about/2.png'
-import bg3 from '../images/about/3.png'
-import bg4 from '../images/about/4.png'
-import bg5 from '../images/about/5.png'
-import bg6 from '../images/about/6.png'
-import bg7 from '../images/about/7.png'
-import bg8 from '../images/about/8.png'
-import logo from '../images/about/logo.png'
+const ABOUT_OSS_BASE_URL = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/about'
+const aboutAsset = (fileName) => `${ABOUT_OSS_BASE_URL}/${fileName}`
+
+const hero = aboutAsset('hero.png')
+const calligraphy = aboutAsset('calligraphy.png')
+const card10yrs = aboutAsset('card-10yrs.png')
+const cardSales = aboutAsset('card-sales.png')
+const cardChannels = aboutAsset('card-channels.png')
+const cardPatents = aboutAsset('card-patents.png')
+const outdoorchair = aboutAsset('outdoor-chair.jpg')
+const imgTent = aboutAsset('tent.jpg')
+const imgAirpad = aboutAsset('airpad.jpg')
+const imgAirsofa = aboutAsset('airsofa.jpg')
+const imgFoampad = aboutAsset('foampad.jpg')
+const imgNeckPillow = aboutAsset('NeckPillow.jpg')
+const imgAccessories = aboutAsset('accessories.jpg')
+const bg = aboutAsset('bg.png')
+const certificates = aboutAsset('certificates.png')
+const mountain = aboutAsset('mountain.jpg')
+const icon5 = aboutAsset('icon-5.png')
+const icon6 = aboutAsset('icon-6.png')
+const iconClock = aboutAsset('icon-3.png')
+const iconCoin = aboutAsset('icon-2.png')
+const iconPlane = aboutAsset('icon-4.png')
+const iconBook = aboutAsset('icon-1.png')
+const bg1 = aboutAsset('1.png')
+const bg2 = aboutAsset('2.png')
+const bg3 = aboutAsset('3.png')
+const bg4 = aboutAsset('4.png')
+const bg5 = aboutAsset('5.png')
+const bg6 = aboutAsset('6.png')
+const bg7 = aboutAsset('7.png')
+const bg8 = aboutAsset('8.png')
+const logo = aboutAsset('logo.png')
 
 export const aboutImages = {
   hero,
   calligraphy,
   // 「从帐篷到充气垫」白底区的雪山云海背景
   bg,
-  // Hero 玻璃卡顶部的品牌字标（红狼头 + 深色字，卡内照片背景偏亮），
-  // 直接复用公共头部的 OSS 资源，不另存一份
+  // Hero 玻璃卡顶部的品牌字标（红狼头 + 深色字，卡内照片背景偏亮）
   logo,
   cards: [card10yrs, cardSales, cardChannels, cardPatents],
-  worldMap,
-  channels,
   certificates,
   mountain,
 }
@@ -91,10 +85,10 @@ export const categoryIcons = {
 
 // 「从帐篷到充气垫」区：左侧大图随激活分类切换，右侧按钮列表。
 // 顺序即设计稿按钮顺序（山野帐篷→…→便携桌椅），key 与 products.js
-// 的 categories 枚举一致（NeckPillow 大小写照抄）。7 张本地图已逐张
+// 的 categories 枚举一致（NeckPillow 大小写照抄）。7 张 OSS 图片已逐张
 // 核对过内容与分类语义一一对应，直接按 key 挂载。
 export const outdoorCategories = [
-  { key: 'tent', zh: '山野帐篷', en: 'tents', image: imgTent },
+  { key: 'tent', zh: '山野帐篷', en: 'tent', image: imgTent },
   { key: 'airpad', zh: '充气卧垫', en: 'airpad', image: imgAirpad },
   { key: 'foampad', zh: '绵护睡垫', en: 'foampad', image: imgFoampad },
   { key: 'airsofa', zh: '户外软座', en: 'airsofa', image: imgAirsofa },

@@ -1018,8 +1018,7 @@ onBeforeUnmount(() => {
   &__photo {
     display: block;
     width: 100%;
-    aspect-ratio: 1920 / 2228;
-    object-fit: cover;
+    height: auto;
   }
 }
 

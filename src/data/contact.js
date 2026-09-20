@@ -15,30 +15,51 @@ export const mailSubject = {
   fallback: 'Wolfwalker website inquiry',
 }
 
-// 左栏四行联系信息。icon 是 lucide 组件名，由视图映射成组件；
-// label 为 null 表示这一行的标题走 contactCopy 里的同名键（office / sales / phone），
-// 只有「工作时间」在字典里没有独立标题，所以单独给了 hours 键。
-//
-// href 为 null 的行只显示文字，不做链接。
-// 这里的号码和邮箱与 footer.js、factory.js 里的不是同一套（见文件末尾说明）。
-export const contactChannels = [
-  { key: 'address', icon: 'MapPin', labelKey: 'office', textKey: 'address', href: null, wide: true },
-  { key: 'sales', icon: 'Mail', labelKey: 'sales', text: 'wolfwalkershop@163.com', href: 'mailto:wolfwalkershop@163.com' },
-  // href 补 +86：手机上点号码要能直接拨，国内号不带国家码在海外网络会拨不出去。
-  // 显示仍是明哥给的 11 位原样。
-  { key: 'phone', icon: 'Phone', labelKey: 'phone', text: '16605655602', href: 'tel:+8616605655602' },
-  { key: 'hours', icon: 'Clock3', labelKey: 'hoursLabel', textKey: 'hours', href: null },
+// 页面图片（蓝湖切图，src/images/contact/ 下）
+// 页面图片已上传阿里云 OSS，改用外链（本地 src/images/contact/ 仅留档，不再参与构建）。
+// banner / photo 是 jpg，社交图标是 png，与 OSS 上的实际对象一一对应（已逐一探测 200）。
+const OSS = 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/contact'
+const contactBanner = `${OSS}/banner.jpg`
+const contactPhoto = `${OSS}/photo.png`
+
+export const contactImages = { banner: contactBanner, photo: contactPhoto }
+
+// 左列三张社交卡片。账号为明哥给的对外口径；
+// Facebook 暂无主页链接，先占位官网地址，有主页后替换 href 即可。
+export const contactSocial = [
+  {
+    key: 'instagram',
+    name: 'Ins',
+    account: 'wolfwalker_shop',
+    icon: `${OSS}/instagram.png`,
+    href: 'https://www.instagram.com/wolfwalker_shop',
+  },
+  {
+    key: 'facebook',
+    name: 'Facebook',
+    account: 'WolfWalker Outdoor Camping Gear',
+    icon: `${OSS}/facebook.png`,
+    href: 'https://www.facebook.com/',
+  },
+  {
+    key: 'whatsapp',
+    name: 'Whatsapp',
+    account: 'WolfWalker',
+    icon: `${OSS}/whatsapp.png`,
+    // 同电话：补国家码，海外点开能直达会话
+    href: 'https://wa.me/8616605655602',
+  },
 ]
 
 // 表单字段。name 就是 Formspree 后台看到的键名，改名等于换字段，别随手改。
 // required 的三个同时是校验对象的键；autocomplete 让浏览器能自动填。
 // type 走原生 input 类型，textarea 单独标 multiline。
+// 设计稿只保留三个字段：姓名 / 邮箱 / 需求描述。
+// company / phone 从 Formspree 表单里移除；要恢复时补回即可。
 export const contactFields = [
   { name: 'name', labelKey: 'name', type: 'text', autocomplete: 'name', required: true },
-  { name: 'company', labelKey: 'company', type: 'text', autocomplete: 'organization', required: false },
   { name: 'email', labelKey: 'email', type: 'email', autocomplete: 'email', required: true },
-  { name: 'phone', labelKey: 'phone', type: 'tel', autocomplete: 'tel', required: false },
-  { name: 'message', labelKey: 'message', multiline: true, rows: 5, required: true },
+  { name: 'message', labelKey: 'message', multiline: true, rows: 6, required: true },
 ]
 
 // 地图模块已整块移除：原 Google Maps embed 大陆无法加载，换高德 marker 页后
@@ -47,21 +68,21 @@ export const contactFields = [
 
 export const contactCopy = {
   zh: {
-    eyebrow: '联系 / WOLFWALKER',
-    hqEyebrow: 'WOLFWALKER 总部',
-    title: '一起开启下一段旅程',
-    lead: '告诉我们您的需求，国际销售团队通常会在一个工作日内回复。',
+    // Hero 大图文案（设计稿：左下白字两行）
+    heroTitle: '深耕户外装备',
+    heroSub: '支持定制代工，稳定交付，诚邀洽谈合作',
 
-    office: '总部及工厂',
-    address: '中国安徽省黄山市经济开发区芙蓉路13号一期2号厂房',
-    sales: '国际销售',
-    phone: '联系电话',
-    hoursLabel: '工作时间',
-    hours: '周一至周五 · 08:30–17:30（北京时间）',
+    // 左列大标题（\n 换行成「联系 / 我们」两行）与介绍段落
+    introTitle: '联系\n我们',
+    // 固定四行（\n + whitespace-pre-line），各断点行数稳定不漂移
+    introBody:
+      '专业户外帐篷、充气垫制造工厂，支持来图来样定制。\n提供快速打样、批量生产一站式服务。\n从原材料到成品出货层层质检，交期稳定、性价比高。\n贴牌代工、渠道拿货、项目定制均可洽谈，期待合作共赢。',
+
+    // 表单下方提示语（设计稿：按钮左侧小字）
+    notice: '温馨提示带 * 号为必填项，请填写完整姓名与邮箱地址，以便我们及时与您取得联系。',
 
     // 表单标签，键与 contactFields 的 labelKey 对应
     name: '姓名',
-    company: '公司名称',
     email: '邮箱地址',
     message: '请描述您的需求',
     send: '提交留言',
@@ -81,20 +102,16 @@ export const contactCopy = {
     inquiry: (product, quantity) => `商品：${product}\n数量：${quantity}`,
   },
   en: {
-    eyebrow: 'CONTACT / WOLFWALKER',
-    hqEyebrow: 'WOLFWALKER HQ',
-    title: 'Let’s build the next journey',
-    lead: 'Tell us what you need. Our international sales team usually replies within one business day.',
+    heroTitle: 'Focused on Outdoor Gear',
+    heroSub: 'OEM & ODM with stable delivery — your cooperation is welcome',
 
-    office: 'Head office & factory',
-    address: 'Building 2, Phase I, No. 13 Furong Road, Huangshan Economic Development Zone, Anhui, China',
-    sales: 'International sales',
-    phone: 'Phone',
-    hoursLabel: 'Business hours',
-    hours: 'Monday–Friday · 08:30–17:30 CST',
+    introTitle: 'Contact\nUs',
+    introBody:
+      'Professional manufacturer of outdoor tents and air mattresses.\nCustom production from your drawings or samples.\nOne-stop service, strict checks, stable lead times and fair pricing.\nOEM, channel supply and project customization are all welcome.',
+
+    notice: 'Fields marked with * are required. Please leave a complete name and email so we can reach you promptly.',
 
     name: 'Name',
-    company: 'Company',
     email: 'Email address',
     message: 'How can we help?',
     send: 'Send message',
@@ -116,13 +133,13 @@ export const contactCopy = {
   },
 }
 
-// 表单外观。方角、$mist 底、聚焦时 pine 描边 —— 换成原生表单后由这串 Tailwind
+// 表单外观。设计稿：白底 + 细灰描边、聚焦转深描边 —— 由这串 Tailwind
 // 接管原先 _element-plus.scss 里 .el-input__wrapper 的覆盖。
 // text-base 不能再小：iOS 上小于 16px，聚焦会自动放大整个页面。
 export const fieldClass =
-  'w-full border border-transparent bg-mist px-4 py-3 text-base leading-6 text-ink outline-none transition placeholder:text-black/30 focus:border-pine focus:bg-white'
+  'w-full border border-black/15 bg-white px-4 py-3 text-base leading-6 text-ink outline-none transition placeholder:text-black/30 focus:border-ink'
 export const labelClass =
-  'mb-2 block text-xs font-bold uppercase leading-4 tracking-[0.02em] text-black/45'
+  'mb-2 block text-sm font-bold leading-5 text-ink'
 
 // 邮箱和电话已按对外口径统一为 wolfwalkershop@163.com / 16605655602，
 // 与 footer.js、factory.js 一致；改的时候三处一起改。

@@ -33,12 +33,44 @@ app.directive('reveal', {
         // 动画结束后 opacity 交回样式表，reveal-hidden 留着元素就没了。
         el.classList.remove('reveal-hidden')
         el.classList.add('animate__animated', ...names)
+        // 播完把 animate.css 类摘掉：fill-mode: both 会把结束帧的 transform
+        // 一直锁在元素上，优先级高于普通 CSS transform，元素后续的 hover
+        // 缩放/位移（scale / translate）会全部失效（实测联系页 photo 中招）。
+        // animate.css 各入场动画结束帧都是「回正」，摘掉类不会闪。
+        el.addEventListener(
+          'animationend',
+          () => el.classList.remove('animate__animated', ...names),
+          { once: true },
+        )
       } else {
         el.classList.add('reveal-visible')
       }
       observer.disconnect()
     }, { threshold: 0.12 })
-    observer.observe(el)
+
+    // 首次加载看不到动画，坑都在「触发时机过早」：
+    //   1) mount 同帧 observer 就回调，动画在浏览器画出首帧前已跑完前段；
+    //   2) rAF 双层仍与刷新时的首帧 paint 存在竞态 —— 回调始终跑在 paint 前，
+    //      页面可见时动画已开播，CPU/网络快慢决定丢多少前段（表现为时有时无）；
+    //   3) img 是 OSS 外链，动画播完图才加载出来，等于白播。
+    // 解法：rAF 后再补 60ms 宏任务延迟，确保动画开始于页面完成首帧之后
+    // （60ms 肉眼无感，但足够躲开刷新白屏期）；img 没加载完（complete 为假）
+    // 则等 load/error 后再观察（破图也要 reveal，别把内容卡死在隐藏态）。
+    // 另给动画统一加 150ms 的 animation-delay，浏览器偶发的首帧抖动不再吃掉开头。
+    const startObserve = () => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          el.style.animationDelay = '0.15s'
+          observer.observe(el)
+        }, 60)
+      })
+    }
+    if (el.tagName === 'IMG' && !el.complete) {
+      el.addEventListener('load', startObserve, { once: true })
+      el.addEventListener('error', startObserve, { once: true })
+    } else {
+      startObserve()
+    }
   },
 })
 

@@ -1,4 +1,4 @@
-import { computed, ref, watch } from 'vue'
+﻿import { computed, ref, watch } from 'vue'
 
 const initialLocale = localStorage.getItem('wolfwalker-locale') || 'zh'
 const locale = ref(initialLocale)
@@ -20,7 +20,7 @@ const dictionary = {
     rights: 'All rights reserved.', privacy: 'Privacy', terms: 'Terms',
     productCount: 'products', catalogTitle: 'Equipment for life outside',
     catalogCopy: 'Explore our complete line of shelter, sleep and camp-living solutions.',
-    breadcrumbHome: 'Home', quantity: 'MOQ', leadTime: 'Lead time', customization: 'Customization',
+    breadcrumbHome: 'Home', quantity: 'MOQ', tierPrice: 'MOQ & Price', tierNotice: 'Note: Prices vary by specification and model and are for reference only. For a detailed quotation sheet, click Request Quote to contact us.', leadTime: 'Lead time', customization: 'Customization',
     moqValue: '50 pieces', leadValue: '25–35 days', customValue: 'Color / Logo / Package',
     aboutTitle: 'Made close to the mountains', aboutEyebrow: 'The WOLFWALKER story',
     aboutLead: 'We build outdoor gear with an industrial mind and an explorer’s instinct.',
@@ -48,7 +48,7 @@ const dictionary = {
     rights: '保留所有权利。', privacy: '隐私政策', terms: '使用条款',
     productCount: '件商品', catalogTitle: '自在户外，装备有度',
     catalogCopy: '探索完整的帐篷、睡眠与营地生活解决方案。',
-    breadcrumbHome: '首页', quantity: '起订量', leadTime: '交付周期', customization: '定制服务',
+    breadcrumbHome: '首页', quantity: '起订量', tierPrice: '起订量与价格', tierNotice: '温馨提示：产品规格型号不同，价格会有差异，本价格仅供参考，如需详细报价表格，点击“获取报价”跟我们联系。', leadTime: '交付周期', customization: '定制服务',
     moqValue: '50 件', leadValue: '25–35 天', customValue: '颜色 / Logo / 包装',
     aboutTitle: '生长于群山之间', aboutEyebrow: 'WOLFWALKER 品牌故事',
     aboutLead: '用工业思维制造装备，以探索本能理解户外。',

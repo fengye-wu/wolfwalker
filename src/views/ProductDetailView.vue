@@ -1,4 +1,4 @@
-<script setup>
+﻿<script setup>
 import { computed, ref, watch } from 'vue';
 import { useRoute } from 'vue-router';
 import UiLinkButton from '../components/UiLinkButton.vue';
@@ -113,7 +113,7 @@ const detailImages = computed(() => detailMeta.value.img);
         </p>
 
         <div
-          class="mt-8 grid grid-cols-3 border-y border-black/10 py-6 text-center"
+          class="mt-8 grid grid-cols-3 border-y border-black/10 py-4 text-center"
         >
           <div class="border-r border-black/10 px-2">
             <Truck class="mx-auto text-pine" :size="21" /><strong
@@ -126,8 +126,24 @@ const detailImages = computed(() => detailMeta.value.img);
           <div class="border-r border-black/10 px-2">
             <ShieldCheck class="mx-auto text-pine" :size="21" /><strong
               class="mt-2 block text-xs"
-              >{{ t.quantity }}</strong
-            ><span class="mt-1 block text-[11px] text-black/45">{{
+              >{{ t.tierPrice }}</strong
+            >
+            <!-- 档位价格三行展示（数据来自 products.js names 的 num/price），
+                 取代原先单一的起购量；无档位数据时回落到 moq 兜底 -->
+            <span
+              v-if="product.tiers"
+              class="flex flex-col mt-1 block text-[11px] leading-4 text-black/45"
+            >
+              <span
+                v-for="tier in product.tiers"
+                :key="tier.num"
+                class="flex w-full items-baseline justify-between gap-2 px-6"
+              >
+                <span>≥{{ tier.num }} {{ locale === 'zh' ? '件' : 'pcs' }}</span>
+                <span>{{ locale === 'zh' ? '¥' : '$' }}{{ tier.price.toFixed(2) }}</span>
+              </span>
+            </span>
+            <span v-else class="mt-1 block text-[11px] text-black/45">{{
               moq }} {{ locale === 'zh' ? '件' : 'pieces' }}</span>
           </div>
           <div class="px-2">
@@ -141,10 +157,7 @@ const detailImages = computed(() => detailMeta.value.img);
         </div>
 
         <div class="mt-9">
-          <label
-            class="mb-2 block text-xs font-bold uppercase tracking-[0.13em] text-black/45"
-            >{{ t.quantity }}</label
-          >
+            <p class="-mt-1 text-[11px] leading-5 text-black/45">{{ t.tierNotice }}</p>
           <div class="flex gap-3">
             <ElInputNumber v-model="quantity" :min="moq" :step="10" class="quantity-input" />
             <UiLinkButton

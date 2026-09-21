@@ -129,7 +129,7 @@ watch(locale, (value, previous) => {
     <section
       class="mx-auto grid gap-y-10 px-[6%] py-12 lg:grid-cols-[0.44fr_0.56fr] lg:gap-x-12 lg:gap-y-[5.5vw] lg:px-[13%]"
     >
-      <div v-reveal="'animate__bounceInLeft'">
+      <div v-reveal="'animate__fadeInUp'">
         <h2
           class="whitespace-pre-line font-display text-[clamp(44px,5vw,96px)] font-black leading-[1.08] text-ink"
         >
@@ -142,7 +142,7 @@ watch(locale, (value, previous) => {
 
       <div class="group overflow-hidden">
         <img
-          v-reveal="'animate__bounceInRight'"
+          v-reveal="'animate__fadeInUp'"
           :src="images.photo"
           alt="Wolfwalker 客服团队"
           loading="lazy"
@@ -153,7 +153,7 @@ watch(locale, (value, previous) => {
       <!-- 社交卡：图标 + 名称 + 账号 -->
       <div v-reveal class="flex flex-col gap-4">
         <a
-          v-reveal="'animate__bounceInLeft'"
+          v-reveal="'animate__fadeInUp'"
           v-for="social in contactSocial"
           :key="social.key"
           :href="social.href"
@@ -184,7 +184,7 @@ watch(locale, (value, previous) => {
              不一致，所以关掉气泡，改用下面的 errors 出中英文提示；required
              保留，屏幕阅读器仍能读到「必填」。 -->
       <form
-        v-reveal="'animate__bounceInRight'"
+        v-reveal="'animate__fadeInUp'"
         ref="formRef"
         :action="formEndpoint"
         method="POST"

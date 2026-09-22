@@ -6,6 +6,7 @@
 // 展开是 min(设计px, 对应vw)，1920 及以上锁定设计值，往下按比例缩，
 // 手机端再单独覆盖（见样式末尾的 mobile 块）。
 import { computed } from 'vue';
+import { useRouter } from 'vue-router';
 import { useLocale } from '../composables/useLocale';
 import {
   contactRows,
@@ -17,6 +18,11 @@ import {
 } from '../data/factory';
 
 const { locale } = useLocale();
+const router = useRouter();
+
+// 联系方式区整块可点：点击区域任意内容跳转联系我们页。
+// 行内的 tel/mailto 链接保留原有行为，@click.stop 阻止冒泡避免二次跳转。
+const goContact = () => router.push('/contact');
 
 const copy = computed(() => factoryCopy[locale.value] ?? factoryCopy.zh);
 
@@ -141,8 +147,8 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
       </div>
     </section>
 
-    <!-- 联系方式 -->
-    <section class="factory-contact">
+    <!-- 联系方式：整区可点跳转联系我们页 -->
+    <section class="factory-contact" @click="goContact">
       <div class="factory-contact__inner">
         <h2 v-reveal class="factory-contact__title">{{ copy.ctaTitle }}</h2>
         <ul
@@ -151,7 +157,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
           :aria-label="copy.contactLabel"
         >
           <li v-for="row in contactRows" :key="row.text">
-            <a :href="row.href">
+            <a :href="row.href" @click.stop>
               <i
                 class="factory-contact__icon"
                 :class="`is-${row.icon}`"
@@ -677,9 +683,11 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
 }
 
 // 联系方式。左边大标题，右边三行「图标 + 右对齐文字 + 下划线」。
+// 整区可点跳转联系页（脚本 goContact），给手型光标提示可点。
 .factory-contact {
   position: relative;
   z-index: 1;
+  cursor: pointer;
   // 灰底底 3367.8 到标题顶 3600
   padding: d(232) 0 d(245);
 

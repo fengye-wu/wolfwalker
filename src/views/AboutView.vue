@@ -339,11 +339,10 @@ onBeforeUnmount(() => {
         controls
         playsinline
         preload="metadata"
-        poster="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=2000&q=90"
         class="about-video__media"
       >
         <source
-          src="https://videos.pexels.com/video-files/3130284/3130284-hd_1920_1080_30fps.mp4"
+          src="https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/about/video.mp4"
           type="video/mp4"
         />
       </video>
@@ -362,16 +361,19 @@ onBeforeUnmount(() => {
           aria-hidden="true"
           class="about-outdoor__bg"
         />
-        <div
+        <!-- 点击左图跳转对应分类的产品列表页，与公共底部链接同款效果 -->
+        <RouterLink
           v-reveal="'animate__fadeInLeft'"
+          :to="`/product?category=${activeCatKey}#product-list`"
           class="about-outdoor__photoFrame"
+          :aria-label="activeCat[locale]"
         >
           <img
             :src="activeCat.image"
             :alt="activeCat[locale]"
             class="about-outdoor__photo"
           />
-        </div>
+        </RouterLink>
         <nav
           class="about-outdoor__pills"
           :aria-label="t.products"

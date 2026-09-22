@@ -253,14 +253,17 @@ const rows = computed(() =>
 
 // ---------- 定制优势 ----------
 // 设计稿这一块 y230..940，压在首屏图上（图到 y483），所以顶部留白按 230 给。
+// 整区缩至 75%（对照新设计稿）：zoom 连同 padding 一起缩，与 hero 图的压叠、
+// 下方流程区的位置随之等比上移；手机端是另排的布局，在末尾 mobile 块恢复 1。
 .custom-adv {
   position: relative;
   z-index: 1;
+  zoom: 0.75;
   padding-top: d(230);
 }
 
 .custom-adv__inner {
-  @include shell-width($shell-custom, 64px);
+  @include shell-width($shell-custom, 364px);
 
   display: flex;
   // 左标题块 + 右椭圆组，两者宽度和比 shell 多 9px（设计稿本身就压着），
@@ -443,15 +446,18 @@ $bob-lift: d(22);
 
 // ---------- 定制流程 ----------
 // 区块 y1094..5204。标题行盒顶 1092.6，上一块（定制优势）底 939，差 152.6。
+// 与 custom-adv 同步缩至 75%（对照新设计稿，图片/文字/间距一起等比缩小），
+// 手机端是独立重排布局，在末尾 mobile 块恢复 1。
 .custom-flow {
   position: relative;
   z-index: 1;
+  zoom: 0.75;
   padding-top: d(152.6);
   padding-bottom: d(159);
 }
 
 .custom-flow__inner {
-  @include shell-width($shell-custom, 64px);
+  @include shell-width($shell-custom, 364px);
 
   margin: 0 auto;
 }
@@ -568,19 +574,18 @@ $bob-lift: d(22);
   line-height: 1.3333;
 }
 
-// 图片：前两张 568 宽、最后一张 496 宽，都是 328 高，所以底边齐平。
-// 568 比栏宽 539 宽，多出来的部分吃进栏间距里 —— 设计稿就是这么排的。
-//
-// 对齐规则：宽的那两张贴「流程起点」那一侧，窄的那张贴「流程终点」。
-// 正序排终点在右，倒序排终点在左，所以下面 --reverse 里两条对调。
+// 图片：与上方正文同宽 —— 正文占满栅格栏，图也拉满同一栏。
+// （原设计稿 568/496 固定宽在 75% 缩放后比文字栏窄/不齐，改为随栏自适应。）
+// 切图有两种比例（9 张 568×328、3 张 496×328），等比缩会有的高有的矮 ——
+// 统一锁 568:328 的宽高比 + cover 裁齐，12 张图完全同尺寸（496 那三张上下
+// 各裁约 7%，主体都居中，无伤）。
+// 对齐类 --narrow 保留：只管 justify-self 的起点/终点侧，宽度已统一拉满。
 .custom-flow__shot {
   grid-row: 3;
-  justify-self: start;
-  // _base.scss 里 img 有一条 max-width: 100%，会把图夹回栏宽（1440 下 411 而不是 426），
-  // d(568) 就失效了。这里必须解开，溢出栏间距是设计稿本来的排法。
-  max-width: none;
-  width: d(568);
-  height: auto;
+  justify-self: stretch;
+  width: 100%;
+  aspect-ratio: 568 / 328;
+  object-fit: cover;
   // 设计稿原值 8.5：正文排满 4 行时墨迹底距图顶只剩十来个像素，视觉太贴。
   // 正文槽位改为内容自适应后（见 .custom-flow__text），这里取 40 ——
   // 间隙由行盒底统一保证，不再受行数影响。
@@ -593,7 +598,6 @@ $bob-lift: d(22);
 
 .custom-flow__shot--narrow {
   justify-self: end;
-  width: d(496);
 }
 
 .custom-flow__row--reverse {
@@ -848,6 +852,12 @@ $bob-lift: d(22);
 // ---------- 手机 ----------
 // 必须写在 tablet-down 之后：两者权重相同，靠先后决胜。
 @include mobile {
+  // 手机端布局是独立重排的（固定 px 字号、纵向椭圆），不吃桌面的 75% 缩放
+  .custom-adv,
+  .custom-flow {
+    zoom: 1;
+  }
+
   // 三个椭圆并排到 390 只剩 122px 宽，白字塞不进去，改成纵向一个一个来。
   // 压边的负 margin 也要一起清掉，否则会互相盖住。
   .custom-adv__list {

@@ -61,14 +61,19 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
       loading="lazy"
     />
 
-    <!-- 首屏大图：设计稿 1920×1044，与首页 hero 同比例 -->
+    <!-- 首屏大视频：占位与原 hero 图一致（设计稿 1920×1044，与首页 hero 同比例）。 -->
     <section class="factory-hero">
-      <img
-        :src="factoryImages.hero"
-        :alt="copy.heroAlt"
-        decoding="async"
-        fetchpriority="high"
-      />
+      <video
+        controls
+        playsinline
+        preload="metadata"
+        class="about-video__media"
+      >
+        <source
+          src="https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/about/video.mp4"
+          type="video/mp4"
+        />
+      </video>
     </section>
 
     <!-- 十一年，只为一件事：左标题右正文 -->
@@ -231,10 +236,11 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
   overflow: hidden;
   background: $card-placeholder;
 
-  img {
+  video {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    display: block;
   }
 }
 

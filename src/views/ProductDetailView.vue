@@ -140,7 +140,7 @@ const detailImages = computed(() => detailMeta.value.img);
                 class="flex w-full items-baseline justify-between gap-2 px-6"
               >
                 <span>≥{{ tier.num }} {{ locale === 'zh' ? '件' : 'pcs' }}</span>
-                <span>{{ locale === 'zh' ? '¥' : '$' }}{{ tier.price.toFixed(2) }}</span>
+                <span>${{ tier.price.toFixed(2) }}</span>
               </span>
             </span>
             <span v-else class="mt-1 block text-[11px] text-black/45">{{

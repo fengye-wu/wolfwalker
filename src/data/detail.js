@@ -69,7 +69,7 @@ const DETAIL_META = {
   },
   tableAndchair: {
     video: null,
-    counts: [9, 9, 9, 9, 9, 9, 9, 9, 9],
+    counts: [10, 9, 12, 10, 10, 9, 10, 7, 8],
   },
   accessories: {
     video: null,
@@ -87,7 +87,7 @@ const DETAIL_META = {
       null,
       null,
     ],
-    counts: [9, 9, 9, 9, 9, 9, 9, 9, 9],
+    counts: [9, 8, 8, 5, 10, 11, 9, 7, 8],
   },
 };
 

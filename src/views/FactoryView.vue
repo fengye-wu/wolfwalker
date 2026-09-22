@@ -139,12 +139,14 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
               v-reveal="'animate__fadeInUp'"
               :class="`is-${cell.tone}`"
             >
-              <i
+              <img
                 class="factory-card__icon"
                 :class="`is-${cell.icon}`"
-                :style="maskVar(cell.icon)"
+                :src="factoryIcons[cell.icon]"
+                alt=""
                 aria-hidden="true"
-              ></i>
+                loading="lazy"
+              />
               <strong>{{ cell.value }}</strong>
               <span>{{ cell.label }}</span>
             </li>
@@ -665,14 +667,10 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
   }
 }
 
-// 品类图标。设计稿里同一个图形在深浅两种格子上是白线 / 棕线两种颜色，
-// 所以切图存成只有 alpha 的蒙版，颜色由 background-color 给，一份文件两处用。
+// 品类图标。改为直接 <img> 引用 OSS 图标文件（icon-tent.png / icon-pad.png，
+// 白色线稿 + alpha），贴在每格右上角（align-self: flex-end，flex 首子项在顶）。
 .factory-card__icon {
   align-self: flex-end;
-  mask-image: var(--icon);
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
-  background-color: currentcolor;
   // 跟着格子的 hover 一起放大（规则在 .factory-card__grid 里）。
   // 时长与格子一致，两个动作同时收尾。
   transition: scale 320ms $ease-rise;

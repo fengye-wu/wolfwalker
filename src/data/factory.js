@@ -15,8 +15,10 @@ const heroImage = `${OSS}/hero.jpg`;
 const mailIcon = `${OSS}/icon-mail.png`;
 const mobileIcon = `${OSS}/icon-mobile.png`;
 const padIcon = `${OSS}/icon-pad.png`;
+const padIcon1 = `${OSS}/icon-pad1.png`;
 const telIcon = `${OSS}/icon-tel.png`;
 const tentIcon = `${OSS}/icon-tent.png`;
+const tentIcon1 = `${OSS}/icon-tent1.png`;
 const patentsIcon = `${OSS}/patents.png`;
 const tentFactory = `${OSS}/tent-factory.jpg`;
 const workersIcon = `${OSS}/workers.png`;
@@ -36,6 +38,8 @@ const statIcons = [workersIcon, equipmentIcon, patentsIcon, engineersIcon];
 // （浅底棕线 / 棕底白线），所以存成「只有 alpha 有意义」的蒙版，
 // 由 CSS 的 mask-image + background-color 上色，一份文件两处复用。
 export const factoryIcons = {
+   tent1: tentIcon1,
+  pad1: padIcon1,
   tent: tentIcon,
   pad: padIcon,
   tel: telIcon,
@@ -86,12 +90,12 @@ export const factoryCopy = {
         // tone 为 dark 的格子是棕底浅字，light 是浅底棕字。
         cells: [
           { value: '25+', label: '专业生产设备', tone: 'dark', icon: 'tent' },
-          { value: '50+', label: '帐篷产品品类', tone: 'light', icon: 'tent' },
+          { value: '50+', label: '帐篷产品品类', tone: 'light', icon: 'tent1' },
           {
             value: '30+',
             label: '独立的帐篷类产品专利',
             tone: 'light',
-            icon: 'tent',
+            icon: 'tent1',
           },
           { value: '60+', label: '普通工人人数', tone: 'dark', icon: 'tent' },
         ],
@@ -103,12 +107,12 @@ export const factoryCopy = {
           // 设计稿中文版这格写的是「帐篷产品品类」，但这是气垫工厂那张卡，
           // 英文版同一格是 PAD CATEGORIES —— 中文版是复制上一张卡时漏改的。
           // 这里按英文版和上下文改成「气垫产品品类」，已同步告知明哥。
-          { value: '50+', label: '气垫产品品类', tone: 'light', icon: 'pad' },
+          { value: '50+', label: '气垫产品品类', tone: 'light', icon: 'pad1' },
           {
             value: '20+',
             label: '独立的气垫类产品专利',
             tone: 'light',
-            icon: 'pad',
+            icon: 'pad1',
           },
           { value: '90+', label: '普通工人人数', tone: 'dark', icon: 'pad' },
         ],

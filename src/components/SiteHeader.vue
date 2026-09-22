@@ -126,11 +126,12 @@ watch(
     color 260ms ease,
     box-shadow 260ms ease;
 
-  // 手机端（≤1023，固定条形态）改深色底：logo 是白色字标，
-  // 白底上「WOLF WALKER」完全看不见 —— 深底白字 + 文字图标反白。
+  // 手机端（≤1023，固定条形态）白底深字。logo 图本身是深红棕字标
+  // （实测不透明像素 RGB 均值 92/35/41），白底上清晰；文字/图标同步翻成
+  // 深色，否则白底白字全隐形。
   @include tablet-down {
-    color: $white;
-    background: $ink;
+    color: $ink;
+    background: #fff;
   }
 }
 
@@ -255,10 +256,10 @@ watch(
     gap: 16px;
     // 手机端头部是固定条形态，没有底对齐的大 logo 语境，
     // 恢复垂直居中，不被桌面端的新规则带偏；
-    // 深色底上原来的深灰分隔线不可见，换成浅色。
+    // 白底上用与桌面端一致的深灰分隔线。
     align-items: center;
     padding-bottom: 0;
-    border-bottom-color: rgba($white, 0.16);
+    border-bottom-color: rgba(39, 38, 45, 0.13);
   }
 }
 

@@ -337,6 +337,7 @@ onBeforeUnmount(() => {
     <section class="about-video"  v-reveal="'animate__fadeIn'">
       <video
         controls
+        loop
         playsinline
         preload="metadata"
         class="about-video__media"

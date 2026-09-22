@@ -5,6 +5,8 @@ import ProductView from '../views/ProductView.vue'
 import ProductDetailView from '../views/ProductDetailView.vue'
 import AboutView from '../views/AboutView.vue'
 import FactoryView from '../views/FactoryView.vue'
+import FactoryTentView from '../views/FactoryTentView.vue'
+import FactoryAirpadView from '../views/FactoryAirpadView.vue'
 import CustomView from '../views/CustomView.vue'
 import ContactView from '../views/ContactView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
@@ -50,6 +52,9 @@ const router = createRouter({
     { path: '/product/:category(tent|airpad|foampad|NeckPillow|sofa|tableAndchair|accessories)/:id', name: 'product-detail', component: ProductDetailView, meta: { headerDark: true } },
     { path: '/AboutUs', name: 'about', component: AboutView, meta: { headerOverlay: true } },
     { path: '/factory', name: 'factory', component: FactoryView, meta: { headerOverlay: true } },
+    // 帐篷工厂介绍页：工厂介绍页第一张卡「查看」的落地页
+    { path: '/factoryTent', name: 'factory-tent', component: FactoryTentView, meta: { headerOverlay: true } },
+    { path: '/factoryAirpad', name: 'factory-airpad', component: FactoryAirpadView, meta: { headerOverlay: true } },
     { path: '/custom', name: 'custom', component: CustomView, meta: { headerOverlay: true } },
     { path: '/contact', name: 'contact', component: ContactView, meta: { headerOverlay: true } },
     { path: '/:pathMatch(.*)*', name: 'not-found', component: NotFoundView, meta: { headerDark: true } },

@@ -65,6 +65,7 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
     <section class="factory-hero">
       <video
         controls
+        loop
         playsinline
         preload="metadata"
         class="about-video__media"

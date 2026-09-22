@@ -67,6 +67,7 @@ const detailImages = computed(() => detailMeta.value.img);
           :src="detailMeta.video"
           :poster="product.image"
           controls
+          loop
           playsinline
           preload="metadata"
           class="w-full bg-black"

@@ -256,14 +256,14 @@ const rows = computed(() =>
 // 宽度按设计稿比例定：截图里标题 : 照片 ≈ 450 : 378；按需求两图再放大、
 // 中缝收到只剩 ~12px，等比放到 840 / 704。
 .custom-adv__ad {
-  width: d(940);
+  width: d(810);
   height: auto;
 }
 
 // 右：照片组合图（674×684，三张照片、压角圆角与白色大字都已烘焙）。
 .custom-adv__ad--photos {
   flex: 0 0 auto;
-  width: d(940);
+  width: d(810);
 }
 
 // ---------- 定制流程 ----------

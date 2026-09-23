@@ -473,7 +473,6 @@ const rows = computed(() =>
   width: 93.63%;
   margin: d(66) auto 0;
   font-size: d(33.33);
-  font-weight: 700;
   line-height: 1.375;
   text-align: center;
 

@@ -13,13 +13,12 @@ const { locale } = useLocale();
 
 const copy = computed(() => customCopy[locale.value] ?? customCopy.zh);
 
-// 三个定制优势：文案来自 copy，椭圆图是固定的三张，按下标配对。
-const advantages = computed(() =>
-  copy.value.advantages.map((item, index) => ({
-    ...item,
-    image: customImages.advantages[index]
-  }))
-);
+// 定制优势区改为左右两张成品切图（标题块 / 照片组合，文案都已烘焙在图里），
+// 不再用实时标题与三个椭圆。
+const adImages = {
+  left: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/ad-left.png',
+  right: 'https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/custom/ad-right.png',
+};
 
 // 12 步切成 4 排，每排 3 步。reverse 的那两排要从右往左走 ——
 // 设计稿是回形（蛇形）走位，不是每排都从左开始。
@@ -68,42 +67,22 @@ const rows = computed(() =>
       />
     </div>
 
-    <!-- 定制优势：左边标题块，右边三个互相压边的椭圆 -->
+    <!-- 定制优势：左右两张成品切图（左标题块 / 右照片组合，文案已烘焙在图里） -->
     <section class="custom-adv">
       <div class="custom-adv__inner">
-        <div class="custom-adv__head">
-          <h1 v-reveal="'animate__bounceInLeft'" class="custom-adv__title">
-            <span v-for="line in copy.title" :key="line">{{ line }}</span>
-          </h1>
-          <p v-reveal="'animate__bounceInLeft'" class="custom-adv__subtitle">
-            <span v-for="line in copy.subtitle" :key="line">{{ line }}</span>
-          </p>
-          <img
-            v-reveal="'animate__bounceInLeft'"
-            class="custom-adv__dash"
-            :src="customImages.dashBar"
-            alt=""
-            aria-hidden="true"
-            loading="lazy"
-          />
-        </div>
-
-        <ul class="custom-adv__list" v-reveal="'animate__bounceInRight'">
-          <li
-            v-for="(item, index) in advantages"
-            :key="item.label"
-            class="custom-adv__item"
-            :style="{ '--reveal-delay': `${index * 90}ms` }"
-          >
-            <div class="custom-adv__figure">
-              <img :src="item.image" alt="" aria-hidden="true" loading="lazy" />
-              <span class="custom-adv__label">{{ item.label }}</span>
-            </div>
-            <p class="custom-adv__name">
-              <span v-for="line in item.nameLines" :key="line">{{ line }}</span>
-            </p>
-          </li>
-        </ul>
+        <img
+          v-reveal="'animate__bounceInLeft'"
+          class="custom-adv__ad"
+          :src="adImages.left"
+          alt="产品定制优势 Product Customization Advantages"
+        />
+        <img
+          v-reveal="'animate__bounceInRight'"
+          class="custom-adv__ad custom-adv__ad--photos"
+          :src="adImages.right"
+          alt="多台专业设备可控成本，11年专业定制源头工厂，精湛工艺技术严格品控"
+          loading="lazy"
+        />
       </div>
     </section>
 
@@ -266,182 +245,25 @@ const rows = computed(() =>
   @include shell-width($shell-custom, 364px);
 
   display: flex;
-  // 左标题块 + 右椭圆组，两者宽度和比 shell 多 9px（设计稿本身就压着），
-  // 椭圆左侧 30px 是羽化透明区，压这一点看不出来。
-  align-items: flex-start;
+  // 左标题块图 + 右照片组合图，垂直居中对齐，两端撑开
+  align-items: center;
   justify-content: space-between;
+  gap: d(60);
   margin: 0 auto;
 }
 
-// 标题块顶到区块顶 = 336.6 - 230 = 106.6。
-// 336.6 是标题「行盒」顶：设计稿给的 354 是墨迹顶，
-// 两行墨迹共 236、行高 135.4，反推出半行距 17.4，354 - 17.4 = 336.6。
-// 宽度锁在设计稿的 684（副题那一行 Product Customization 就要这么宽）。
-// 给 flex: 1 1 auto 只能分到 675，副题会被挤成三行、把短横往下顶 83px。
-//
-// 684 + 1132 比 shell 多 9px —— 设计稿里这两块本来就压着（标题块右沿 771 > 椭圆左沿 753）。
-// 用负边距把这 9px 让出来，压的是椭圆左边那段羽化透明区，看不出来；
-// 改成缩椭圆的话它会矮 5px，整个流程区跟着上移。
-.custom-adv__head {
-  flex: 0 0 d(684);
-  min-width: 0;
-  margin-right: d(-9);
-  padding-top: d(106.6);
-}
-
-.custom-adv__title {
-  margin: 0;
-  color: $custom-blue;
-  font-family: $font-serif;
-  font-size: d(104.17);
-  font-weight: 900;
-  line-height: 1.3;
-
-  span {
-    display: block;
-  }
-}
-
-// 中文稿里这两行本身就是英文副题。行盒顶 612.15，与标题行盒底 607.4 相差 4.75。
-.custom-adv__subtitle {
-  margin: d(4.75) 0 0;
-  color: $custom-body;
-  font-size: d(60.42);
-  font-weight: 700;
-  line-height: 1.3793;
-
-  span {
-    display: block;
-  }
-}
-
-// 六段短横，设计稿 349×35，纯色 #254E94。副题行盒底 778.85 → 短横顶 822。
-.custom-adv__dash {
-  display: block;
-  width: d(349);
+// 左：标题块成品图（781×265，中文标题 / 英文副题 / 六枚圆点都已烘焙）。
+// 宽度按设计稿比例定：截图里标题 : 照片 ≈ 450 : 378；按需求两图再放大、
+// 中缝收到只剩 ~12px，等比放到 840 / 704。
+.custom-adv__ad {
+  width: d(940);
   height: auto;
-  margin-top: d(43.15);
 }
 
-// 三个椭圆。设计稿 x753 / 1118 / 1470，各 415 宽 —— 间距 365 / 352 小于宽度，
-// 是刻意互相压边的，所以用负 margin。整组 1132 宽（753..1885）。
-// 宽度和负边距都写成组宽的百分比，缩放时压边量才跟着等比变：
-// 36.6608 × 3 - 4.4170 - 5.5654 = 100%，正好填满。
-// 设计稿 1132 宽（753..1885），锁死不参与 flex 收缩，椭圆才保得住 415×645。
-.custom-adv__list {
-  display: flex;
-  flex: 0 0 d(1132);
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.custom-adv__item {
-  // 提 z-index 用的定位上下文。没给偏移量，不影响排版。
-  position: relative;
+// 右：照片组合图（674×684，三张照片、压角圆角与白色大字都已烘焙）。
+.custom-adv__ad--photos {
   flex: 0 0 auto;
-  width: 36.6608%;
-  // 入场做一点错开，靠 CSS 补延迟 —— v-reveal 指令本身不读这个变量
-  transition-delay: var(--reveal-delay, 0ms);
-  // 摆动的第一步朝哪走。CSS 里上为负，所以「先上」是 -1。
-  --bob-dir: -1;
-
-  & + & {
-    margin-left: -4.417%;
-  }
-
-  &:nth-child(3) {
-    margin-left: -5.5654%;
-  }
-
-  // 中间那个反过来，先往下。
-  &:nth-child(2) {
-    --bob-dir: 1;
-  }
-}
-
-// 鼠标移入的上下摆动：第 1、3 个上→下→上→回原位，第 2 个下→上→下→回原位。
-// 走 keyframes 而不是 transition —— 一次 hover 要经过四个落点，transition 只能到一个终点。
-// 和 v-reveal 不冲突：入场动效挂在外层 ul 上，这里动的是 li 自己的 transform。
-//
-// 幅度写成自定义属性、靠 --bob-dir 的正负决定方向，两个反向就共用一组关键帧。
-// 后两步依次收到 55% 和 28%，摆动自己衰减下去，不需要在收尾处硬停。
-// 负数不能过 d()：min(-12px, -4.8vw) 在窄屏取的是更小的那个，幅度会越缩越大，
-// 所以只有正的 $bob-lift 过 d()，负号留在 calc 里乘。
-$bob-lift: d(22);
-
-@keyframes adv-bob {
-  0% {
-    transform: translateY(0);
-  }
-
-  25% {
-    transform: translateY(calc(var(--bob-dir) * #{$bob-lift}));
-  }
-
-  50% {
-    transform: translateY(calc(var(--bob-dir) * #{$bob-lift} * -0.55));
-  }
-
-  75% {
-    transform: translateY(calc(var(--bob-dir) * #{$bob-lift} * 0.28));
-  }
-
-  100% {
-    transform: translateY(0);
-  }
-}
-
-// 三个椭圆是压边排的，抬起来那一下得盖住邻居，否则会被后一个的图切掉一角。
-// 只在 hover 期间提，移出即还原 —— 动画本身不带 fill-mode，停了就在原位。
-.custom-adv__item:hover {
-  z-index: 2;
-  animation: adv-bob 760ms ease-in-out;
-}
-
-// 椭圆图。设计稿 415×645，四角 alpha=0，边缘约 30px 羽化。
-.custom-adv__figure {
-  position: relative;
-
-  img {
-    display: block;
-    width: 100%;
-    height: auto;
-  }
-}
-
-// 压在椭圆上的白色大字。设计稿里是位图，这里改成实时文字，
-// 字号按切图墨迹高度（42~45）反推 ≈46px。
-// 竖向落点 46.5%：墨迹中线 y530，椭圆 230..875，(530-230)/645 = 46.5%。
-.custom-adv__label {
-  position: absolute;
-  top: 46.5%;
-  left: 50%;
-  width: 86%;
-  color: $white;
-  font-size: d(46);
-  font-weight: 700;
-  line-height: 1.15;
-  text-align: center;
-  transform: translate(-50%, -50%);
-}
-
-// 椭圆下面那两行蓝字。设计稿 T863，椭圆盒底是 875，所以往上压 12px；
-// 那一段椭圆已经淡到几乎透明，压上去看不出来。
-// 给固定高度，英文版只有一行时不会把整组高度顶掉。
-.custom-adv__name {
-  min-height: d(76);
-  margin: d(-12) 0 0;
-  color: $custom-blue;
-  font-size: d(28.5);
-  font-weight: 700;
-  line-height: 1;
-  text-align: center;
-
-  span {
-    display: block;
-    margin-bottom: d(12);
-  }
+  width: d(940);
 }
 
 // ---------- 定制流程 ----------
@@ -645,20 +467,6 @@ $bob-lift: d(22);
 .custom-flow__row--reverse .custom-flow__turn {
   grid-column: 1;
 }
-
-// 英文版这两行另设字号。设计稿只有中文一版，字号是按中文四到六个字定的：
-// Customization 这一个词在 104.17px 下就要 700px，超过 684 的标题栏宽，
-// 而它中间没有可断处，只能溢出（不是换行）。副题同理，两行各三十来个字符。
-// 缩到 76 / 42 后各自按我写的断行落位，标题+副题共 412，和中文版的 438 差不多，
-// 短横仍落在原来那条线附近，整块高度不变。
-:root:lang(en) .custom-adv__title {
-  font-size: d(76);
-}
-
-:root:lang(en) .custom-adv__subtitle {
-  font-size: d(42);
-}
-
 // 页尾温馨告知。设计稿 W1692（shell 的 93.63%）、33.33px / 1.375、居中。
 // 「温馨告知」在设计稿里是独占一行的，所以 strong 提成块级。
 .custom-note {
@@ -692,39 +500,9 @@ $bob-lift: d(22);
     @include shell-width($shell-custom, 64px);
   }
 
-  // 标题块与椭圆组从并排改成上下：并排时标题栏只剩 251px，
-  // 而「产品定制优势」在该字号下就要 250px，等于卡死在边界上。
+  // 两张成品图按 d() 的 vw 比例自动缩，窄屏下并排仍放得下，只收栏宽
   .custom-adv__inner {
-    display: block;
-  }
-
-  .custom-adv__title {
-    font-size: clamp(30px, 5.42vw, 60px);
-  }
-
-  .custom-adv__subtitle {
-    margin-top: 1.2vw;
-    font-size: clamp(19px, 3.15vw, 36px);
-  }
-
-  .custom-adv__dash {
-    width: 42%;
-    margin-top: 3vw;
-  }
-
-  .custom-adv__list {
-    width: 100%;
-    margin-top: 6vw;
-  }
-
-  .custom-adv__label {
-    font-size: clamp(15px, 2.4vw, 34px);
-  }
-
-  .custom-adv__name {
-    min-height: 0;
-    margin-top: 1vw;
-    font-size: clamp(13px, 1.95vw, 28px);
+    @include shell-width($shell-custom, 64px);
   }
 
   .custom-flow {
@@ -867,44 +645,17 @@ $bob-lift: d(22);
 @include mobile {
   // （zoom 与栏宽的恢复已上移到 tablet-down 块，手机/平板一起生效。）
 
-  // 三个椭圆并排到 390 只剩 122px 宽，白字塞不进去，改成纵向一个一个来。
-  // 压边的负 margin 也要一起清掉，否则会互相盖住。
-  .custom-adv__list {
+  // 两张成品图在手机上改上下堆叠、各自满宽，比并排缩成小图好读
+  .custom-adv__inner {
     display: block;
-    margin-top: 8vw;
   }
 
-  .custom-adv__item {
-    width: 66%;
-    margin-left: auto !important;
-    margin-right: auto;
-
-    & + & {
-      margin-top: 6vw;
-    }
+  .custom-adv__ad {
+    width: 100%;
   }
 
-  .custom-adv__label {
-    font-size: 19px;
-  }
-
-  .custom-adv__name {
-    margin-top: 2vw;
-    font-size: 15px;
-  }
-
-  .custom-adv__title {
-    font-size: 30px;
-  }
-
-  .custom-adv__subtitle {
-    margin-top: 8px;
-    font-size: 17px;
-  }
-
-  .custom-adv__dash {
-    width: 52%;
-    margin-top: 16px;
+  .custom-adv__ad--photos {
+    margin-top: 6vw;
   }
 
   .custom-flow {

@@ -45,6 +45,15 @@ const activeCat = computed(
   () => outdoorCats.find((c) => c.key === activeCatKey.value) ?? outdoorCats[0]
 );
 
+// 手机端左图是竖框，cover 裁切时横向锚点按分类定：
+// 多数分类的主体偏左（左锚），户外软座偏右（右锚），绵护睡垫居中不动（无类）。
+// 只在平板/手机断点的样式里生效，PC 端横框用不到这些类。
+const photoAnchor = computed(() => {
+  if (activeCatKey.value === 'airsofa') return 'is-anchor-right';
+  if (activeCatKey.value === 'foampad') return '';
+  return 'is-anchor-left';
+});
+
 const worldMapEl = ref(null);
 let worldMapChart;
 let worldMapResizeObserver;
@@ -373,6 +382,7 @@ onBeforeUnmount(() => {
             :src="activeCat.image"
             :alt="activeCat[locale]"
             class="about-outdoor__photo"
+            :class="photoAnchor"
           />
         </RouterLink>
         <nav
@@ -1219,6 +1229,22 @@ onBeforeUnmount(() => {
       height: 100%;
       object-fit: cover;
       object-position: center bottom;
+
+      // 素材切图自带烘焙的白底圆角（四角约 20-27px 白边，PC 横框 cover
+      // 正好裁掉；手机竖框上下全幅可见，白角就露出来了——与锚点无关）。
+      // CSS 擦不掉图内白角，整图从中心放大 12% 把四角白边挤出框外：
+      // 横向溢出约 15px、纵向约 13px，均大于白角在屏幕上的尺寸（约 8-11px）。
+      transform: scale(1.12);
+
+      // 竖框裁切的横向锚点按分类走（脚本 photoAnchor 下发类）：
+      // 主体偏左的五类锚左、户外软座锚右，绵护睡垫保持居中。
+      &.is-anchor-left {
+        object-position: left bottom;
+      }
+
+      &.is-anchor-right {
+        object-position: right bottom;
+      }
     }
 
     &__pills {

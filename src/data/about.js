@@ -65,11 +65,11 @@ export const channelLogos = [
 
 // Hero 玻璃卡内容是设计稿固定的图形与文字（书法字为位图、副题本就是英文、
 // 创立信息中英两行并排展示），不参与双语切换 —— zh/en 都渲染同一份。
+// CTA 文案原也固定为「探索产品」，现按需求随语言切换，移到 aboutCopy.heroCta。
 export const heroFixedContent = {
   sub: 'Free Yourself, Travel Without Borders',
   founded: '创立于2015 · 十年户外品牌',
   foundedEn: 'Founded in 2015 & A Decade of Outdoor Excellence',
-  cta: '探索产品',
 }
 
 // 分类胶囊图标映射（key 与 products.js 的 categories 一致）
@@ -108,6 +108,8 @@ export const aboutCopy = {
   zh: {
     heroTags: ['large area', 'support', 'sunscreen', 'major'],
 
+    heroCta: '探索产品',
+
     decadeTitle: '十年品牌 专注户外出行体验',
     decadeLines: [
       '狼行者创立于2015年，至今已走过十年历程，',
@@ -132,6 +134,8 @@ export const aboutCopy = {
 
   en: {
     heroTags: ['large area', 'support', 'sunscreen', 'major'],
+
+    heroCta: 'Explore Products',
 
     decadeTitle: 'A Decade of Dedication to the Outdoors',
     decadeLines: [

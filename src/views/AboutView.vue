@@ -300,7 +300,7 @@ onBeforeUnmount(() => {
           {{ fixed.founded }}<br />{{ fixed.foundedEn }}
         </p>
         <RouterLink to="/product" class="about-hero__cta">
-          {{ fixed.cta }} <ArrowRight :size="15" />
+          {{ copy.heroCta }} <ArrowRight :size="15" />
         </RouterLink>
       </div>
       <div class="about-hero__tags">

@@ -992,9 +992,10 @@ onBeforeUnmount(() => {
     text-transform: uppercase;
   }
 
+  // 证书图（certificates.png，817×303）按自身比例完整展示。
+  // 之前框写死 aspect-ratio: 1920/474 + cover，把图上下裁掉近三分之一。
   &__photoFrame {
     width: 100%;
-    aspect-ratio: 1920 / 474;
     margin-top: d(44);
     overflow: hidden;
   }
@@ -1002,8 +1003,7 @@ onBeforeUnmount(() => {
   &__photo {
     display: block;
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
     transition: transform 500ms ease;
     will-change: transform;
   }

@@ -158,12 +158,14 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous })
   font-family: $font-sans;
 
   // 手机端改由宽高比定高。原图是横长方形，配 object-fit: cover 时框越矮、
-  // 左右被裁掉的越少，4/5 在 390 屏得 488px，文案区宽裕；
-  // max-height 收在 78svh，还留 1/5 屏给下一屏露头，提示可以往下滚。
+  // 左右被裁掉的越少。原 4/5（390 屏高 488px）左右裁太多、画面展示不全，
+  // 现取 9/8（347px）：比 4/5 矮一截、横向多露画面，又比 5/4 高一点点，
+  // 画面更舒展；文案区仍装得下。max-height 收在 78svh，还留屏给下一屏
+  // 露头，提示可以往下滚。
   // 必须排在 tablet-down 之后 —— 这里没有 tablet-down，但顺序仍照全站规矩。
   @include mobile {
     height: auto;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 9 / 8;
     max-height: 78svh;
   }
 
@@ -207,8 +209,10 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous })
     height: 100%;
     object-fit: cover;
 
+    // 手机端画面主体（帐篷等）在原图右侧，竖框裁切时锚定右边，
+    // 尽量展示靠右的部分
     @include mobile {
-      object-position: center;
+      object-position: right center;
     }
 
     // 只给当前幻灯片开图层，七张一直挂在 DOM 里，全开等于常驻七个合成层

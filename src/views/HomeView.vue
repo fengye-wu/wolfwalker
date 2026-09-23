@@ -288,7 +288,11 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
                 :src="slide.image"
                 :alt="slide.alt"
                 class="hero-slide__media"
-                :class="{ 'is-drifting': index === activeSlide }"
+                :class="{
+                  'is-drifting': index === activeSlide,
+                  // 首张 banner 主体在原图左侧，手机端竖框裁切时锚定左边
+                  'is-anchor-left': index === 0
+                }"
                 decoding="async"
                 :loading="slide.eager ? 'eager' : 'lazy'"
                 :fetchpriority="slide.eager ? 'high' : 'auto'"
@@ -517,18 +521,15 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
   z-index: 9999;
 
   // 手机端改由宽高比定高。原图是横长方形，配 object-fit: cover 时框越矮、
-  // 左右被裁掉的越少：3:4（390×520）只能看到原图约四成宽度，1:1（390×390）
-  // 能看到约五成半。文案区约需 200px，390 高下图面仍余 190px，放得下。
+  // 左右被裁掉的越少。原 4/5（390 屏高 488px）偏高、左右裁太多，
+  // 改 9/8（347px）：高度矮一截、横向多露出约四成画面，主体居中展示
+  // （__media 的 object-position: center），文案区仍装得下。
   // 必须排在 tablet-down 之后 —— 两者在手机上同时命中，靠先后决胜。
-  //
-  // 从 1/1 调到 4/5：390 屏由 390px 增到 488px，文案下方空间更宽裕，
-  // 首屏也更有气势。代价是 cover 下左右裁得更多（能看到的原图宽度由约
-  // 五成半降到约四成半）—— 加高和少裁这两件事在 cover 下是对立的。
-  // max-height 同步放到 78svh：还留 1/5 屏给下一屏露头，提示可以往下滚。
+  // max-height 收在 78svh：还留 1/5 屏给下一屏露头，提示可以往下滚。
   @include mobile {
     height: auto;
     min-height: 0;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 9 / 8;
     max-height: 78svh;
   }
 
@@ -575,6 +576,11 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous });
 
     @include mobile {
       object-position: center;
+
+      // 首张 banner 例外：主体在原图左侧，裁切锚定左边
+      &.is-anchor-left {
+        object-position: left center;
+      }
     }
 
     // 只给当前幻灯片开图层，5 张一直挂在 DOM 里，全开等于常驻 5 个合成层

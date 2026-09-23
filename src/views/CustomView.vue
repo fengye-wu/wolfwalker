@@ -679,6 +679,19 @@ $bob-lift: d(22);
 // 三栏并排到这个宽度就排不开了：768 时每栏只剩 222px、正文 15px，
 // 芯片更是缩到 80px 装不下四个字。所以整块收成单列，按「步」纵向走。
 @include tablet-down {
+  // PC 的 75% 缩放和 364px 栏宽 gutter（见上方 base 两条 shell-width）只服务
+  // 桌面版式：364px gutter 在手机上 calc(100% - 364px) 只剩 26px，内容全挤成
+  // 一根竖条。这里恢复优化前的原始比例与 64px gutter，PC（≥1024）不受影响。
+  .custom-adv,
+  .custom-flow {
+    zoom: 1;
+  }
+
+  .custom-adv__inner,
+  .custom-flow__inner {
+    @include shell-width($shell-custom, 64px);
+  }
+
   // 标题块与椭圆组从并排改成上下：并排时标题栏只剩 251px，
   // 而「产品定制优势」在该字号下就要 250px，等于卡死在边界上。
   .custom-adv__inner {
@@ -852,11 +865,7 @@ $bob-lift: d(22);
 // ---------- 手机 ----------
 // 必须写在 tablet-down 之后：两者权重相同，靠先后决胜。
 @include mobile {
-  // 手机端布局是独立重排的（固定 px 字号、纵向椭圆），不吃桌面的 75% 缩放
-  .custom-adv,
-  .custom-flow {
-    zoom: 1;
-  }
+  // （zoom 与栏宽的恢复已上移到 tablet-down 块，手机/平板一起生效。）
 
   // 三个椭圆并排到 390 只剩 122px 宽，白字塞不进去，改成纵向一个一个来。
   // 压边的负 margin 也要一起清掉，否则会互相盖住。

@@ -138,7 +138,7 @@ const detailImages = computed(() => detailMeta.value.img);
               <span
                 v-for="tier in product.tiers"
                 :key="tier.num"
-                class="flex w-full items-baseline justify-between gap-2 px-6"
+                class="flex w-full items-baseline justify-center gap-1.5 whitespace-nowrap px-1 sm:justify-between sm:gap-2 sm:px-6"
               >
                 <span>≥{{ tier.num }} {{ locale === 'zh' ? '件' : 'pcs' }}</span>
                 <span>${{ tier.price.toFixed(2) }}</span>

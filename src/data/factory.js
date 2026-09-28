@@ -50,8 +50,8 @@ export const factoryIcons = {
 // 联系方式三行。tone 决定用哪个图标，右对齐 + 下划线由样式处理。
 // 号码和邮箱与页脚 footer.js 里的一致，改的时候两处一起改。
 export const contactRows = [
-  { icon: 'tel', text: '15655920120', href: 'tel:15655920120' },
-  { icon: 'mobile', text: '+86 16605655602', href: 'tel:+8616605655602' },
+  { icon: 'tel', text: '18605596576', href: 'tel:18605596576' },
+  { icon: 'mobile', text: '+86 18605596576', href: 'tel:+8618605596576' },
   {
     icon: 'mail',
     text: 'wolfwalkershop@163.com',

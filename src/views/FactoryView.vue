@@ -166,12 +166,8 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
         >
           <li v-for="row in contactRows" :key="row.text">
             <a :href="row.href" @click.stop>
-              <i
-                class="factory-contact__icon"
-                :class="`is-${row.icon}`"
-                :style="maskVar(row.icon)"
-                aria-hidden="true"
-              ></i>
+                <img class="factory-contact__icon"  :class="`is-${row.icons}`" :src="row.icon" />
+              
               <span>{{ row.text }}</span>
             </a>
           </li>
@@ -775,10 +771,6 @@ const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
 // 联系方式图标同样是 alpha 蒙版，颜色跟着 a 的 currentcolor 走，hover 一起变。
 .factory-contact__icon {
   flex: 0 0 auto;
-  mask-image: var(--icon);
-  mask-repeat: no-repeat;
-  mask-size: 100% 100%;
-  background-color: currentcolor;
 
   &.is-tel {
     width: d(39);

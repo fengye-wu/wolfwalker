@@ -22,6 +22,9 @@ const tentIcon1 = `${OSS}/icon-tent1.png`;
 const patentsIcon = `${OSS}/patents.png`;
 const tentFactory = `${OSS}/tent-factory.jpg`;
 const workersIcon = `${OSS}/workers.png`;
+const tel = `${OSS}/icon-tel.png`;
+const mobile = `${OSS}/icon-mobile.png`;
+const mail = `${OSS}/icon-mail.png`;
 
 // 首屏大图，设计稿 1920×1044（比例 1.839），紧贴在 146px 高的头部下面。
 export const factoryImages = {
@@ -50,10 +53,11 @@ export const factoryIcons = {
 // 联系方式三行。tone 决定用哪个图标，右对齐 + 下划线由样式处理。
 // 号码和邮箱与页脚 footer.js 里的一致，改的时候两处一起改。
 export const contactRows = [
-  { icon: 'tel', text: '17755929837', href: 'tel:17755929837' },
-  { icon: 'mobile', text: '+86 17755929837', href: 'tel:+8617755929837' },
+  { icon: tel, icons: 'tel',text: '17755929837', href: 'tel:17755929837' },
+  { icon: mobile,icons: 'mobile', text: '+86 17755929837', href: 'tel:+8617755929837' },
   {
-    icon: 'mail',
+    icon: mail,
+    icons: 'mail',
     text: 'wolfwalkershop@163.com',
     href: 'mailto:wolfwalkershop@163.com',
   },

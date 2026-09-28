@@ -47,7 +47,7 @@ export const contactSocial = [
     account: 'WolfWalker',
     icon: `${OSS}/whatsapp.png`,
     // 同电话：补国家码，海外点开能直达会话
-    href: 'https://wa.me/8618605596576',
+    href: 'https://wa.me/8617755929837',
   },
 ]
 
@@ -141,11 +141,11 @@ export const fieldClass =
 export const labelClass =
   'mb-2 block text-sm font-bold leading-5 text-ink'
 
-// 邮箱和电话对外口径：本页与 factory.js 已统一改为 18605596576；
+// 邮箱和电话对外口径：本页与 factory.js 已统一改为 17755929837；
 // 页脚 footer.js 按要求保留旧号 16605655602 未动，三处号码现在不一致。
 //
 // 还没统一的两处（明哥只要求改邮箱和电话，这些先按原样留着）：
 //   地址   本页写「经济开发区芙蓉路13号一期2号厂房」，
 //          footer.js 写「屯溪区百鸟亭路新城时代大厦A12」——一个是厂房一个是写字楼，
 //          可能本来就是两个地点，要不要都露出来由明哥定。
-//   固话   factory.js 另有一行固话，号码已随本次统一改为 18605596576，本页没有这一行。
+//   固话   factory.js 另有一行固话，号码已随本次统一改为 17755929837，本页没有这一行。

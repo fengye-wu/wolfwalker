@@ -37,7 +37,9 @@ export const contactInfo = {
   email: 'wolfwalkershop@163.com',
   place: {
     zh: '安徽省黄山市屯溪区百鸟亭路新城时代大厦A12',
-    en: 'A12, Xincheng Times Building, Bainiaoting Road, Tunxi District, Huangshan, Anhui, China'
+    en: 'A12, Xincheng Times Building, Bainiaoting Road, Tunxi District, Huangshan, Anhui, China',
+    ja: '中国安徽省黄山市屯溪区百鳥亭路新城時代ビルA12',
+    ru: 'A12, Xincheng Times Building, Bainiaoting Road, Tunxi District, Huangshan, Anhui, China',
   }
 };
 
@@ -97,5 +99,58 @@ export const copy = {
     scan: 'Scan to contact us',
     rights: 'All rights reserved.',
     wechatQrAlt: 'Wolf Walker WeChat QR code'
+  },
+  ja: {
+    brandName: 'WOLF WALKER',
+    brandHome: 'Wolf Walker ホーム',
+    products: '商品カテゴリー',
+    // 顺位は footerRoutes.product と一致、日本語版で同ジャンルの
+    // アウトドア用品として自然な並びで揃える。
+    productLinks: [
+      'バックカントリーテント',
+      'エアーマット',
+      'フォームパッド',
+      'キャンプシート',
+      'キャンプピロー',
+      'アウトドアアクセサリー',
+      'ポータブルテーブル&チェア',
+    ],
+    solutions: '工場紹介',
+    solutionLinks: ['テント工場', 'エアマット工場'],
+    about: 'ブランドについて',
+    aboutLinks: ['会社概要'],
+    contact: 'お問い合わせ',
+    phone: `TEL：${contactInfo.phone}`,
+    email: `メール：${contactInfo.email}`,
+    place: `住所：${contactInfo.place.ja}`,
+    scan: 'QRコードでフォロー',
+    rights: 'All rights reserved.',
+    wechatQrAlt: 'Wolf Walker WeChat QR コード',
+  },
+  ru: {
+    brandName: 'WOLF WALKER',
+    brandHome: 'Wolf Walker — главная',
+    products: 'Категории товаров',
+    // Тот же порядок, что и в footerRoutes.product.
+    productLinks: [
+      'Палатки для дикой природы',
+      'Надувные спальные коврики',
+      'Пенные спальные коврики',
+      'Кемпинговая мебель для отдыха',
+      'Походные подушки',
+      'Аксессуары для походов',
+      'Походные столы и стулья',
+    ],
+    solutions: 'Наши фабрики',
+    solutionLinks: ['Фабрика палаток', 'Фабрика надувных матрасов'],
+    about: 'О бренде',
+    aboutLinks: ['Профиль компании'],
+    contact: 'Контакты',
+    phone: `Тел: ${contactInfo.phone}`,
+    email: `Email: ${contactInfo.email}`,
+    place: `Адрес: ${contactInfo.place.ru}`,
+    scan: 'Сканируйте, чтобы связаться',
+    rights: 'Все права защищены.',
+    wechatQrAlt: 'Wolf Walker WeChat QR-код',
   }
 };

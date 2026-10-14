@@ -140,19 +140,19 @@ const detailImages = computed(() => detailMeta.value.img);
                 :key="tier.num"
                 class="flex w-full items-baseline justify-center gap-1.5 whitespace-nowrap px-1 sm:justify-between sm:gap-2 sm:px-6"
               >
-                <span>≥{{ tier.num }} {{ locale === 'zh' ? '件' : 'pcs' }}</span>
+                <span>≥{{ tier.num }} {{ t.pcsUnit }}</span>
                 <span>${{ tier.price.toFixed(2) }}</span>
               </span>
             </span>
             <span v-else class="mt-1 block text-[11px] text-black/45">{{
-              moq }} {{ locale === 'zh' ? '件' : 'pieces' }}</span>
+              moq }} {{ t.piecesUnit }}</span>
           </div>
           <div class="px-2">
             <Wrench class="mx-auto text-pine" :size="21" /><strong
               class="mt-2 block text-xs"
               >{{ t.customization }}</strong
             ><span class="mt-1 block text-[11px] text-black/45">{{
-              locale === 'zh' ? '品牌定制' : 'OEM / ODM'
+              t.brandCustom
             }}</span>
           </div>
         </div>
@@ -182,13 +182,13 @@ const detailImages = computed(() => detailMeta.value.img);
             <!-- 头两行固定为商品标识：货号取 sku，类型取品类名；后面跟 specs 数据 -->
             <div class="grid grid-cols-2 border-b border-black/10 py-3 text-sm">
               <dt class="text-black/45">{{
-                locale === 'zh' ? '产品货号' : 'SKU'
+                t.skuLabel
               }}</dt>
               <dd class="font-medium text-ink">{{ product.sku }}</dd>
             </div>
             <div class="grid grid-cols-2 border-b border-black/10 py-3 text-sm">
               <dt class="text-black/45">{{
-                locale === 'zh' ? '产品类型' : 'Category'
+                t.categoryLabel
               }}</dt>
               <dd class="font-medium text-ink">{{ category[locale] }}</dd>
             </div>

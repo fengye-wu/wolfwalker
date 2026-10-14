@@ -1,6 +1,6 @@
 <script setup>
-import { computed, ref, watch } from 'vue';
-import { Globe2, Menu, X } from 'lucide-vue-next';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { Globe2, Menu, X, Check } from 'lucide-vue-next';
 import { useRoute } from 'vue-router';
 import { useLocale } from '../composables/useLocale';
 import { useHeaderScroll } from '../composables/useHeaderScroll';
@@ -8,7 +8,11 @@ import { headerImages, navigation, copy as headerCopy } from '../data/header';
 
 const route = useRoute();
 const open = ref(false);
-const { locale, toggleLocale } = useLocale();
+// 语言下拉的开关。langOpen 与上面 open（汉堡按钮打开移动菜单）独立，
+// 两者同时为 true 也无所谓：菜单和下拉会同时盖在头部下方。
+const langOpen = ref(false);
+const localeTriggerRef = ref(null);
+const { locale, setLocale, locales } = useLocale();
 const { stuck } = useHeaderScroll();
 
 // 桌面端两态：
@@ -35,8 +39,40 @@ watch(
   () => route.fullPath,
   () => {
     open.value = false;
+    langOpen.value = false;
   }
 );
+
+// 点 Globe2：在桌面端是切换弹层，弹层关闭后整个按钮 aria-expanded 同步。
+// 桌面端 hover/激活的视觉样式照旧，弹层沿用已有的 nav 配色。
+const toggleLang = () => {
+  langOpen.value = !langOpen.value;
+};
+const chooseLang = (value) => {
+  setLocale(value);
+  langOpen.value = false;
+  // 设置语言后也把汉堡菜单关掉（移动端两者可能重合）
+  open.value = false;
+};
+// 点击/聚焦 触发器外区域时关闭下拉。绑定到 document 是因为下拉浮在
+// 头部里层，事件不冒泡到 trigger 自身就够了；这里再加一个 Escape 关闭。
+const onDocumentClick = (event) => {
+  if (!langOpen.value) return;
+  if (localeTriggerRef.value && !localeTriggerRef.value.contains(event.target)) {
+    langOpen.value = false;
+  }
+};
+const onKey = (event) => {
+  if (event.key === 'Escape') langOpen.value = false;
+};
+onMounted(() => {
+  document.addEventListener('mousedown', onDocumentClick);
+  document.addEventListener('keydown', onKey);
+});
+onBeforeUnmount(() => {
+  document.removeEventListener('mousedown', onDocumentClick);
+  document.removeEventListener('keydown', onKey);
+});
 </script>
 
 <template>
@@ -45,7 +81,10 @@ watch(
     :class="{
       'site-header--overlay': overlay,
       'site-header--dark': darkText,
-      'site-header--stuck': stuck
+      'site-header--stuck': stuck,
+      // 俄语专用字体态：思源宋体/宋体里的西里尔字形接近全角宽，
+      // 字距被撑得很大（见下方 .site-header--cyrillic 注释）。
+      'site-header--cyrillic': locale === 'ru'
     }"
   >
     <div class="site-header__inner">
@@ -65,15 +104,48 @@ watch(
       </nav>
 
       <div class="site-tools">
-        <button
-          type="button"
-          class="home-tool"
-          :aria-label="copy.switchLanguage"
-          @click="toggleLocale"
+        <!-- 语言切换：Globe2 + 当前语言名 + 弹出四语下拉菜单。
+             trigger 用 div 包一层而非 button 元素，是为了能在内部同时放
+             trigger 按钮和下拉面板，且 trigger 自身监听外部点击关闭。 -->
+        <div
+          class="home-tool home-tool--locale"
+          ref="localeTriggerRef"
         >
-          <Globe2 :size="17" />
-          <span>{{ copy.currentLanguage }}</span>
-        </button>
+          <button
+            type="button"
+            class="home-tool__trigger"
+            :aria-label="copy.switchLanguage"
+            :aria-expanded="langOpen"
+            :aria-haspopup="true"
+            @click="toggleLang"
+          >
+            <Globe2 :size="17" />
+            <span>{{ copy.currentLanguage }}</span>
+          </button>
+          <ul v-if="langOpen" class="locale-menu" role="menu" :aria-label="copy.languageMenu">
+            <li
+              v-for="option in locales"
+              :key="option.value"
+              role="menuitem"
+            >
+              <button
+                type="button"
+                class="locale-menu__item"
+                :class="{ 'is-active': option.value === locale }"
+                :aria-current="option.value === locale ? 'true' : undefined"
+                @click="chooseLang(option.value)"
+              >
+                <span>{{ option.label }}</span>
+                <Check
+                  v-if="option.value === locale"
+                  :size="14"
+                  stroke-width="3"
+                  aria-hidden="true"
+                />
+              </button>
+            </li>
+          </ul>
+        </div>
         <button
           type="button"
           class="site-menu-button"
@@ -96,9 +168,22 @@ watch(
         :aria-current="isActive(link) ? 'page' : undefined"
         >{{ link.label }}</RouterLink
       >
-      <button type="button" @click="toggleLocale">
-        {{ copy.currentLanguage }}
-      </button>
+      <!-- 移动端：四语平铺一行（手机端一个普通 button 占一整行太长，
+           横排胶囊装在屏幕宽度内更顺眼）。与上面桌面端共用 setLocale，
+           切换结果会立即同步到全站。 -->
+      <div class="site-mobile-langs" role="group" :aria-label="copy.languageMenu">
+        <button
+          v-for="option in locales"
+          :key="option.value"
+          type="button"
+          class="site-mobile-lang"
+          :class="{ 'is-active': option.value === locale }"
+          :aria-current="option.value === locale ? 'true' : undefined"
+          @click="chooseLang(option.value)"
+        >
+          {{ option.label }}
+        </button>
+      </div>
     </nav>
   </header>
 </template>
@@ -125,6 +210,14 @@ watch(
     backdrop-filter 260ms ease,
     color 260ms ease,
     box-shadow 260ms ease;
+
+  // 俄语态：宋体里的西里尔字形是接近全角的宽字形，菜单字距被撑得
+  // 特别大（用户截图：Т о в а р и 之间像隔了空格）。切到西文衬线栈
+  // （Times 系）让西里尔按正常比例字宽渲染；仅俄语启用，中英日
+  // 保持思源宋体不变，避免其它语言的头部视觉跳动。
+  &.site-header--cyrillic {
+    font-family: 'Times New Roman', 'Noto Serif', Georgia, serif;
+  }
 
   // 手机端（≤1023，固定条形态）白底深字。logo 图本身是深红棕字标
   // （实测不透明像素 RGB 均值 92/35/41），白底上清晰；文字/图标同步翻成
@@ -373,7 +466,7 @@ watch(
 
 // 语言/搜索工具与移动端菜单按钮共用的裸按钮外观。
 // 保留逗号分组而不是抽成 mixin，免得产物里同样的声明出现两遍。
-.home-tool,
+.home-tool__trigger,
 .site-menu-button {
   display: inline-flex;
   align-items: center;
@@ -390,15 +483,82 @@ watch(
   cursor: pointer;
 }
 
-.home-tool {
+.home-tool--locale {
+  // 桌面端：作为容器 / 下拉定位起点。下拉浮在按钮下方，所以这里要 relative。
+  // 隐藏窄屏，移动端由 site-mobile-nav 里的 site-mobile-lang 接管。
+  position: relative;
+
   // min-height: 40 会让文字在按钮里垂直居中、底边比 logo 底线悬高约 13px，
   // 与底对齐的导航不齐。压到内容高并让内容沉底后，文字底边与 logo 底线取平；
-  // 代价是点击区变小（桌面端鼠标操作可接受），手机端菜单按钮不在此列。
+  // 代价是点击区变小（桌面端鼠标操作可接受）。
   min-height: 0;
   align-items: flex-end;
 
   @include tablet-down {
     display: none;
+  }
+}
+
+// 兼容旧的 .home-tool 选择器：如果别处仍按这个类名命中按钮样式，
+// 给它一份同样的按钮外观，避免 UI 走形。
+.home-tool {
+  display: inline-flex;
+  align-items: flex-end;
+  min-width: 0;
+  min-height: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  color: inherit;
+  font-size: clamp(12px, 0.82vw, 15px);
+  text-decoration: none;
+  cursor: pointer;
+  gap: 7px;
+}
+
+// 语言下拉卡片：从 trigger 向下浮出的白底卡片。
+// bottom 不必写，按钮基线已经对齐 logo 下沿，下拉往下挂会露出头部白底。
+.locale-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 1;
+  min-width: 168px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: 10px;
+  background: $white;
+  box-shadow: 0 12px 28px rgba(21, 28, 31, 0.16);
+}
+
+.locale-menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 9px 12px;
+  border: 0;
+  background: transparent;
+  color: $header-text;
+  font-size: 14px;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+
+  &:hover,
+  &:focus-visible {
+    background: rgba($nav-active, 0.08);
+    color: $nav-active;
+    outline: none;
+  }
+
+  &.is-active {
+    color: $nav-active;
   }
 }
 
@@ -443,6 +603,44 @@ watch(
     a.is-active {
       color: $nav-active;
       font-size: 19px;
+    }
+
+    // 语言切换行：用单独的类避免和上方普通按钮使用同一字号，
+    // 同时把它们聚拢到同一行（四个按钮共享一条横线、不再各占一行）。
+    .site-mobile-lang {
+      flex: 0 0 auto;
+      padding: 13px 16px;
+      border: 0;
+      border-bottom: 0;
+      border-radius: 999px;
+      background: rgba(39, 38, 45, 0.06);
+      color: $header-text;
+      font-size: 14px;
+      font-weight: 700;
+      text-align: center;
+
+      &.is-active {
+        background: $nav-active;
+        color: $white;
+      }
+    }
+
+    // 第一项和最后一项给一点呼吸空间，避免贴边
+    .site-mobile-lang + .site-mobile-lang {
+      margin-left: 10px;
+    }
+
+    // 把四个 lang 胶囊收成一行 —— 父容器是 column，四颗 button 默认会
+    // 一上一下排成四行；这里包一层设 flex-direction:row 让它们横排并 justify-between
+    // 让两端（首项和末项）贴边而不是挤在中间。
+    .site-mobile-langs {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 14px;
+      margin-top: 4px;
     }
   }
 }

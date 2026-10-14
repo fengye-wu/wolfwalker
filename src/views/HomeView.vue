@@ -240,7 +240,6 @@ onBeforeUnmount(() => {
   document.removeEventListener('visibilitychange', handleCategoryVisibility);
 });
 
-const goTo = (index) => carouselRef.value?.setActiveItem(index);
 const previous = () => carouselRef.value?.prev();
 const next = () => carouselRef.value?.next();
 const handleSlideChange = (index) => {

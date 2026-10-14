@@ -7,15 +7,15 @@ const OSS = "https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/detail";
 const common = `${OSS}/common/1.jpg`;
 const common2 = `${OSS}/common/2.jpg`;
 
-// 交货时间（zh / en 两个格式）：帐篷、沙发 50-60 天，其余 40-50 天。
+// 交货时间（zh / en / ja / ru 四种格式）：帐篷、沙发 50-60 天，其余 40-50 天。
 export const leadTimeByCategory = {
-  tent: { zh: "50-60 天", en: "50-60 days" },
-  sofa: { zh: "50-60 天", en: "50-60 days" },
-  airpad: { zh: "40-50 天", en: "40-50 days" },
-  foampad: { zh: "40-50 天", en: "40-50 days" },
-  NeckPillow: { zh: "40-50 天", en: "40-50 days" },
-  tableAndchair: { zh: "40-50 天", en: "40-50 days" },
-  accessories: { zh: "40-50 天", en: "40-50 days" },
+  tent: { zh: "50-60 天", en: "50-60 days", ja: "50〜60日", ru: "50–60 дней" },
+  sofa: { zh: "50-60 天", en: "50-60 days", ja: "50〜60日", ru: "50–60 дней" },
+  airpad: { zh: "40-50 天", en: "40-50 days", ja: "40〜50日", ru: "40–50 дней" },
+  foampad: { zh: "40-50 天", en: "40-50 days", ja: "40〜50日", ru: "40–50 дней" },
+  NeckPillow: { zh: "40-50 天", en: "40-50 days", ja: "40〜50日", ru: "40–50 дней" },
+  tableAndchair: { zh: "40-50 天", en: "40-50 days", ja: "40〜50日", ru: "40–50 дней" },
+  accessories: { zh: "40-50 天", en: "40-50 days", ja: "40〜50日", ru: "40–50 дней" },
 };
 
 // 起订数量（件）：帐篷/沙发/桌椅 100，气垫/棉垫 200，枕头/配件 500。

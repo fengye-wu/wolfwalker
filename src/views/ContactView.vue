@@ -102,7 +102,7 @@ watch(locale, (value, previous) => {
     <section class="group relative overflow-hidden">
       <img
         :src="images.banner"
-        alt="Wolfwalker 联系我们"
+        :alt="copy.heroTitle"
         fetchpriority="high"
         class="block h-auto w-full transition duration-700 group-hover:scale-105"
       />
@@ -144,7 +144,7 @@ watch(locale, (value, previous) => {
         <img
           v-reveal="'animate__fadeInUp'"
           :src="images.photo"
-          alt="Wolfwalker 客服团队"
+          :alt="`Wolfwalker — ${copy.introTitle.replace('\n', '')}`"
           loading="lazy"
           class="aspect-[1.6] w-full object-cover"
         />

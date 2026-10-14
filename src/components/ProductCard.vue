@@ -1,16 +1,11 @@
 <script setup>
 import { useLocale } from '../composables/useLocale';
-import { getCategory } from '../data/products';
 
 const props = defineProps({
   product: { type: Object, required: true },
   priority: { type: Boolean, default: false }
 });
 const { locale, t } = useLocale();
-
-// 商品名的主语言固定为中文，次语言固定为英文；站点切换只影响分类角标、图片 alt
-// 和可访问标签。这套层级是产品目录的展示规则，不随 UI 语言翻转。
-const productName = props.product.name;
 </script>
 
 <template>
@@ -28,21 +23,14 @@ const productName = props.product.name;
       
     </RouterLink>
     <div class="pt-4">
-      <h3
-        class="text-base font-bold leading-6 text-ink transition-colors hover:text-[#93563a] sm:text-lg"
-      >
-        {{ productName.zh }}
-      </h3>
-      <div
-        class="mt-1 flex items-center justify-between gap-2 text-sm font-bold leading-5 text-black/50"
-      >
-        <p class="min-w-0 truncate text-sm font-bold leading-5 text-black/50">
-          {{ productName.en }}
-        </p>
+      <div class="flex items-center justify-between gap-2">
+        <h3 class="min-w-0 truncate text-base font-bold leading-6 sm:text-lg">
+          {{ props.product.name[locale] }}
+        </h3>
         <RouterLink
           :to="`/product/${props.product.category}/${props.product.id}`"
           class="group/arrow shrink-0"
-          :aria-label="`${t.viewProduct}: ${productName.zh}`"
+          :aria-label="`${t.viewProduct}: ${props.product.name[locale]}`"
         >
           <img
             src="https://wolfwalkershop.oss-cn-beijing.aliyuncs.com/images/product/jt.jpg"

@@ -1,10 +1,9 @@
 <script setup>
-import { ArrowRight, Search, SlidersHorizontal, X } from 'lucide-vue-next';
+import { Search } from 'lucide-vue-next';
 import { computed, nextTick, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import ProductCard from '../components/ProductCard.vue';
 import ProductHero from '../components/ProductHero.vue';
-import UiLinkButton from '../components/UiLinkButton.vue';
 import { categories, products } from '../data/products';
 import { useLocale } from '../composables/useLocale';
 
@@ -13,7 +12,6 @@ const route = useRoute();
 const router = useRouter();
 const activeCategory = ref(route.query.category || 'all');
 const search = ref('');
-const mobileFilters = ref(false);
 const productList = ref(null);
 
 watch(
@@ -32,10 +30,13 @@ const filteredProducts = computed(() =>
       activeCategory.value === 'all' ||
       product.category === activeCategory.value;
     const term = search.value.trim().toLowerCase();
+    // 搜索四语言都要命中：把每个 name 字段（zh / en / ja / ru）都参与匹配。
+    // 之前只比对 en / zh，日语俄语商品名就搜不到了。
     const searchMatch =
       !term ||
-      product.name.en.toLowerCase().includes(term) ||
-      product.name.zh.includes(term) ||
+      Object.values(product.name).some((value) =>
+        value.toLowerCase().includes(term),
+      ) ||
       product.id.includes(term) ||
       product.sku.toLowerCase().includes(term);
     return categoryMatch && searchMatch;
@@ -44,7 +45,6 @@ const filteredProducts = computed(() =>
 
 const chooseCategory = async (key) => {
   activeCategory.value = key;
-  mobileFilters.value = false;
   await router.replace({ query: key === 'all' ? {} : { category: key } });
   await nextTick();
   productList.value?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -97,23 +97,38 @@ onMounted(() => {
             clearable
             class="product-search flex-1 lg:w-72 lg:flex-none"
             type="search"
-            :placeholder="locale === 'zh' ? '搜索商品' : 'Search products'"
+            :placeholder="t.searchProducts"
           >
             <template #prefix><Search :size="18" /></template>
           </ElInput>
-          <ElButton
-            class="brand-icon-button lg:!hidden"
-            :aria-label="t.categories"
-            @click="mobileFilters = !mobileFilters"
-            ><X v-if="mobileFilters" :size="19" /><SlidersHorizontal
-              v-else
-              :size="19"
-          /></ElButton>
         </div>
       </div>
 
+      <!-- 手机端：分类平铺在搜索框下方，一行放不下就换行，全部展示、不滚动不隐藏。
+           激活项高亮，默认「全部」。桌面端（lg+）仍用左侧竖排筛选。 -->
+      <div class="mt-6 flex flex-wrap gap-2 lg:hidden">
+        <button
+          type="button"
+          class="rounded-full border px-4 py-2 text-sm font-bold transition"
+          :class="activeCategory === 'all' ? 'border-signal bg-signal text-white' : 'border-black/15 bg-white text-black/60'"
+          @click="chooseCategory('all')"
+        >
+          {{ t.filterAll }}
+        </button>
+        <button
+          v-for="category in categories"
+          :key="category.key"
+          type="button"
+          class="rounded-full border px-4 py-2 text-sm font-bold transition"
+          :class="activeCategory === category.key ? 'border-signal bg-signal text-white' : 'border-black/15 bg-white text-black/60'"
+          @click="chooseCategory(category.key)"
+        >
+          {{ category[locale] }}
+        </button>
+      </div>
+
       <div class="mt-8 grid gap-10 lg:grid-cols-[220px_1fr] lg:gap-12">
-        <aside :class="mobileFilters ? 'block' : 'hidden lg:block'">
+        <aside class="hidden lg:block">
           <div
             class="sticky top-28 space-y-1 bg-white p-3 lg:bg-transparent lg:p-0"
           >
@@ -151,11 +166,7 @@ onMounted(() => {
             <p
               class="hidden text-xs uppercase tracking-[0.12em] text-black/35 sm:block"
             >
-              {{
-                locale === 'zh'
-                  ? 'WOLFWALKER 户外装备系统'
-                  : 'WOLFWALKER FIELD SYSTEMS'
-              }}
+              {{ t.fieldSystems }}
             </p>
           </div>
           <div

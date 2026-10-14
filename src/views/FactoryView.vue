@@ -44,9 +44,6 @@ const factories = computed(() =>
     to: factoryLinks[index]
   }))
 );
-
-// 图标蒙版走 CSS 自定义属性下发，模板里不直接写 url()
-const maskVar = (name) => ({ '--icon': `url(${factoryIcons[name]})` });
 </script>
 
 <template>

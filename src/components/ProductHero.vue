@@ -20,22 +20,35 @@ const INTERVAL = 7000
 const slides = computed(() =>
   productHeroSlides.map((slide, index) => {
     const category = getCategory(slide.category)
-    const zh = locale.value === 'zh'
-    const cta = category ? category[locale.value] : ''
+    // 取当前 locale 的字段；缺失时回落到 en，整站兜底保持一致。
+    const title = slide[`title${cap(locale.value)}`] ?? slide.titleEn
+    const subtitle = slide[`subtitle${cap(locale.value)}`] ?? slide.subtitleEn
+    const cta = category ? category[locale.value] ?? category.en : ''
     return {
       image: slide.image,
       key: slide.category,
-      title: zh ? slide.titleZh : slide.titleEn,
-      subtitle: zh ? slide.subtitleZh : slide.subtitleEn,
+      title,
+      subtitle,
       cta,
       // 图拍的就是这个品类的使用场景，alt 用「品类名 + 页面标题」，
       // 七张各不相同，读屏不会连着念七遍一样的话。
-      alt: zh ? `${cta}｜${t.value.catalogTitle}` : `${cta} — ${t.value.catalogTitle}`,
+      // 中日用「・ / ｜」这种点分符，俄英保留原有连字符。
+      alt:
+        locale.value === 'en'
+          ? `${cta} — ${t.value.catalogTitle}`
+          : locale.value === 'ru'
+            ? `${cta} — ${t.value.catalogTitle}`
+            : `${cta}｜${t.value.catalogTitle}`,
       // 首屏图参与 LCP，其余交给浏览器懒加载
       eager: index === 0,
     }
   }),
 )
+
+// locale code 首字母大写，用来匹配 titleZh / titleEn / titleJa / titleRu
+// 这种「字段名前缀」约定。原本是 zh ? zh : en 写死的，加 ja / ru 后
+// 改成字典式（避免再加语言时再插一支三元）。
+const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 
 const eyebrow = computed(() => productHeroEyebrow[locale.value])
 
@@ -58,7 +71,7 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous })
 <template>
   <section
     class="product-hero"
-    :aria-label="locale === 'zh' ? '产品系列轮播' : 'Product collection carousel'"
+    :aria-label="t.productCollectionCarousel"
     @touchstart.passive="heroSwipe.start"
     @touchend.passive="heroSwipe.end"
     @click.capture="heroSwipe.guardClick"
@@ -115,7 +128,7 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous })
     <button
       class="hero-arrow hero-arrow--previous"
       type="button"
-      :aria-label="locale === 'zh' ? '上一张' : 'Previous slide'"
+      :aria-label="t.previousSlide"
       @click="previous"
     >
       <ChevronLeft :size="38" stroke-width="3" />
@@ -123,7 +136,7 @@ const heroSwipe = createSwipe({ onLeft: next, onRight: previous })
     <button
       class="hero-arrow hero-arrow--next"
       type="button"
-      :aria-label="locale === 'zh' ? '下一张' : 'Next slide'"
+      :aria-label="t.nextSlide"
       @click="next"
     >
       <ChevronRight :size="38" stroke-width="3" />

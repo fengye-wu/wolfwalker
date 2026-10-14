@@ -34,6 +34,16 @@ echarts.registerMap("wolfwalker-world", worldGeoJson);
 const { locale, t } = useLocale();
 const copy = computed(() => aboutCopy[locale.value] ?? aboutCopy.zh);
 const images = aboutImages;
+// 世界地图的 aria-label：俄日语需要自写翻译。
+// 「从中国黄山出发前往全球国家与城市的多色动态航线」对 ja / ru 仍是有意义
+// 的描述，所以这里按语言给一份独立文案，而不是 zh / en 三元硬塞。
+const mapAriaLabels = {
+  zh: '从中国黄山出发前往全球国家与城市的多色动态航线地图',
+  en: 'Animated multicolor global routes departing from Huangshan, China',
+  ja: '中国の黄山から世界各国・都市へ向かう多色動的航路マップ',
+  ru: 'Анимированная многоцветная карта маршрутов из Хуаншаня по всему миру',
+};
+const mapAriaLabel = computed(() => mapAriaLabels[locale.value] ?? mapAriaLabels.en);
 // Hero 玻璃卡内容为设计稿固定图文，不随语言切换
 const fixed = heroFixedContent;
 
@@ -415,11 +425,7 @@ onBeforeUnmount(() => {
         ref="worldMapEl"
         class="about-global__bg"
         role="img"
-        :aria-label="
-          locale === 'en'
-            ? 'Animated multicolor global routes departing from Huangshan, China'
-            : '从中国黄山出发前往全球国家与城市的多色动态航线地图'
-        "
+        :aria-label="mapAriaLabel"
       ></div>
       <div class="about-global__heading">
         <h2 v-reveal class="about-global__title">{{ copy.globalTitle }}</h2>
@@ -806,7 +812,11 @@ onBeforeUnmount(() => {
     z-index: 1;
     display: flex;
     flex-direction: column;
+    // 容器宽 = 最宽按钮，内部 stretch 让所有按钮等宽（文字仍居中）。
+    // 作为 __body 的 flex item 需显式 fit-content 才不被剩余空间撑满。
     align-items: stretch;
+    width: fit-content;
+    max-width: 100%;
     // 与左侧大图同高、垂直均匀分布（设计稿按钮首尾对齐图顶/图底）
     height: d(770);
     padding: d(43) 0;
@@ -823,6 +833,9 @@ onBeforeUnmount(() => {
     justify-content: center;
     gap: d(16);
     min-width: d(294);
+    // 所有不换行不省略（需求）：宽度由最宽按钮统一决定，长语言
+    // （ru/ja）也单行展示，全部按钮等宽、文字居中。
+    white-space: nowrap;
     padding: d(10) d(28);
     border: 2px solid $white;
     border-radius: d(999);
@@ -1250,15 +1263,17 @@ onBeforeUnmount(() => {
     &__pills {
       flex: 1;
       height: auto;
+      width: auto;
       justify-content: flex-start;
-      align-items: center;
+      align-items: stretch;
       gap: 2.2vw;
     }
 
     &__pill {
-      // 约为原先通栏宽的 2/5，列内居中
-      width: 80%;
-      min-width: 0;
+      // 等宽（列宽撑满、由最宽按钮决定），文字居中，长语言不换行。
+      width: auto;
+      min-width: 80%;
+      max-width: 100%;
       justify-content: center;
       padding: 1vw 1.5vw;
       font-size: clamp(7px, 1.8vw, 10px);

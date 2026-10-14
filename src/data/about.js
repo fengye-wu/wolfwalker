@@ -64,7 +64,7 @@ export const channelLogos = [
 ]
 
 // Hero 玻璃卡内容是设计稿固定的图形与文字（书法字为位图、副题本就是英文、
-// 创立信息中英两行并排展示），不参与双语切换 —— zh/en 都渲染同一份。
+// 创立信息中英两行并排展示），不参与双语切换 —— zh/en/ja/ru 都渲染同一份。
 // CTA 文案原也固定为「探索产品」，现按需求随语言切换，移到 aboutCopy.heroCta。
 export const heroFixedContent = {
   sub: 'Free Yourself, Travel Without Borders',
@@ -87,14 +87,15 @@ export const categoryIcons = {
 // 顺序即设计稿按钮顺序（山野帐篷→…→便携桌椅），key 与 products.js
 // 的 categories 枚举一致（NeckPillow 大小写照抄）。7 张 OSS 图片已逐张
 // 核对过内容与分类语义一一对应，直接按 key 挂载。
+// 四语叫法在原基础上扩展；en 沿用旧值以保持路由参数 / image alt 不变。
 export const outdoorCategories = [
-  { key: 'tent', zh: '山野帐篷', en: 'tent', image: imgTent },
-  { key: 'airpad', zh: '充气卧垫', en: 'airpad', image: imgAirpad },
-  { key: 'foampad', zh: '绵护睡垫', en: 'foampad', image: imgFoampad },
-  { key: 'airsofa', zh: '户外软座', en: 'airsofa', image: imgAirsofa },
-  { key: 'NeckPillow', zh: '舒柔枕头', en: 'neckpillow', image: imgNeckPillow },
-  { key: 'accessories', zh: '随行配件', en: 'accessories', image: imgAccessories },
-  { key: 'outdoorchair', zh: '便携桌椅', en: 'outdoorchair', image: outdoorchair },
+  { key: 'tent', zh: '山野帐篷', en: 'tent', ja: 'バックカントリーテント', ru: 'Палатки', image: imgTent },
+  { key: 'airpad', zh: '充气卧垫', en: 'airpad', ja: 'エアーマット', ru: 'Надувные коврики', image: imgAirpad },
+  { key: 'foampad', zh: '绵护睡垫', en: 'foampad', ja: 'フォームパッド', ru: 'Пенные коврики', image: imgFoampad },
+  { key: 'airsofa', zh: '户外软座', en: 'airsofa', ja: 'キャンプシート', ru: 'Кемпинговый диван', image: imgAirsofa },
+  { key: 'NeckPillow', zh: '舒柔枕头', en: 'neckpillow', ja: 'キャンプピロー', ru: 'Походные подушки', image: imgNeckPillow },
+  { key: 'accessories', zh: '随行配件', en: 'accessories', ja: 'アクセサリー', ru: 'Аксессуары', image: imgAccessories },
+  { key: 'outdoorchair', zh: '便携桌椅', en: 'outdoorchair', ja: 'ポータブル家具', ru: 'Походная мебель', image: outdoorchair },
 ]
 
 const cardList = (label10yrs, labelSales, labelChannels, labelPatents) => [
@@ -159,8 +160,69 @@ export const aboutCopy = {
 
     globalTitle: 'Global Reach · Trusted Worldwide',
     globalSub: 'Global Reach · Trusted Worldwide',
+  },
 
-    industryTitle: 'Industry Recognition · Proven Strength',
+  ja: {
+    heroTags: ['large area', 'support', 'sunscreen', 'major'],
+
+    heroCta: '商品を見る',
+
+    decadeTitle: '十年間、アウトドアに専心',
+    decadeLines: [
+      'Wolfwalker は 2015 年に創業し、十年以上の歩みを進めてきました。',
+      '製造の基盤である祁門昆騰アウトドア用品有限公司は、十一年にわたる実体製造の経験を持ちます。',
+      'この十年間で、私たちはアウトドアギアに専心するブランドから、',
+      '独立した研究開発・製造・グローバル販売を統合した総合アウトドアブランドへと成長しました。',
+    ],
+
+    cards: cardList(
+      '十年のブランド歩み',
+      '年商 1 億円以上',
+      'グローバル販路',
+      '自社開発特許'
+    ),
+
+    filmEyebrow: 'WOLFWALKER ブランドフィルム',
+    filmTitle: '私たちのアウトドアへ',
+
+    outdoorTitle: 'テントからエアマットまで丨私たちはアウトドアを知る',
+
+    globalTitle: 'グローバル展開 · 確かな信頼',
+    globalSub: 'Global Reach · Trusted Worldwide',
+
+    industryTitle: '業界評価 · 実力の証',
     industrySub: 'Industry Recognition · Proven Strength',
   },
-}
+
+  ru: {
+    heroTags: ['large area', 'support', 'sunscreen', 'major'],
+
+    heroCta: 'Смотреть товары',
+
+    decadeTitle: 'Десять лет — ради опыта на открытом воздухе',
+    decadeLines: [
+      'Wolfwalker основан в 2015 году — уже более десяти лет пути.',
+      'Наша производственная база, Qimen Kunteng Outdoor Products Co., Ltd., обладает одиннадцатилетним опытом реального производства.',
+      'За это десятилетие мы прошли путь от бренда, сфокусированного на outdoor-снаряжении,',
+      'до комплексного outdoor-бренда с независимыми R&D, производством и глобальными продажами.',
+    ],
+
+    cards: cardList(
+      'Десять лет бренда',
+      'Годовые продажи ¥100M+',
+      'Глобальные каналы',
+      'Собственные патенты'
+    ),
+
+    filmEyebrow: 'WOLFWALKER БРЕНД-ФИЛЬМ',
+    filmTitle: 'Добро пожаловать в наш мир outdoor',
+
+    outdoorTitle: 'От палаток до надувных ковриков | мы знаем outdoor',
+
+    globalTitle: 'Глобальное присутствие · авторитетное признание',
+    globalSub: 'Global Reach · Trusted Worldwide',
+
+    industryTitle: 'Признание отрасли · доказательство силы',
+    industrySub: 'Industry Recognition · Proven Strength',
+  },
+};

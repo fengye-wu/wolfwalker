@@ -1,0 +1,78 @@
+DEPRECATION WARNING: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+   ┌──> src\views\HomeView.vue
+506│         font-family: $font-georgia;
+   │         ^^^^^^^^^^^^^^^^^^^^^^^^^^ declaration
+   ╵
+   ┌──> src\styles\_mixins.scss
+8  │ ┌   @media (max-width: $bp-mobile) {
+9  │ │     @content;
+10 │ │   }
+   │ └─── nested rule
+   ╵
+    src\views\HomeView.vue 506:7  root stylesheet
+
+DEPRECATION WARNING: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+   ┌──> src\views\HomeView.vue
+507│         font-size: 15px;
+   │         ^^^^^^^^^^^^^^^ declaration
+   ╵
+   ┌──> src\styles\_mixins.scss
+8  │ ┌   @media (max-width: $bp-mobile) {
+9  │ │     @content;
+10 │ │   }
+   │ └─── nested rule
+   ╵
+    src\views\HomeView.vue 507:7  root stylesheet
+
+DEPRECATION WARNING: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+   ┌──> src\views\HomeView.vue
+508│         line-height: 1.35;
+   │         ^^^^^^^^^^^^^^^^^ declaration
+   ╵
+   ┌──> src\styles\_mixins.scss
+8  │ ┌   @media (max-width: $bp-mobile) {
+9  │ │     @content;
+10 │ │   }
+   │ └─── nested rule
+   ╵
+    src\views\HomeView.vue 508:7  root stylesheet
+
+DEPRECATION WARNING: Sass's behavior for declarations that appear after nested
+rules will be changing to match the behavior specified by CSS in an upcoming
+version. To keep the existing behavior, move the declaration above the nested
+rule. To opt into the new behavior, wrap the declaration in `& {}`.
+
+More info: https://sass-lang.com/d/mixed-decls
+
+   ┌──> src\views\HomeView.vue
+509│         white-space: pre-line;
+   │         ^^^^^^^^^^^^^^^^^^^^^ declaration
+   ╵
+   ┌──> src\styles\_mixins.scss
+8  │ ┌   @media (max-width: $bp-mobile) {
+9  │ │     @content;
+10 │ │   }
+   │ └─── nested rule
+   ╵
+    src\views\HomeView.vue 509:7  root stylesheet
+
+'FIX_NPM_CLI_JS"' �����ڲ����ⲿ���Ҳ���ǿ����еĳ���
+���������ļ���

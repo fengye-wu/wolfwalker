@@ -3,6 +3,7 @@ dist/
 artifacts/
 lanhu-mcp/
 *.log
+*.err
 .DS_Store
 
 # AI 助手本地配置，不入库

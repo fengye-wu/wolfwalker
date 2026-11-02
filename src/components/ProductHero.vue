@@ -45,8 +45,8 @@ const slides = computed(() =>
   }),
 )
 
-// locale code 首字母大写，用来匹配 titleZh / titleEn / titleJa / titleRu
-// 这种「字段名前缀」约定。原本是 zh ? zh : en 写死的，加 ja / ru 后
+// locale code 首字母大写，用来匹配 titleZh / titleEn / titleRu
+// 这种「字段名前缀」约定。原本是 zh ? zh : en 写死的，加 ru 后
 // 改成字典式（避免再加语言时再插一支三元）。
 const cap = (s) => s.charAt(0).toUpperCase() + s.slice(1)
 

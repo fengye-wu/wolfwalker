@@ -30,8 +30,8 @@ const filteredProducts = computed(() =>
       activeCategory.value === 'all' ||
       product.category === activeCategory.value;
     const term = search.value.trim().toLowerCase();
-    // 搜索四语言都要命中：把每个 name 字段（zh / en / ja / ru）都参与匹配。
-    // 之前只比对 en / zh，日语俄语商品名就搜不到了。
+    // 搜索三语言都要命中：把每个 name 字段（zh / en / ru）都参与匹配。
+    // 之前只比对 en / zh，俄语商品名就搜不到了。
     const searchMatch =
       !term ||
       Object.values(product.name).some((value) =>

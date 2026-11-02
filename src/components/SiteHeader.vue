@@ -104,7 +104,7 @@ onBeforeUnmount(() => {
       </nav>
 
       <div class="site-tools">
-        <!-- 语言切换：Globe2 + 当前语言名 + 弹出四语下拉菜单。
+        <!-- 语言切换：Globe2 + 当前语言名 + 弹出三语下拉菜单。
              trigger 用 div 包一层而非 button 元素，是为了能在内部同时放
              trigger 按钮和下拉面板，且 trigger 自身监听外部点击关闭。 -->
         <div
@@ -168,7 +168,7 @@ onBeforeUnmount(() => {
         :aria-current="isActive(link) ? 'page' : undefined"
         >{{ link.label }}</RouterLink
       >
-      <!-- 移动端：四语平铺一行（手机端一个普通 button 占一整行太长，
+      <!-- 移动端：三语平铺一行（手机端一个普通 button 占一整行太长，
            横排胶囊装在屏幕宽度内更顺眼）。与上面桌面端共用 setLocale，
            切换结果会立即同步到全站。 -->
       <div class="site-mobile-langs" role="group" :aria-label="copy.languageMenu">
@@ -213,7 +213,7 @@ onBeforeUnmount(() => {
 
   // 俄语态：宋体里的西里尔字形是接近全角的宽字形，菜单字距被撑得
   // 特别大（用户截图：Т о в а р и 之间像隔了空格）。切到西文衬线栈
-  // （Times 系）让西里尔按正常比例字宽渲染；仅俄语启用，中英日
+  // （Times 系）让西里尔按正常比例字宽渲染；仅俄语启用，中英
   // 保持思源宋体不变，避免其它语言的头部视觉跳动。
   &.site-header--cyrillic {
     font-family: 'Times New Roman', 'Noto Serif', Georgia, serif;

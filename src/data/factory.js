@@ -187,50 +187,6 @@ export const factoryCopy = {
     ctaTitle: 'How to\nreach us?',
     contactLabel: 'Contact',
   },
-  ja: {
-    heroAlt: 'Wolfwalker 工場の生産ライン',
-
-    introTitle: '十一年、\nひとつのことのために',
-    introTagline: 'すべての製品に心を込めて、すべてのお客様に誠実に。',
-    introBody:
-      'この業界で十一年にわたり深く関わってきた私たちは、製品への真剣な姿勢、技術へのたゆまぬ探究、そしてお客様のニーズへの敬意を、すべての工程、すべての検査、すべての納品に込めてきました。\n本物のプロフェッショナルとは口先ではなく、シンプルなことを繰り返し、誠実に、そして完璧に行うことだと私たちは信じています。この品質への妥協なきこだわりが、お客様の信頼を獲得し、私たちの決意をさらに強くしています。――これからの道も、匠の心で品質を守り、行動で約束を果たし続けます。',
-
-    areaValue: '12000m²',
-    areaLabel: '工場面積',
-    areaNote: '工場面積は約 12,000 平方メートル。',
-
-    stats: [
-      { value: '150+', label: '従業員数' },
-      { value: '42+', label: '生産設備' },
-      { value: '50+', label: '技術特許' },
-      { value: '12+', label: '開発技術者' },
-    ],
-
-    cardCta: '詳細を見る',
-    factories: [
-      {
-        alt: 'テント工場の生産ライン',
-        cells: [
-          { value: '25+', label: '生産設備', tone: 'dark', icon: 'tent' },
-          { value: '50+', label: 'テント製品カテゴリー', tone: 'light', icon: 'tent1' },
-          { value: '30+', label: 'テント製品の独自特許', tone: 'light', icon: 'tent1' },
-          { value: '60+', label: '従業員数', tone: 'dark', icon: 'tent' },
-        ],
-      },
-      {
-        alt: 'エアマット工場の生産ライン',
-        cells: [
-          { value: '17+', label: '専門生産設備', tone: 'dark', icon: 'pad' },
-          { value: '50+', label: 'エアマット製品カテゴリー', tone: 'light', icon: 'pad1' },
-          { value: '20+', label: 'エアマット製品の独自特許', tone: 'light', icon: 'pad1' },
-          { value: '90+', label: '従業員数', tone: 'dark', icon: 'pad' },
-        ],
-      },
-    ],
-
-    ctaTitle: 'ご要望、\n私たちにソリューションを',
-    contactLabel: 'お問い合わせ',
-  },
 
   ru: {
     heroAlt: 'Производственная линия Wolfwalker',

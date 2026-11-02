@@ -212,63 +212,6 @@ export const customCopy = {
       'Dear customer, every custom piece we make carries a maker’s care, and that is what makes your order one of a kind. Because fabric batches vary, hand cutting takes the time it takes, and some construction is genuinely complex, no two pieces take exactly the same time to finish. The production times shown on this page are normal estimates, so the real schedule may move a little. We will give it everything we have and keep you posted as it progresses. Thank you for your patience and understanding, this is something worth waiting for together.',
   },
 
-  ja: {
-    heroAlt: 'Wolfwalker カスタムテントキャンプ',
-
-    title: ['Wolfwalker', 'カスタマイズの強み'],
-    subtitle: ['自社工場、適正なコスト、', '厳格な品質管理。'],
-
-    advantages: [
-      { label: '11 年のカスタマイズ実績', nameLines: ['自社工場'] },
-      { label: '充実した設備ライン', nameLines: ['コスト管理'] },
-      { label: '熟練の職人技', nameLines: ['厳格な品質管理'] },
-    ],
-
-    flowTitle: 'カスタマイズの流れ',
-
-    steps: [
-      {
-        label: 'サンプル送付',
-        text: '実物サンプルや参考画像がございましたら、お送りください。ない場合はご要望を伺い、近しい素材をご提案します。',
-      },
-      {
-        label: '仕様の確定',
-        text: '生地の種類、ロゴの加工方法など、詳細をお伺いします。この段階が丁寧であるほど、後のサンプル精度が高まります。',
-      },
-      { label: '書類へのサイン', text: 'すべての要件を書面にまとめ、両者で確認・署名を行います。' },
-      {
-        label: 'サンプル作成',
-        text: 'テントは約 30 日、エアマットは約 20 日が目安です。生地在庫や仕様の複雑さにより前後することがございます（事前にご案内します）。',
-      },
-      { label: 'サンプル発送', text: 'サンプル完成後、社内検査を実施し、検査完了後にお送りします。' },
-      {
-        label: '書類へのサイン',
-        text: 'サンプル到着後、現物でのご確認をお願いします。問題がなければ「サンプル合格」とご返信ください。その内容に沿って量産を進めます。',
-      },
-      { label: '契約締結', text: 'サンプルが確定し量産発注に進む段階で、契約を締結します。' },
-      {
-        label: '前払い',
-        text: '前払いは契約総額の 30% です。支払条件や特別なご事情は発注前にご相談ください。',
-      },
-      {
-        label: '量産',
-        text: '生産期間はご注文量とスケジュールにより異なります。詳細は契約書に明記します。節目ごとに進捗をご報告します。',
-      },
-      {
-        label: '出荷前検査',
-        text: '社内自己検査と出荷前全検査の二重チェックを実施します。不合格品は修繕し、出荷・納品を行いません。',
-      },
-      { label: '輸送', text: '製品出荷後、追跡番号をお知らせし、輸送状況の確認をお手伝いします。' },
-      {
-        label: 'ご注文完了',
-        text: '残金のお支払いが完了した時点で正式にクローズします。お問い合わせ窓口は継続いたしますので、稼働中のご不明点はお気軽にご連絡ください。',
-      },
-    ],
-
-    noteTitle: 'ご案内',
-    noteBody:
-      'お客様へ。一点ものの特別な体験をお届けするため、職人が丁寧に仕上げるすべてのカスタム商品に、真心を込めています。生地のロット差、ハンドメイドの繊細さ、そして複雑な工程のため、商品によって製作期間は少しずつ異なります。ページ記載の製作期間は通常の目安であり、実際の期間は前後することがございます。製作中は全力を尽くし、進捗を速やかにご共有いたします。お待ちいただくお時間に感謝申し上げるとともに、この特別な体験を大切にいたします。',
-  },
 
   ru: {
     heroAlt: 'Wolfwalker — кастомный палаточный лагерь',

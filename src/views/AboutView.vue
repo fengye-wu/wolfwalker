@@ -34,13 +34,12 @@ echarts.registerMap("wolfwalker-world", worldGeoJson);
 const { locale, t } = useLocale();
 const copy = computed(() => aboutCopy[locale.value] ?? aboutCopy.zh);
 const images = aboutImages;
-// 世界地图的 aria-label：俄日语需要自写翻译。
-// 「从中国黄山出发前往全球国家与城市的多色动态航线」对 ja / ru 仍是有意义
+// 世界地图的 aria-label：俄语需要自写翻译。
+// 「从中国黄山出发前往全球国家与城市的多色动态航线」对 ru 仍是有意义
 // 的描述，所以这里按语言给一份独立文案，而不是 zh / en 三元硬塞。
 const mapAriaLabels = {
   zh: '从中国黄山出发前往全球国家与城市的多色动态航线地图',
   en: 'Animated multicolor global routes departing from Huangshan, China',
-  ja: '中国の黄山から世界各国・都市へ向かう多色動的航路マップ',
   ru: 'Анимированная многоцветная карта маршрутов из Хуаншаня по всему миру',
 };
 const mapAriaLabel = computed(() => mapAriaLabels[locale.value] ?? mapAriaLabels.en);
@@ -834,7 +833,7 @@ onBeforeUnmount(() => {
     gap: d(16);
     min-width: d(294);
     // 所有不换行不省略（需求）：宽度由最宽按钮统一决定，长语言
-    // （ru/ja）也单行展示，全部按钮等宽、文字居中。
+    // （ru）也单行展示，全部按钮等宽、文字居中。
     white-space: nowrap;
     padding: d(10) d(28);
     border: 2px solid $white;

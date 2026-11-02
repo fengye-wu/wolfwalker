@@ -93,7 +93,7 @@ const images = {
 };
 
 // 商品清单按品类分组，每条记录的字段：
-//   [zhName, enName, jaName, ruName, sku, zhDesc, enDesc, jaDesc, ruDesc, tiers]
+//   [zhName, enName, ruName, sku, zhDesc, enDesc, ruDesc, tiers]
 // 日俄翻译与英文版并列：name / description 是只展示给用户看的，多给两版完整提供。
 // 若日俄某行缺失，渲染时会回落到英文版（useLocalized 函数），不要把空字符串塞进来。
 //
@@ -106,15 +106,13 @@ const names = {
     [
       "云阁充气帐篷",
       "Cloud Pavilion Air Tent",
-      "クラウドパビリオンエアテント",
       "Палатка Cloud Pavilion с надувным каркасом",
       "Lxz-1150-1102",
       "融入自然的栖居空间，为户外生活带来从容与雅致",
       "A dwelling that blends into nature, bringing ease and elegance to outdoor living.",
-      "自然と調和するシェルター。アウトドアにゆとりと趣をもたらします。",
       "Укрытие, вписанное в природу, — спокойствие и элегантность на открытом воздухе.",
       [
-        { num: 100, price: 97.0 },
+        { num: 100, price: 97 },
         { num: 500, price: 89.6 },
         { num: 1000, price: 82.1 },
       ],
@@ -122,12 +120,10 @@ const names = {
     [
       "中号充气帐篷",
       "Medium Inflatable Tent",
-      "中型インフレータブルテント",
       "Средняя надувная палатка",
       "LXZ-1150-1116",
       "适中体量的户外居所，兼顾空间感与便携性",
       "A right-sized outdoor shelter balancing space and portability.",
-      "広さと携帯性を両立した、ちょうどいいサイズのアウトドアシェルター。",
       "Укрытие среднего размера: баланс вместительности и портативности.",
       [
         { num: 100, price: 126.9 },
@@ -138,12 +134,10 @@ const names = {
     [
       "破舰者帐篷",
       "Breaker Tent",
-      "ブレイカーテント",
       "Палатка Breaker",
       "lxz-1200-0001",
       "以硬朗姿态迎接旷野，陪伴每一次出发",
       "A rugged companion that meets the wild on every departure.",
-      "タフな姿で原野へ踏み出すための頼れる相棒。",
       "Брутальный компаньон для каждого выхода в дикую природу.",
       [
         { num: 100, price: 47.8 },
@@ -154,12 +148,10 @@ const names = {
     [
       "充气凉棚天幕",
       "Inflatable Shade Canopy",
-      "インフレータブルシェードキャノピー",
       "Надувной тент-шатер",
       "lxz-1150-1117",
       "开阔的户外会客厅，让相聚更有氛围",
       "A spacious open-air lounge that warms up every gathering.",
-      "広々としたアウトドアリビングで、みんなの集まりがもっと特別に。",
       "Просторная гостиная на открытом воздухе для тёплых встреч.",
       [
         { num: 100, price: 119.4 },
@@ -170,12 +162,10 @@ const names = {
     [
       "支架更衣帐篷",
       "Frame Changing Tent",
-      "フレームチェンジングテント",
       "Каркасная раздевалка-палатка",
       "lxz-1100-1",
       "户外生活的私密角落，守护从容与体面",
       "A private corner outdoors that guards your comfort and dignity.",
-      "アウトドアでのプライバシーを守る、ゆとりのあるひとコマ。",
       "Приватный уголок на природе — комфорт и достоинство в любой ситуации.",
       [
         { num: 200, price: 31.3 },
@@ -186,12 +176,10 @@ const names = {
     [
       "折叠式更衣帐篷",
       "Folding Changing Tent",
-      "フォールディングチェンジングテント",
       "Складная раздевалка-палатка",
       "lxz-1101-1001",
       "轻巧随行的私密空间，收纳无忧",
       "A light, portable private space that packs away without worry.",
-      "軽くて持ち運べるプライベートスペース。収納もラクラク。",
       "Лёгкое и портативное укрытие для приватности — удобно складывать.",
       [
         { num: 300, price: 11.9 },
@@ -202,12 +190,10 @@ const names = {
     [
       "行军床帐篷",
       "Cot Tent",
-      "コットテント",
       "Палатка-койка",
       "lxz-1221-001",
       "离地而居的户外体验，干爽舒适一整晚",
       "An off-the-ground camping experience, dry and comfy all night.",
-      "地面から離れて過ごすアウトドア体験。一晩中ドライで快適。",
       "Сон над землёй — сухо и комфортно всю ночь.",
       [
         { num: 100, price: 46.3 },
@@ -218,12 +204,10 @@ const names = {
     [
       "充气穹顶天幕",
       "Inflatable Dome Canopy",
-      "インフレータブルドームキャノピー",
       "Надувной купольный тент",
       "lxz-1001-0017",
       "圆润舒展的遮蔽空间，为营地增添仪式感",
       "A rounded, spacious shelter that adds ceremony to the campsite.",
-      "丸みのある広いシェルターで、キャンプサイトに特別感を。",
       "Округлый просторный тент — церемония уюта на вашем лагере.",
       [
         { num: 500, price: 74.6 },
@@ -234,12 +218,10 @@ const names = {
     [
       "阔野·半自动天幕",
       "Widefield Semi-auto Canopy",
-      "ワイドフィールドセミオートキャノピー",
       "Полуавтоматический тент Widefield",
       "lxz-1000-1330",
       "快速展开的旷野庇护，把时间留给风景",
       "Quick-opening shelter for the wild, saving your time for the view.",
-      "原野ですぐ展開できるシェルター。景色を楽しむ時間が増える。",
       "Быстрораскрывающийся тент — больше времени на пейзажи, меньше на сборку.",
       [
         { num: 500, price: 71.6 },
@@ -250,12 +232,10 @@ const names = {
     [
       "袋鼠帐篷",
       "Kangaroo Tent",
-      "カンガルーテント",
       "Палатка Kangaroo",
       "lxz-1201-0012",
       "贴心的亲子户外空间，承载温暖的家庭记忆",
       "A thoughtful parent-child space that carries warm family memories.",
-      "親子で使いやすいアウトドア空間。家族のあたたかな思い出のために。",
       "Уютное пространство для родителей и детей — тёплые семейные воспоминания.",
       [
         { num: 500, price: 41.8 },
@@ -266,12 +246,10 @@ const names = {
     [
       "行者隧道帐篷",
       "Wanderer Tunnel Tent",
-      "ワンダラートンネルトテント",
       "Туннельная палатка Wanderer",
       "LXZ-1148-1105",
       "修长的户外走廊，串联起营地的每个角落",
       "A long tunnel gallery linking every corner of the campsite.",
-      "細長いアウトドアの廊下で、キャンプサイトの隅々をつなぐ。",
       "Длинный туннельный шатёр, связывающий весь лагерь воедино.",
       [
         { num: 100, price: 283.6 },
@@ -282,12 +260,10 @@ const names = {
     [
       "大号半球形帐篷",
       "Large Dome Tent",
-      "ラージドームテント",
       "Большая купольная палатка",
       "lxz-1143-5001",
       "宽敞的半球形居所，容纳更多户外想象",
       "A roomy dome dwelling with space for bigger outdoor imaginations.",
-      "広々としたドーム型のシェルター。もっとたくさんのアウトドアの夢を受け止める。",
       "Просторный купол — больше места для ваших outdoor-идей.",
       [
         { num: 100, price: 268.7 },
@@ -298,15 +274,13 @@ const names = {
     [
       "狼堡支架帐篷",
       "Wolfkeep Frame Tent",
-      "ウルフキープフレームテント",
       "Каркасная палатка Wolfkeep",
       "LXZ-1144-1201-1",
       "稳固的营地堡垒，给足户外安全感",
       "A steady camp fortress that feels safe and solid outdoors.",
-      "安定したキャンプの砦。アウトドアに安心感をもたらす。",
       "Надёжная крепость в лагере — спокойствие на каждом выходе.",
       [
-        { num: 100, price: 194.0 },
+        { num: 100, price: 194 },
         { num: 200, price: 179.1 },
         { num: 300, price: 164.2 },
       ],
@@ -314,12 +288,10 @@ const names = {
     [
       "屋檐天幕",
       "Eave Canopy",
-      "イーブキャノピー",
       "Карнизный тент Eave",
       "LXZ-1152-1304",
       "如屋檐般延展的遮蔽，营造家的归属感",
       "Eave-like shelter that brings the feeling of home.",
-      "軒先のように広がるシェルター。家のあたたかさをアウトドアに。",
       "Тент-карниз, дающий ощущение дома под открытым небом.",
       [
         { num: 500, price: 29.9 },
@@ -330,12 +302,10 @@ const names = {
     [
       "船形速开帐篷",
       "Boat Instant Tent",
-      "ボートインスタントテント",
       "Мгновенная палатка Boat",
       "lxz-1136-1304",
       "即刻开启的户外之旅，省时省心",
       "An instant start to your trip — quick to pitch, easy to love.",
-      "すぐに開いてアウトドアスタート。時間と手間を節約。",
       "Мгновенный старт похода — быстрая сборка, никаких хлопот.",
       [
         { num: 500, price: 34.3 },
@@ -346,12 +316,10 @@ const names = {
     [
       "游侠·铝杆帐篷",
       "Ranger Aluminum-pole Tent",
-      "レンジャーアルミポールテント",
       "Палатка Ranger на алюминиевых стойках",
       "lxz-1200-0013",
       "轻量坚韧的旅伴，陪你走得更远",
       "A light yet tough companion that goes the extra mile.",
-      "軽量でタフな旅の相棒。もっと遠くまで一緒に。",
       "Лёгкий и прочный компаньон для дальних маршрутов.",
       [
         { num: 500, price: 67.2 },
@@ -362,12 +330,10 @@ const names = {
     [
       "冰屋圆形帐篷",
       "Igloo Round Tent",
-      "イグルーラウンドテント",
       "Круглая палатка Igloo",
       "lxz-1143-2122",
       "独特的圆形居所，打造别具一格的营地风景",
       "A distinctive round dwelling with one-of-a-kind campsite charm.",
-      "ユニークな円形シェルター。キャンプサイトの風景に特別感を。",
       "Особое круглое укрытие — неповторимый вид вашего лагеря.",
       [
         { num: 100, price: 238.8 },
@@ -378,28 +344,24 @@ const names = {
     [
       "手搭穹顶天幕",
       "Hand-pitch Dome Canopy",
-      "ハンドピッチドームキャノピー",
       "Купольный тент с ручной установкой",
       "lxz-1000-1138",
       "亲手搭建的穹顶空间，享受动手的乐趣",
       "A hand-pitched dome for the joy of building it yourself.",
-      "自分の手で組み上げるドームスペース。設営の楽しさを。",
       "Купольный тент, установленный вручную — радость сборки.",
       [
         { num: 500, price: 82.1 },
-        { num: 1000, price: 73.0 },
-        { num: 1500, price: 70.0 },
+        { num: 1000, price: 73 },
+        { num: 1500, price: 70 },
       ],
     ],
     [
       "自动穹顶天幕",
       "Auto Dome Canopy",
-      "オートドームキャノピー",
       "Автоматический купольный тент",
       "lxz-1000-2030",
       "一键展开的穹顶庇护，轻松享受户外",
       "One-touch dome shelter for effortless time outdoors.",
-      "ワンプッシュで展開できるドームシェルター。手軽にアウトドア。",
       "Купольный тент в одно касание — лёгкий отдых на природе.",
       [
         { num: 500, price: 58.2 },
@@ -410,12 +372,10 @@ const names = {
     [
       "六角速开帐篷",
       "Hex Instant Tent",
-      "ヘックスインスタントテント",
       "Мгновенная шестиугольная палатка",
       "lxz-1151-1204",
       "六角造型的快速居所，空间利用更从容",
       "A hexagonal instant tent that uses space with ease.",
-      "六角形のクイックシェルター。広々使えて快適。",
       "Шестиугольная мгновенная палатка — рациональное использование пространства.",
       [
         { num: 500, price: 23.9 },
@@ -426,12 +386,10 @@ const names = {
     [
       "驼峰天幕",
       "Hump Canopy",
-      "ハンプキャノピー",
       "Тент Hump",
       "LXZ-1152-1302",
       "高耸的尖顶造型，如山峰般矗立营地",
       "A towering peak that stands tall over the campsite.",
-      "高くそびえる尖塔デザイン。キャンプサイトに山頂のような佇まいを。",
       "Высокий острый силуэт — как вершина над лагерем.",
       [
         { num: 100, price: 223.9 },
@@ -442,12 +400,10 @@ const names = {
     [
       "单层弹簧帐篷",
       "Single-layer Spring Tent",
-      "単層スプリングテント",
       "Однослойная пружинная палатка",
       "lxz-1002",
       "弹簧结构的轻便居所，开合之间尽显巧思",
       "A spring-framed shelter whose open-and-close is pure ingenuity.",
-      "スプリング構造の軽量シェルター。開閉に工夫が光る。",
       "Лёгкий пружинный каркас — изящное открывание и закрывание.",
       [
         { num: 500, price: 11.2 },
@@ -458,12 +414,10 @@ const names = {
     [
       "苍狼·半球形帐篷",
       "Greywolf Dome Tent",
-      "グレイウルフドームテント",
       "Купольная палатка Greywolf",
       "lxz-1143-2002",
       "沉稳的半球形设计，低调而可靠",
       "A calm dome design, understated and dependable.",
-      "落ち着いたドームデザイン。控えめで頼もしい。",
       "Спокойный купольный дизайн — сдержанный и надёжный.",
       [
         { num: 100, price: 223.9 },
@@ -474,28 +428,24 @@ const names = {
     [
       "摩托车帐篷",
       "Motorcycle Camping Tent",
-      "モーターサイクルキャンプテント",
       "Мотопалатка",
       "lxz-1066",
       "专为摩旅打造的居所，与爱车一同出发",
       "Built for motorcycle touring — set off together with your ride.",
-      "モタ旅のために設計されたシェルター。愛車と一緒に出発しよう。",
       "Палатка для мотопутешествий — отправляйтесь вместе со своим байком.",
       [
         { num: 100, price: 104.5 },
         { num: 500, price: 101.5 },
-        { num: 1000, price: 100.0 },
+        { num: 1000, price: 100 },
       ],
     ],
     [
       "印第安型帐篷",
       "Tipi Tent",
-      "ティーピーテント",
       "Палатка-типи",
       "lxz-1143-1401",
       "复古的 tipi 造型，为营地注入异域风情",
       "A retro tipi silhouette that adds exotic flair to camp.",
-      "レトロなティピーシルエット。キャンプサイトに異国情緒を。",
       "Ретро-силуэт типи — экзотический шарм вашего лагеря.",
       [
         { num: 500, price: 89.6 },
@@ -506,12 +456,10 @@ const names = {
     [
       "风衫天幕",
       "Windshirt Canopy",
-      "ウィンドシャツキャノピー",
       "Тент Windshirt",
       "lxz-1141-1101",
       "如披风般的流线设计，与风共舞于旷野",
       "A cloak-like streamlined canopy dancing with the wind.",
-      "マントのような流線形デザイン。風と踊る原野のシェルター。",
       "Обтекаемый силуэт, словно плащ, — танец с ветром на просторе.",
       [
         { num: 200, price: 38.8 },
@@ -524,12 +472,10 @@ const names = {
     [
       "拉丝矮垫（单）",
       "Low-profile Drop-stitch Mat",
-      "ロープロファイルドロップステッチマット",
       "Низкопрофильный коврик Drop-stitch",
       "lxz-4339-1106",
       "低矮贴合的睡眠基底，让身体彻底放松",
       "A low-profile sleep base that lets the body fully relax.",
-      "身体にぴったり沿う低めの寝床。全身を思いっきりリラックス。",
       "Низкий профиль для комфортного сна — тело расслабляется полностью.",
       [
         { num: 100, price: 19.4 },
@@ -540,12 +486,10 @@ const names = {
     [
       "星途恒温气垫",
       "Startrail Thermal Air Mat",
-      "スタートレイルサーマルエアマット",
       "Термо-надувной коврик Startrail",
       "lxz-4042-1208",
       "如星空般静谧的睡眠体验，温暖相伴",
       "A serene, starry-quiet sleep with warmth all along.",
-      "星空のような静けさと温もりに包まれる眠り。",
       "Тихий сон под звёздами — тепло на всю ночь.",
       [
         { num: 100, price: 31.3 },
@@ -556,12 +500,10 @@ const names = {
     [
       "电动加厚充气床",
       "Electric Thick Air Bed",
-      "電動シックエアベッド",
       "Электрический утолщённый надувной матрас",
       "lxz-4217-92",
       "厚实饱满的充气床面，接近居家睡眠感",
       "A thick, plush air bed close to a home-bed feel.",
-      "厚くてふっくらしたエアベッド面。ご自宅のような寝心地に。",
       "Толстый плюшевый надувной матрас — почти как домашняя кровать.",
       [
         { num: 200, price: 41.8 },
@@ -572,12 +514,10 @@ const names = {
     [
       "两用坐垫",
       "Dual-use Seat Pad",
-      "デュアルユースシートパッド",
       "Универсальная подушка-сидушка",
       "lxz-4381-1206",
       "一物两用的贴心设计，坐卧皆宜",
       "A thoughtful two-in-one design for sitting and lying.",
-      "ひとつのアイテムで座っても寝ても使える、うれしい設計。",
       "Универсальное решение — сидеть и лежать одинаково удобно.",
       [
         { num: 500, price: 2.7 },
@@ -588,28 +528,24 @@ const names = {
     [
       "恒温坐垫",
       "Thermal Seat Pad",
-      "サーマルシートパッド",
       "Термо-сидушка",
       "lxz-4381-1211",
       "温暖的座靠体验，久坐也舒适",
       "Warm seating comfort that lasts through long sits.",
-      "あたたかな座り心地。長時間座っても快適。",
       "Тёплая сидушка — комфорт даже при долгом сидении.",
       [
         { num: 300, price: 9.7 },
-        { num: 600, price: 9.0 },
+        { num: 600, price: 9 },
         { num: 1000, price: 8.2 },
       ],
     ],
     [
       "海绵拉丝云床",
       "Foam Drop-stitch Cloud Bed",
-      "フォームドロップステッチクラウドベッド",
       "Пенный коврик-облако Drop-stitch",
       "lxzqd1206",
       "如云般柔软的睡感，沉入梦乡",
       "A cloud-soft sleep that sinks you into dreams.",
-      "雲のように柔らかい寝心地。夢の世界へすーっと。",
       "Облачно-мягкий сон — плавное погружение в сны.",
       [
         { num: 100, price: 89.6 },
@@ -620,12 +556,10 @@ const names = {
     [
       "tpu直拉带气垫",
       "TPU Straight-strap Air Mat",
-      "TPUストレートストラップエアマット",
       "Надувной коврик TPU с прямыми стяжками",
       "lxz-4135-4",
       "利落的支撑结构，平稳承托每一次翻身",
       "A clean support structure that steadies every turn.",
-      "すっきりしたサポート構造。寝返りごとにしっかり支える。",
       "Чистая конструкция опоры — стабильность при каждом повороте.",
       [
         { num: 500, price: 12.7 },
@@ -636,12 +570,10 @@ const names = {
     [
       "带枕菱形脚踩气垫",
       "Diamond Foot-pump Mat with Pillow",
-      "ダイヤモンドフットポンプマット（枕付き）",
       "Ромбовидный коврик с ножной накачкой и подушкой",
       "lxz-4154-1002",
       "自带枕头的贴心设计，脚踩充气更便捷",
       "Built-in pillow and foot pump for easier inflation.",
-      "枕＋フットポンプ付きの、うれしい設計。膨らませる手間いらず。",
       "Встроенная подушка и ножной насос — удобное накачивание.",
       [
         { num: 500, price: 7.5 },
@@ -652,28 +584,24 @@ const names = {
     [
       "V型气垫",
       "V-shaped Air Mat",
-      "V字型エアマット",
       "Надувной коврик V-образной формы",
       "lxz-4039-1",
       "V型人体工学轮廓，贴合身体曲线",
       "A V-shaped ergonomic contour that hugs the body.",
-      "V字のエルゴノミクス設計で身体のカーブにしっかりフィット。",
       "V-образный эргономичный контур — повторяет изгибы тела.",
       [
         { num: 500, price: 9.7 },
-        { num: 1000, price: 9.0 },
+        { num: 1000, price: 9 },
         { num: 1500, price: 8.2 },
       ],
     ],
     [
       "糖葫芦充气床",
       "Candy-stick Air Bed",
-      "キャンディースティックエアベッド",
       "Надувной матрас «Чупа-чупс»",
       "LXZ-4239-1122",
       "趣味的串珠造型，为营地增添活泼气息",
       "A playful bead-on-a-stick look that livens up camp.",
-      "遊び心あるキャンディ型デザイン。キャンプに元気をプラス。",
       "Забавный бус-силуэт — оживит ваш лагерь.",
       [
         { num: 500, price: 21.6 },
@@ -684,12 +612,10 @@ const names = {
     [
       "双人加厚TPU充气床",
       "Double Thick TPU Air Bed",
-      "ダブルシックTPUエアベッド",
       "Двухспальный утолщённый TPU-матрас",
       "lxz-4217-7",
       "双人共享的厚实睡感，安心入眠",
       "Thick double sleeping comfort for restful nights.",
-      "厚手の双人用ベッドで、安心の眠りを。",
       "Толстый двухспальный матрас — крепкий сон на двоих.",
       [
         { num: 500, price: 26.1 },
@@ -700,12 +626,10 @@ const names = {
     [
       "花棱形双人带枕脚踩充气垫",
       "Faceted Double Foot-pump Mat with Pillow",
-      "ファセットダブルフットポンプマット（枕付き）",
       "Двухспальный гранёный коврик с ножной накачкой и подушкой",
       "lxz-4316-4",
       "花棱纹理的双人垫面，美观与舒适兼得",
       "A faceted double surface both good-looking and comfy.",
-      "花柄模様の双人用マット。見た目と寝心地を両立。",
       "Гранёный двухспальный коврик — красиво и комфортно.",
       [
         { num: 500, price: 12.7 },
@@ -718,12 +642,10 @@ const names = {
     [
       "薄款奶酪垫",
       "Slim Cheese Pad",
-      "スリムチーズパッド",
       "Тонкий коврик «Сыр»",
       "lxz-4339-4001",
       "轻薄随行的泡沫垫，收纳无负担",
       "A slim foam pad that travels light and stores easy.",
-      "薄手のフォームパッドで、持ち運びも収納もラクラク。",
       "Тонкий пенный коврик — легко носить и просто хранить.",
       [
         { num: 300, price: 12.7 },
@@ -734,12 +656,10 @@ const names = {
     [
       "星栖奶酪垫",
       "Starrest Cheese Pad",
-      "スターレストチーズパッド",
       "Коврик «Сыр» Starrest",
       "lxz-4339-1115",
       "如栖身星空下的柔软触感，伴你入眠",
       "Soft like sleeping under the stars, straight into dreams.",
-      "星空の下にいるような柔らかさ。眠りへと誘う。",
       "Мягко как сон под звёздами — уносит в сновидения.",
       [
         { num: 200, price: 37.3 },
@@ -750,12 +670,10 @@ const names = {
     [
       "战术奶酪垫",
       "Tactical Cheese Pad",
-      "タクティカルチーズパッド",
       "Тактический коврик «Сыр»",
       "lxz-4339-1103",
       "硬朗风格的泡沫垫，适配多种户外场景",
       "A rugged-style foam pad for many outdoor scenarios.",
-      "タフなスタイルのフォームパッド。さまざまなアウトドアに対応。",
       "Брутальный пенный коврик для разных outdoor-сценариев.",
       [
         { num: 200, price: 37.3 },
@@ -766,12 +684,10 @@ const names = {
     [
       "双人波点形自动充气垫",
       "Double Dotted Self-inflating Pad",
-      "ダブルドットセルフレグリュレーションパッド",
       "Двухспальный точечный самонадувной коврик",
       "lxz-4335-1402",
       "波点纹理的双人垫，自动充气更省心",
       "A dotted double pad that self-inflates with ease.",
-      "ドット柄の双人用マット。自動膨張で手間いらず。",
       "Двухспальный точечный коврик с самонадуванием — без лишних хлопот.",
       [
         { num: 500, price: 14.9 },
@@ -782,12 +698,10 @@ const names = {
     [
       "单人波点形自动充气垫",
       "Solo Dotted Self-inflating Pad",
-      "ソロドットセルフレグリュレーションパッド",
       "Односпальный точечный самонадувной коврик",
       "lxz-4335-1403",
       "单人独享的波点垫，轻盈出发",
       "A solo dotted pad for a light start.",
-      "ドット柄のひとり用パッド。軽やかに出発。",
       "Односпальный точечный коврик — лёгкий старт.",
       [
         { num: 500, price: 8.2 },
@@ -798,12 +712,10 @@ const names = {
     [
       "一键式充放奶酪床",
       "One-touch Cheese Bed",
-      "ワンタッチチーズベッド",
       "Кровать «Сыр» с управлением в одно касание",
       "lxz-4239-1113",
       "一键操作的便捷睡床，充放自如",
       "One-touch inflation and deflation, fully effortless.",
-      "ワンタッチで充排気が操作できる、便利なベッド。",
       "Надувание и сдувание одним касанием — без лишних усилий.",
       [
         { num: 500, price: 82.1 },
@@ -814,12 +726,10 @@ const names = {
     [
       "青春版奶酪床",
       "Youth Cheese Bed",
-      "ユースチーズベッド",
       "Молодёжная кровать «Сыр»",
       "LXZ-4239-1105",
       "活力满满的青春设计，为户外注入朝气",
       "A youthful design that energizes the outdoors.",
-      "元気いっぱいのヤングデザイン。アウトドアに活力を。",
       "Молодёжный дизайн — энергия для вашего outdoor.",
       [
         { num: 500, price: 53.7 },
@@ -830,12 +740,10 @@ const names = {
     [
       "猛禽奶酪垫",
       "Raptor Cheese Pad",
-      "ラプターチーズパッド",
       "Коврик «Сыр» Raptor",
       "lxz-3145-1104",
       "如猛禽般锐利的风格，硬核户外之选",
       "A raptor-sharp style for hardcore outdoor use.",
-      "猛禽のようにシャープなデザイン。ハードなアウトドア向け。",
       "Хищный силуэт — выбор для хардкорного outdoor.",
       [
         { num: 500, price: 52.2 },
@@ -848,12 +756,10 @@ const names = {
     [
       "双人躺靠式充气沙发",
       "Double Reclining Air Sofa",
-      "ダブルリクライニングエアソファ",
       "Двухспальный откидной надувной диван",
       "LXZ-4321-1106",
       "双人躺靠的慵懒时光，尽享户外惬意",
       "Lazy lounging for two, fully enjoying the outdoors.",
-      "二人でゆったり寛げる、リラックスできるアウトドア時間。",
       "Расслабленный отдых вдвоём — наслаждайтесь природой.",
       [
         { num: 100, price: 43.3 },
@@ -864,12 +770,10 @@ const names = {
     [
       "双人坐式充气沙发",
       "Double Seated Air Sofa",
-      "ダブルシーテッドエアソファ",
       "Двухспальный сидячий надувной диван",
       "LXZ-4321-1312",
       "并肩而坐的户外沙发，拉近彼此距离",
       "A side-by-side sofa that brings people closer.",
-      "並んで座るアウトドアソファ。距離がもっと近づく。",
       "Диван для двоих бок о бок — ближе друг к другу.",
       [
         { num: 100, price: 56.7 },
@@ -880,12 +784,10 @@ const names = {
     [
       "单人两用沙发",
       "Solo Dual-use Sofa",
-      "ソロデュアルユースソファ",
       "Односпальный универсальный диван",
       "LXZ-4321-2001",
       "坐卧两用的灵活设计，随心切换",
       "A flexible sit-or-lie design, switch as you like.",
-      "座っても横になっても使える、フレキシブル設計。",
       "Гибкий формат — сидеть и лежать, как вам удобно.",
       [
         { num: 100, price: 59.7 },
@@ -896,12 +798,10 @@ const names = {
     [
       "头等舱单人充气沙发",
       "First-class Solo Air Sofa",
-      "ファーストクラスソロエアソファ",
       "Односпальный надувной диван «Первый класс»",
       "LXZ-4321-3001",
       "如头等舱般的包裹感，奢享户外休憩",
       "First-class embrace for a luxurious outdoor rest.",
-      "ファーストクラスのような包まれる感覚。アウトドアの上級休憩。",
       "Объятия первого класса — роскошный отдых на природе.",
       [
         { num: 100, price: 29.9 },
@@ -912,12 +812,10 @@ const names = {
     [
       "悠然·单人充气沙发",
       "Leisure Solo Air Sofa",
-      "レジャーソロエアソファ",
       "Односпальный диван Leisure",
       "LXZ-4321-1203",
       "悠然自得的单人座，独享户外宁静",
       "An easygoing solo seat to own the outdoor quiet.",
-      "ゆったりひとりの時間。アウトドアの静けさをひとりじめ。",
       "Уютное одиночное сиденье — тишина природы только для вас.",
       [
         { num: 300, price: 20.9 },
@@ -930,12 +828,10 @@ const names = {
     [
       "羽绒充气枕头",
       "Down Inflatable Pillow",
-      "ダウンインフレータブルピロー",
       "Пуховая надувная подушка",
       "lxz-4332-1605",
       "羽绒般的柔软触感，轻盈随行",
       "Down-soft touch that travels light.",
-      "ダウン級の柔らかさ。軽量で持ち歩きやすい。",
       "Пуховая мягкость — лёгкая и удобная в поездке.",
       [
         { num: 300, price: 11.9 },
@@ -946,12 +842,10 @@ const names = {
     [
       "U型旅行枕头",
       "U-shaped Travel Pillow",
-      "U字型トラベラーズピロー",
       "Дорожная подушка U-формы",
       "lxz-4339-1120",
       "U型护颈设计，旅途中也能安心小憩",
       "A U-shaped neck support for naps on the go.",
-      "U字型ネックサポートで、移動中も安心の小休止。",
       "U-образная поддержка шеи для отдыха в дороге.",
       [
         { num: 500, price: 7.2 },
@@ -962,28 +856,24 @@ const names = {
     [
       "海绵舒适软枕",
       "Soft Foam Camp Pillow",
-      "ソフトフォームキャンプピロー",
       "Мягкая пенная подушка для кемпинга",
       "lxz-4332-1602",
       "柔软蓬松的海绵枕，如居家般舒适",
       "A fluffy foam pillow as comfy as home.",
-      "ふわふわのフォームピロー。自宅のような寝心地。",
       "Пушистая пенная подушка — комфорт как дома.",
       [
         { num: 300, price: 6.7 },
-        { num: 600, price: 6.0 },
+        { num: 600, price: 6 },
         { num: 1000, price: 5.2 },
       ],
     ],
     [
       "战术风格充气枕头",
       "Tactical Inflatable Pillow",
-      "タクティカルインフレータブルピロー",
       "Тактическая надувная подушка",
       "lxz-4339-1109",
       "硬朗战术风格，与硬核装备相得益彰",
       "Tactical styling that matches hardcore gear.",
-      "タフなタクティカルデザイン。ハードコアギアと相性抜群。",
       "Тактический стиль — отлично сочетается с хардкорным снаряжением.",
       [
         { num: 300, price: 7.5 },
@@ -994,28 +884,24 @@ const names = {
     [
       "卡其色奶酪枕",
       "Khaki Cheese Pillow",
-      "カーキチーズピロー",
       "Хаки-подушка «Сыр»",
       "lxz-4339-1501",
       "温润卡其色调，为营地增添柔和氛围",
       "Warm khaki tones that soften the campsite.",
-      "やさしいカーキ色。キャンプサイトに柔らかな雰囲気を。",
       "Тёплый хаки-оттенок — мягкая атмосфера лагеря.",
       [
         { num: 300, price: 6.7 },
         { num: 600, price: 6.4 },
-        { num: 1000, price: 6.0 },
+        { num: 1000, price: 6 },
       ],
     ],
     [
       "魔方自动充气枕",
       "Cube Self-inflating Pillow",
-      "キューブセルフレグレーションピロー",
       "Кубическая самонадувная подушка",
       "lxz-4332-1201",
       "魔方造型的自动充气枕，趣味与实用并存",
       "A cube-shaped self-inflating pillow, fun and practical.",
-      "キューブ型の自動膨張ピロー。楽しさと実用を両立。",
       "Кубическая самонадувная подушка — практично и забавно.",
       [
         { num: 300, price: 4.5 },
@@ -1028,15 +914,13 @@ const names = {
     [
       "小号单横杆月亮椅",
       "Small Single-bar Moon Chair",
-      "スモールシングルバームーンチェア",
       "Маленькое кресло-луна с одной перекладиной",
       "lxz-3145-1115",
       "小巧的月亮椅造型，轻盈便携",
       "A compact moon chair, light and portable.",
-      "コンパクトなムーンチェアで、軽量・携帯性どちらも。",
       "Компактное кресло-луна — лёгкое и портативное.",
       [
-        { num: 100, price: 9.0 },
+        { num: 100, price: 9 },
         { num: 500, price: 8.2 },
         { num: 1000, price: 7.9 },
       ],
@@ -1044,12 +928,10 @@ const names = {
     [
       "碳纤维月亮椅",
       "Carbon Fiber Moon Chair",
-      "カーボンファイバームーンチェア",
       "Карбоновое кресло-луна",
       "lxz-6128-2610",
       "碳纤维材质的轻量座椅，高端户外之选",
       "A carbon-fiber lightweight seat for premium outdoors.",
-      "カーボンファイバー製で軽量、上質なアウトドアの選択。",
       "Карбоновое лёгкое кресло — выбор для премиального outdoor.",
       [
         { num: 100, price: 25.4 },
@@ -1060,12 +942,10 @@ const names = {
     [
       "四角马扎",
       "Four-corner Folding Stool",
-      "フォーコーナーフォールディングスツール",
       "Четырёхопорный складной стул",
       "lxz-6128-2604",
       "经典的四角马扎，稳固耐用",
       "The classic four-corner stool, steady and durable.",
-      "クラシックな四脚スツール。安定性と耐久性を両立。",
       "Классический четырёхопорный стул — устойчивый и долговечный.",
       [
         { num: 100, price: 4.9 },
@@ -1076,12 +956,10 @@ const names = {
     [
       "双横杆折叠躺椅",
       "Double-bar Folding Recliner",
-      "ダブルバーフォールディングリクライナー",
       "Двухперекладинное складное кресло-реклайнер",
       "lxz-6131-1507",
       "双横杆支撑的躺椅，舒展全身",
       "A double-bar recliner that stretches you out.",
-      "ダブルバーで支えるリクライナー。全身を伸ばせる。",
       "Реклайнер с двумя перекладинами — для полного расслабления.",
       [
         { num: 100, price: 28.4 },
@@ -1092,12 +970,10 @@ const names = {
     [
       "后背提拉椅",
       "Lift-back Camp Chair",
-      "リフトバックキャンプチェア",
       "Кемпинговое кресло с подъёмной спинкой",
       "lxz-3145-1125",
       "提拉式便携设计，拎起就走",
       "A lift-and-go design — grab it and go.",
-      "リフト式ポータブル設計。持ち上げてすぐ出発。",
       "Конструкция «поднял и пошёл» — берите и отправляйтесь.",
       [
         { num: 100, price: 29.9 },
@@ -1108,12 +984,10 @@ const names = {
     [
       "四方躺平椅",
       "Square Flat Recliner",
-      "スクエアフラットリクライナー",
       "Квадратный плоский реклайнер",
       "lxz-6131-1513",
       "方正的躺平设计，彻底放松身心",
       "A square flat-recline design for total relaxation.",
-      "スクエア型フラットリクライナーで、からだもこころも解放。",
       "Квадратный плоский реклайнер — полное расслабление.",
       [
         { num: 100, price: 25.4 },
@@ -1124,12 +998,10 @@ const names = {
     [
       "战术蝴蝶椅",
       "Tactical Butterfly Chair",
-      "タクティカルバタフライチェア",
       "Тактическое кресло-бабочка",
       "lxz-3145-1111",
       "蝴蝶展开的造型，战术风格拉满",
       "A butterfly-open shape with full tactical style.",
-      "バタフライ展開のシルエット。タクティカル感たっぷり。",
       "Силуэт-бабочка с тактическим характером.",
       [
         { num: 100, price: 13.4 },
@@ -1140,12 +1012,10 @@ const names = {
     [
       "车载钓鱼椅",
       "Car-mount Fishing Chair",
-      "カーマウントフィッシングチェア",
       "Автомобильное кресло для рыбалки",
       "lxz-3145-1105",
       "专为车载与垂钓设计，陪伴悠闲时光",
       "Made for car trips and fishing, for leisurely hours.",
-      "車載・釣りにぴったりの設計。ゆったり時間のお供に。",
       "Для автопутешествий и рыбалки — спутник вашего досуга.",
       [
         { num: 100, price: 25.4 },
@@ -1156,12 +1026,10 @@ const names = {
     [
       "轻便折叠布面桌",
       "Lightweight Folding Fabric Table",
-      "軽量フォールディングファブリックテーブル",
       "Лёгкий складной тканевый стол",
       "lxz-3145-1801",
       "轻便的布面折叠桌，营地用餐好搭档",
       "A light fabric folding table, a great camp-dining mate.",
-      "軽量ファブリックのフォールディングテーブル。キャンプダイニングの良き相棒に。",
       "Лёгкий тканевый складной стол — отличный компаньон для лагеря.",
       [
         { num: 100, price: 11.9 },
@@ -1174,12 +1042,10 @@ const names = {
     [
       "户外折叠水桶",
       "Collapsible Outdoor Bucket",
-      "アウトドア折りたたみバケツ",
       "Складное ведро для outdoor",
       "LXZ-3124-3002",
       "可折叠的便携水桶，户外取水好帮手",
       "A collapsible bucket, a handy helper for water outdoors.",
-      "折りたたみ式の携帯バケツ。アウトドアでの給水に。",
       "Складное ведро — удобный помощник для воды на природе.",
       [
         { num: 300, price: 4.5 },
@@ -1190,15 +1056,13 @@ const names = {
     [
       "排气式收纳包",
       "Vented Storage Bag",
-      "ベンテッドストレージバッグ",
       "Сумка с вентиляцией для хранения",
       "lxz-4042-1218",
       "排气压缩的收纳设计，节省更多空间",
       "Vented compression storage that saves more space.",
-      "排気を抑え込む収納設計。スペースを賢く節約。",
       "Хранение с отводом воздуха — экономит место.",
       [
-        { num: 300, price: 3.0 },
+        { num: 300, price: 3 },
         { num: 600, price: 2.8 },
         { num: 1000, price: 2.5 },
       ],
@@ -1206,15 +1070,13 @@ const names = {
     [
       "气密式收纳包",
       "Airtight Storage Bag",
-      "エアタイトストレージバッグ",
       "Герметичная сумка для хранения",
       "lxz-4042-3201",
       "气密密封的收纳方案，妥善保护装备",
       "An airtight storage solution that protects your gear.",
-      "気密シーリング収納で、機材をしっかり守る。",
       "Герметичное хранение — надёжная защита снаряжения.",
       [
-        { num: 100, price: 6.0 },
+        { num: 100, price: 6 },
         { num: 500, price: 5.7 },
         { num: 1000, price: 5.2 },
       ],
@@ -1222,12 +1084,10 @@ const names = {
     [
       "云朵背包",
       "Cloud Backpack",
-      "クラウドバックパック",
       "Рюкзак Cloud",
       "lxz-4381-4201",
       "如云朵般轻盈的背包，背负无负担",
       "A cloud-light backpack with effortless carry.",
-      "雲のように軽いバックパック。背負い心地ラクラク。",
       "Лёгкий как облако рюкзак — носить одно удовольствие.",
       [
         { num: 100, price: 10.4 },
@@ -1238,12 +1098,10 @@ const names = {
     [
       "手持气泵",
       "Handheld Air Pump",
-      "ハンディエアクポンプ",
       "Ручной нанос",
       "lxz-3125-8891",
       "小巧的手持充气泵，随时为装备补气",
       "A compact hand pump to top up gear anytime.",
-      "コンパクトなハンディエアクポンプ。いつでも機材に給気。",
       "Компактный ручной насос — подкачка в любой момент.",
       [
         { num: 200, price: 18.7 },
@@ -1254,12 +1112,10 @@ const names = {
     [
       "智能充气泵",
       "Smart Electric Pump",
-      "スマートエレクトリックポンプ",
       "Умный электрический насос",
       "lxz-3125-8890",
       "智能控压的充气泵，省心又精准",
       "A smart pump with precise, worry-free control.",
-      "スマートな圧制御で、ラクで正確に。",
       "Умное управление давлением — точно и без хлопот.",
       [
         { num: 200, price: 37.3 },
@@ -1270,12 +1126,10 @@ const names = {
     [
       "mini款充气泵",
       "Mini Air Pump",
-      "ミニエアクポンプ",
       "Мини-насос",
       "lxz-3125-1101",
       "迷你尺寸的充气泵，收纳携带两相宜",
       "A mini pump that stores and carries well.",
-      "ミニサイズで、収納も携帯も快適。",
       "Мини-формат — удобно хранить и носить.",
       [
         { num: 200, price: 12.7 },
@@ -1286,12 +1140,10 @@ const names = {
     [
       "户外徒步雨衣",
       "Trail Rain Jacket",
-      "トレイルレインジャケット",
       "Дождевик для похода",
       "lxz-3436-1009",
       "轻量便携的徒步雨衣，风雨中从容前行",
       "A light trail rain jacket for calm walking in the rain.",
-      "軽量・携帯しやすいハイキング用レインジャケット。",
       "Лёгкая походная куртка — спокойно даже в дождь.",
       [
         { num: 500, price: 4.2 },
@@ -1302,16 +1154,14 @@ const names = {
     [
       "户外速干毛巾",
       "Quick-dry Outdoor Towel",
-      "クイックドライアウトドアタオル",
       "Быстросохнущее outdoor-полотенце",
       "lxz-4381-2006",
       "速干透气的户外毛巾，运动后快速干爽",
       "A quick-dry breathable towel, dry again in no time.",
-      "速乾・透湿性のアウトドアタオル。運動後すぐさっぱり。",
       "Быстросохнущее «дышащее» полотенце — комфорт после активности.",
       [
         { num: 500, price: 3.7 },
-        { num: 1500, price: 3.0 },
+        { num: 1500, price: 3 },
         { num: 3000, price: 2.7 },
       ],
     ],
@@ -1319,7 +1169,7 @@ const names = {
 };
 
 // 按品类给 spec 表（参数表）做四语版本。原有 zh / en 还在这里继续用，
-// 新增 ja / ru 字段；详情页会拿 spec[locale] 然后渲染。
+// 新增 ru 字段；详情页会拿 spec[locale] 然后渲染。
 //
 // 双行 spec 列表里，key 是参数名、value 是参数值，两边都要翻译。
 // 与 categories 一样，路由链路上的产品类目必须有完全相同的 spec key。
@@ -1327,7 +1177,6 @@ const categoryDetails = {
   tent: {
     zh: "采用耐磨防泼水面料与稳定支撑结构，兼顾通风、搭建效率和全天候营地体验。",
     en: "Built with abrasion-resistant, water-repellent fabric and a stable support system for ventilation, fast setup and reliable all-weather use.",
-    ja: "耐摩耗・撥水ファブリックと安定したサポート構造。通気性、設営効率、そして全天候のキャンプ体験を両立。",
     ru: "Износостойкая водоотталкивающая ткань и стабильный каркас — вентиляция, быстрая сборка и надёжность в любую погоду.",
     specsZh: [
       ["适用季节", "三季"],
@@ -1337,10 +1186,6 @@ const categoryDetails = {
       ["Season", "3 season"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["対応シーズン", "3シーズン"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Сезон", "3 сезона"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1349,7 +1194,6 @@ const categoryDetails = {
   sofa: {
     zh: "宽大承托面配合稳定气室，快速充放气，在营地也能拥有松弛舒适的休息空间。",
     en: "A generous support area and stable air chambers create a relaxed camp lounge that inflates and packs quickly.",
-    ja: "広いサポート面と安定したエアチャンバー。充排気も速く、キャンプでもゆったり寛げるラウンジに。",
     ru: "Просторная опора и стабильные воздушные камеры создают расслабляющую лаунж-зону, которая быстро надувается и складывается.",
     specsZh: [
       ["承重", "150–240 kg"],
@@ -1359,10 +1203,6 @@ const categoryDetails = {
       ["Load", "150–240 kg"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["耐荷重", "150〜240 kg"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Нагрузка", "150–240 кг"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1371,7 +1211,6 @@ const categoryDetails = {
   tableAndchair: {
     zh: "轻量金属结构与高强度座布相结合，展开快捷、支撑稳定，满足多种营地活动。",
     en: "A lightweight metal frame and high-strength fabric deliver quick setup and dependable support around camp.",
-    ja: "軽量メタルフレームと高強度ファブリックの組み合わせ。展開しやすく、安定したサポートでさまざまなキャンプ活動に。",
     ru: "Лёгкий металлический каркас и прочная ткань — быстрая установка и надёжная поддержка в лагере.",
     specsZh: [
       ["结构", "快速折叠"],
@@ -1381,10 +1220,6 @@ const categoryDetails = {
       ["Structure", "Quick folding"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["構造", "クイック折りたたみ"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Конструкция", "Быстрая сборка"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1393,7 +1228,6 @@ const categoryDetails = {
   accessories: {
     zh: "围绕营地搭建、充气与收纳设计，体积小巧、使用直观，是户外系统中不可缺少的一环。",
     en: "Designed around setup, inflation and storage, this compact essential keeps every camp system working smoothly.",
-    ja: "設営・給気・収納のために設計された、コンパクトで使いやすい必需品。アウトドアのシステムに欠かせない要素。",
     ru: "Разработано для установки лагеря, накачивания и хранения — компактно, удобно, незаменимо для outdoor-системы.",
     specsZh: [
       ["包装", "独立包装"],
@@ -1403,10 +1237,6 @@ const categoryDetails = {
       ["Packing", "Individual pack"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["パッケージ", "個別包装"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Упаковка", "Индивидуальная"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1415,7 +1245,6 @@ const categoryDetails = {
   airpad: {
     zh: "内置支撑气室撑起均匀承托，双向气阀快充快放，收纳后仅一只水壶大小。",
     en: "Internal support chambers spread weight evenly, while a two-way valve inflates and empties fast — packed down, it is no bigger than a water bottle.",
-    ja: "内部サポートチャンバーが均一に支え、双方向バルブで素早く充排気。収納サイズは水筒程度。",
     ru: "Внутренние опорные камеры распределяют вес, двухходовой клапан быстро надувает и сдувает — в сложенном виде не больше бутылки.",
     specsZh: [
       ["收纳尺寸", "约 φ12 × 25 cm"],
@@ -1425,10 +1254,6 @@ const categoryDetails = {
       ["Packed size", "Approx. φ12 × 25 cm"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["収納サイズ", "約 φ12 × 25 cm"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Размер в сложенном виде", "около φ12 × 25 см"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1437,7 +1262,6 @@ const categoryDetails = {
   foampad: {
     zh: "海绵夹层不用充气也不怕扎破，铺开即睡；折叠后可当营地坐垫。",
     en: "A foam core needs no inflation and shrugs off punctures — unroll to sleep, fold it up to sit on.",
-    ja: "フォームコアは穴に強く、膨らませる必要なし。広げて眠り、たたんでシーツとしても。",
     ru: "Пенный наполнитель не требует надува и не боится проколов — раскатал и спишь, свернул — используй как сидушку.",
     specsZh: [
       ["结构", "折叠 / 卷收"],
@@ -1447,10 +1271,6 @@ const categoryDetails = {
       ["Format", "Folding / roll-up"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["収納", "折りたたみ / ロール"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Формат", "Складывание / скрутка"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1459,7 +1279,6 @@ const categoryDetails = {
   NeckPillow: {
     zh: "贴合颈部曲线的支撑造型，亲肤外套可拆洗，长途车程与帐篷里都用得上。",
     en: "Neck-contoured support with a removable, washable cover — equally at home on a long drive or in the tent.",
-    ja: "首のカーブにフィットするサポート形状。肌触りの良いカバーは着脱可能。長距離ドライブにもテントにも。",
     ru: "Опора по форме шеи со съёмным чехлом, который можно стирать — пригодится и в долгой поездке, и в палатке.",
     specsZh: [
       ["收纳", "附收纳袋"],
@@ -1469,10 +1288,6 @@ const categoryDetails = {
       ["Storage", "Stuff sack included"],
       ["Custom", "Color / Logo / Package"],
     ],
-    specsJa: [
-      ["収納", "スタッフサック付き"],
-      ["カスタマイズ", "カラー / ロゴ / パッケージ"],
-    ],
     specsRu: [
       ["Хранение", "В комплекте мешок"],
       ["Кастомизация", "Цвет / Логотип / Упаковка"],
@@ -1481,11 +1296,11 @@ const categoryDetails = {
 };
 
 // 从多语言字典中取当前 locale 的值；缺失时回落到 en（产品描述/名称
-// 必须有，而 ja / ru 翻译不在时 fallback 到 en 不至于空白）。
+// 必须有，而 ru 翻译不在时 fallback 到 en 不至于空白）。
 const pickLocalized = (dict, locale) => dict[locale] ?? dict.en;
 
 // 七个商品品类的标准叫法，按 hero 轮播与产品卡角标要展示的顺序排列。
-// 包含四语言字段 zh / en / ja / ru，对应 .categoryRoutes 的 7 个 key。
+// 包含三语言字段 zh / en / ru，对应 .categoryRoutes 的 7 个 key。
 // key 改任何一项必须同步核对 productHeroSlides 里 slide.category 的下标对应
 // （轮播 7 张图按这个顺序配对到 hero 卡片）。
 export const categories = [
@@ -1493,13 +1308,10 @@ export const categories = [
     key: 'tent',
     zh: '山野帐篷',
     en: 'Backcountry Tents',
-    ja: 'バックカントリーテント',
     ru: 'Палатки для дикой природы',
     introZh: '从快速搭建到宽敞充气结构，为营地提供可靠庇护。',
     introEn:
       'Reliable shelter, from quick-pitch privacy tents to spacious inflatable cabins.',
-    introJa:
-      'クイックピッチのプライベートテントから広々としたインフレータブルキャビンまで、キャンプサイトに安心なシェルターを。',
     introRu:
       'Надёжные укрытия — от быстроустанавливаемых приватных палаток до просторных надувных конструкций.',
   },
@@ -1507,13 +1319,10 @@ export const categories = [
     key: 'airpad',
     zh: '充气卧垫',
     en: 'Inflatable Sleeping Mats',
-    ja: 'エアーマット',
     ru: 'Надувные спальные коврики',
     introZh: '一次充气撑起整夜支撑，收起来只有一只水壶大小。',
     introEn:
       'Full-night support from a single inflation, packing down to the size of a water bottle.',
-    introJa:
-      '一度膨らませれば一晩中しっかりサポート。収納は水筒サイズまでコンパクトに。',
     introRu:
       'Поддержка на всю ночь после одного накачивания, а в сложенном виде — не больше бутылки воды.',
   },
@@ -1521,13 +1330,10 @@ export const categories = [
     key: 'foampad',
     zh: '棉护睡垫',
     en: 'Foam Sleeping Pads',
-    ja: 'フォームパッド',
     ru: 'Пенные спальные коврики',
     introZh: '海绵夹层不怕扎、不用充气，铺开即睡。',
     introEn:
       'Puncture-proof foam cores that need no inflation — unroll and sleep.',
-    introJa:
-      'フォーム芯は穴が開かず、膨らませる必要なし。広げるだけでそのまま眠れます。',
     introRu:
       'Пенное ядро не боится проколов и не требует надувания — раскатал и спишь.',
   },
@@ -1535,13 +1341,10 @@ export const categories = [
     key: 'NeckPillow',
     zh: '舒柔枕头',
     en: 'Camp Pillows',
-    ja: 'キャンプピロー',
     ru: 'Походные подушки',
     introZh: '贴合颈部曲线的营地枕，长途车程与帐篷里都用得上。',
     introEn:
       'Neck-contoured pillows that work as well on long drives as they do in the tent.',
-    introJa:
-      '首のカーブにフィットするキャンプ枕。ロングドライブでもテントの中でも活躍します。',
     introRu:
       'Подушки с опорой для шеи — пригодятся и в долгой поездке, и в палатке.',
   },
@@ -1549,13 +1352,10 @@ export const categories = [
     key: 'sofa',
     zh: '户外软座',
     en: 'Camp Seating',
-    ja: 'キャンプシート',
     ru: 'Кемпинговая мебель для отдыха',
     introZh: '将居家般的放松体验带到草地、海边与营地。',
     introEn:
       'Lounge-level comfort designed for campsites, beaches and backyards.',
-    introJa:
-      'リビングのような寛ぎを、キャンプ場やビーチ、庭先まで。',
     introRu:
       'Домашний комфорт на природе: у бассейна, на пляже и в кемпинге.',
   },
@@ -1563,13 +1363,10 @@ export const categories = [
     key: 'accessories',
     zh: '随行配件',
     en: 'Trail Accessories',
-    ja: 'アウトドアアクセサリー',
     ru: 'Аксессуары для походов',
     introZh: '从充气到收纳，让营地搭建更轻松的小型装备。',
     introEn:
       'Compact essentials that make setup, inflation and packing effortless.',
-    introJa:
-      '設営・空気入れ・収納をラクにするコンパクトな小物アイテム。',
     introRu:
       'Компактные помощники для установки лагеря, накачивания и упаковки.',
   },
@@ -1577,56 +1374,49 @@ export const categories = [
     key: 'tableAndchair',
     zh: '便携桌椅',
     en: 'Portable Tables & Chairs',
-    ja: 'ポータブルテーブル&チェア',
     ru: 'Походные столы и стулья',
     introZh: '稳定轻量的营地家具，适合用餐、休息和社交。',
     introEn:
       'Stable, lightweight camp furniture for dining, resting and gathering.',
-    introJa:
-      '安定した軽量キャンプ家具。食事も休憩も、みんなで集まる時間も。',
     introRu:
       'Лёгкая и устойчивая мебель для лагеря — для еды, отдыха и посиделок.',
   },
 ];
 
 // names 每项结构：
-// [zhName, enName, jaName, ruName, sku, zhDesc, enDesc, jaDesc, ruDesc, tiers]。
+// [zhName, enName, ruName, sku, zhDesc, enDesc, ruDesc, tiers]。
 // 不再用「index 0/1」之类的硬编码对照，避免后续再加新语言时再改一遍。
 // description 直接用每个商品自己的简介，不回落到 categoryDetails 的品类描述。
 // tiers 是档位价格：[{ num, price }, ...]，详情页按三行展示。
 export const products = Object.entries(names).flatMap(([category, items]) =>
   items.map((row, index) => {
-    const [zhName, enName, jaName, ruName, sku, zhDesc, enDesc, jaDesc, ruDesc, tiers] = row;
+    const [zhName, enName, ruName, sku, zhDesc, enDesc, ruDesc, tiers] = row;
     return {
       id: String(index + 1),
       sku,
       category,
-      name: { zh: zhName, en: enName, ja: jaName, ru: ruName },
+      name: { zh: zhName, en: enName, ru: ruName },
       description: {
         zh: zhDesc,
         en: enDesc,
-        ja: jaDesc ?? enDesc,
         ru: ruDesc ?? enDesc,
       },
       tiers,
       specs: {
         zh: categoryDetails[category].specsZh,
         en: categoryDetails[category].specsEn,
-        ja: categoryDetails[category].specsJa,
         ru: categoryDetails[category].specsRu,
       },
       image: images[category][index % images[category].length],
       imageAlt: {
         zh: `${zhName}户外产品`,
         en: `${enName} outdoor product`,
-        ja: `${jaName} アウトドア用品`,
         ru: `${ruName} outdoor-товар`,
       },
       // categoryDetails 里的描述文案保留，单页营销场景要拿品类描述时仍可取。
       categoryDescription: {
         zh: categoryDetails[category].zh,
         en: categoryDetails[category].en,
-        ja: categoryDetails[category].ja,
         ru: categoryDetails[category].ru,
       },
       featured:
@@ -1639,24 +1429,23 @@ export const products = Object.entries(names).flatMap(([category, items]) =>
 export const getProduct = (category, id) =>
   products.find((item) => item.category === category && item.id === String(id));
 export const getCategory = (key) => categories.find((item) => item.key === key);
-// 视图层拿到 `{ zh, en, ja, ru }` 字典后按 useLocale().locale 选显示。
+// 视图层拿到 `{ zh, en, ru }` 字典后按 useLocale().locale 选显示。
 export const getLocalizedCategoryName = (category, locale) =>
   pickLocalized(category, locale);
 
 // ---------- 商品页首屏轮播 ----------
 // 每张图配一个品类，按钮文案不写死在这里 —— 由 category 去 categories 里取
-// zh/en/ja/ru，跟公共底部、筛选条、商品卡角标共用同一个叫法。
+// zh/en/ru，跟公共底部、筛选条、商品卡角标共用同一个叫法。
 // 顺序是需求给的图片顺序（one..seven），和 categories 的顺序不同，这是刻意的：
 // 图拍的是什么题材就配哪个品类。
 // eyebrow 七张共用，写在 productHeroEyebrow。
 //
 // title / subtitle 在每种语言下都要重新写一句英文（俄文、日文）
-// 不直接套取 en 的：英文 35 字符上限的玩法对 ja/ru 同样适用，
+// 不直接套取 en 的：英文 35 字符上限的玩法对 ru 同样适用，
 // 但日文与俄文字符按字宽算宽幅不一致，先按宽松字数算，后续有溢出再收。
 export const productHeroEyebrow = {
   zh: "WOLFWALKER / 产品系列",
   en: "WOLFWALKER / PRODUCT COLLECTION",
-  ja: "WOLFWALKER / プロダクトコレクション",
   ru: "WOLFWALKER / КОЛЛЕКЦИЯ ТОВАРОВ",
 };
 
@@ -1666,11 +1455,9 @@ export const productHeroSlides = [
     category: "tent",
     titleZh: "奔赴山野，解锁自由",
     titleEn: "Into the wild, unlock freedom",
-    titleJa: "原野へ、自由を開く",
     titleRu: "В дикую природу — навстречу свободе",
     subtitleZh: "探寻帐篷气垫智造，尽享户外安歇",
     subtitleEn: "Smart-made tents and air mats for a restful night outdoors",
-    subtitleJa: "テントとエアマットのスマート製造で、快適なアウトドア睡眠を。",
     subtitleRu:
       "Умное производство палаток и надувных ковриков — для крепкого сна на природе.",
   },
@@ -1679,13 +1466,10 @@ export const productHeroSlides = [
     category: "airpad",
     titleZh: "栖于天地，乐享自然",
     titleEn: "Dwell in the open, live with nature",
-    titleJa: "天地に暮らし、自然と生きる",
     titleRu: "Жить под открытым небом, в гармонии с природой",
     subtitleZh: "深耕帐篷、充气气垫研发生产，定制户外理想居所",
     subtitleEn:
       "Tents and inflatable mats, developed and built in-house for your ideal camp",
-    subtitleJa:
-      "テントとインフレータブルマットを自社開発・製造。あなたの理想キャンプを。",
     subtitleRu:
       "Палатки и надувные коврики собственной разработки и производства — ваш идеальный лагерь.",
   },
@@ -1694,13 +1478,10 @@ export const productHeroSlides = [
     category: "foampad",
     titleZh: "纵情山海，自在无拘",
     titleEn: "Roam peaks and coasts, wholly free",
-    titleJa: "山も海も、自由に",
     titleRu: "Свободно среди гор и побережий",
     subtitleZh: "专注帐篷与充气气垫，让山野旅居轻松随性",
     subtitleEn:
       "Focused on tents and air mats that keep life outdoors easy and unhurried",
-    subtitleJa:
-      "テントとエアマットに集中し、山での暮らしをラクに気ままに。",
     subtitleRu:
       "Сфокусированы на палатках и надувных ковриках: лёгкая жизнь на природе.",
   },
@@ -1709,13 +1490,10 @@ export const productHeroSlides = [
     category: "sofa",
     titleZh: "身归旷野，心觅安然",
     titleEn: "Body in the wild, mind at ease",
-    titleJa: "体は原野へ、心は穏やか",
     titleRu: "Тело в дикой природе, душа в покое",
     subtitleZh: "帐篷气垫源头工厂，打造户外舒适休憩方案",
     subtitleEn:
       "A source factory for tents and air mats, building comfort into every campsite",
-    subtitleJa:
-      "テントとエアマットの自社工場。あらゆるキャンプサイトに快適を。",
     subtitleRu:
       "Завод-источник палаток и ковриков — комфорт в каждом лагере.",
   },
@@ -1724,12 +1502,9 @@ export const productHeroSlides = [
     category: "NeckPillow",
     titleZh: "逐风而行，随遇而安",
     titleEn: "Follow the wind, at ease anywhere",
-    titleJa: "風とともに、どこでも心安らかに",
     titleRu: "Следуя за ветром, в покое где угодно",
     subtitleZh: "枕垫相伴，享受美景，四海皆可安眠",
     subtitleEn: "Pillows and pads that turn any view into a good night’s sleep",
-    subtitleJa:
-      "ピローとマットがあれば、どんな景色も心地よい眠りに。",
     subtitleRu:
       "Подушки и коврики превращают любой пейзаж в крепкий сон.",
   },
@@ -1738,13 +1513,10 @@ export const productHeroSlides = [
     category: "accessories",
     titleZh: "向野出发，静守清欢",
     titleEn: "Head outdoors, keep the quiet joy",
-    titleJa: "外へ、静かな喜びを",
     titleRu: "На природу — за тихой радостью",
     subtitleZh: "一帐一垫搭配随行配件，尽享天地间松弛时刻",
     subtitleEn:
       "One tent, one mat and the right accessories for unhurried hours outside",
-    subtitleJa:
-      "テント・マット・アクセサリーで、ゆるやかなアウトドア時間を。",
     subtitleRu:
       "Палатка, коврик и аксессуары для неспешных часов на природе.",
   },
@@ -1753,13 +1525,10 @@ export const productHeroSlides = [
     category: "tableAndchair",
     titleZh: "匠心致造，野境可期",
     titleEn: "Crafted with care, made for the wild",
-    titleJa: "匠の技で、野性をかなえる",
     titleRu: "Сделано с заботой — для дикой природы",
     subtitleZh: "专注帐篷桌椅研发生产，铸就高品质户外旅居装备",
     subtitleEn:
       "Tents, tables and chairs developed in-house for high-quality life outdoors",
-    subtitleJa:
-      "テント・テーブル・チェアの自社開発。高品質なアウトドアライフに。",
     subtitleRu:
       "Собственная разработка палаток, столов и стульев — качественный outdoor-быт.",
   },
